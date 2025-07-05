@@ -29,10 +29,10 @@ if not GOOGLE_API_KEY:
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
-# Initialize Gemini model
+# Initialize Gemini model (using Flash for better free tier quotas)
 try:
     model = genai.GenerativeModel('gemini-1.5-flash')
-    print("✅ Gemini flash model initialized successfully!")
+    print("✅ Gemini Flash model initialized successfully!")
 except Exception as e:
     print(f"❌ Error initializing Gemini model: {e}")
     model = None
