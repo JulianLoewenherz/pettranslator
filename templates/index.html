@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Video Interpreter - What's Your Pet Thinking?</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐾 Pet Video Interpreter</h1>
+            <p>Upload a short video of your pet and discover what they're thinking!</p>
+        </header>
+
+        <div class="upload-section">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="file-input-container">
+                    <label for="video-file" class="file-label">
+                        <span class="file-icon">📹</span>
+                        <span class="file-text">Choose Pet Video</span>
+                        <input type="file" id="video-file" name="file" accept=".mp4,.mov,.avi,.mkv,.webm" required>
+                    </label>
+                    <div class="file-info">
+                        <small>Max 10 seconds, up to 50MB • MP4, MOV, AVI, MKV, WEBM</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="upload-btn" disabled>
+                    <span class="btn-text">Analyze My Pet's Thoughts</span>
+                    <span class="btn-icon">🧠</span>
+                </button>
+            </form>
+
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Analyzing your pet's video...</p>
+            </div>
+
+            <div id="result" class="result hidden">
+                <h3>Analysis Complete!</h3>
+                <div id="result-content"></div>
+            </div>
+
+            <div id="error" class="error hidden">
+                <h3>Oops! Something went wrong</h3>
+                <div id="error-content"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>How it works:</h3>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span>Upload a short video of your pet (under 10 seconds)</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <span>Our AI analyzes your pet's behavior and body language</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span>Get a fun interpretation of what your pet is thinking!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('video-file');
+        const uploadBtn = document.querySelector('.upload-btn');
+        const loading = document.getElementById('loading');
+        const result = document.getElementById('result');
+        const error = document.getElementById('error');
+        const fileLabel = document.querySelector('.file-label');
+        const fileText = document.querySelector('.file-text');
+
+        // Enable upload button when file is selected
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                uploadBtn.disabled = false;
+                fileText.textContent = this.files[0].name;
+                fileLabel.classList.add('file-selected');
+            } else {
+                uploadBtn.disabled = true;
+                fileText.textContent = 'Choose Pet Video';
+                fileLabel.classList.remove('file-selected');
+            }
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            
+            // Show loading state
+            loading.classList.remove('hidden');
+            result.classList.add('hidden');
+            error.classList.add('hidden');
+            uploadBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Show success result
+                    document.getElementById('result-content').innerHTML = `
+                        <div class="success-info">
+                            <p><strong>File:</strong> ${data.filename}</p>
+                            <p><strong>Duration:</strong> ${data.duration}</p>
+                            <p><strong>Size:</strong> ${data.size}</p>
+                            <p><strong>Status:</strong> ${data.message}</p>
+                        </div>
+                        <p class="note">🎉 Great! Your video has been uploaded and validated. In the next development stage, we'll add AI analysis to interpret your pet's thoughts!</p>
+                    `;
+                    result.classList.remove('hidden');
+                } else {
+                    // Show error
+                    document.getElementById('error-content').innerHTML = `<p>${data.detail}</p>`;
+                    error.classList.remove('hidden');
+                }
+            } catch (err) {
+                // Show network error
+                document.getElementById('error-content').innerHTML = `<p>Network error: ${err.message}</p>`;
+                error.classList.remove('hidden');
+            } finally {
+                // Hide loading
+                loading.classList.add('hidden');
+                uploadBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html> 
