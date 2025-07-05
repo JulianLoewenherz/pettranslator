@@ -7,6 +7,35 @@ import shutil
 from pathlib import Path
 import subprocess
 import tempfile
+import uuid
+import asyncio
+from datetime import datetime, timedelta
+from typing import Optional
+
+# Google Generative AI imports
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Import our pet behavior knowledge base
+from pet_behaviors import get_behavior_context, get_pet_thoughts_examples
+
+# Load environment variables
+load_dotenv()
+
+# Configure Google Generative AI
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+if not GOOGLE_API_KEY:
+    raise ValueError("GOOGLE_API_KEY not found in environment variables. Please check your .env file.")
+
+genai.configure(api_key=GOOGLE_API_KEY)
+
+# Initialize Gemini model
+try:
+    model = genai.GenerativeModel('gemini-1.5-pro')
+    print("✅ Gemini Pro Vision model initialized successfully!")
+except Exception as e:
+    print(f"❌ Error initializing Gemini model: {e}")
+    model = None
 
 # Create FastAPI app instance
 app = FastAPI(title="Pet Video Interpreter", description="Upload videos of your pets to discover what they're thinking!")
