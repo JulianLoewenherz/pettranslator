@@ -29,10 +29,10 @@ if not GOOGLE_API_KEY:
 
 genai.configure(api_key=GOOGLE_API_KEY)
 
-# Initialize Gemini model (using Flash for better free tier quotas)
+# Initialize Gemini model
 try:
     model = genai.GenerativeModel('gemini-1.5-flash')
-    print("✅ Gemini Flash model initialized successfully!")
+    print("✅ Gemini flash model initialized successfully!")
 except Exception as e:
     print(f"❌ Error initializing Gemini model: {e}")
     model = None
@@ -84,134 +84,6 @@ def validate_video_file(file: UploadFile) -> None:
             detail=f"File too large. Maximum size: {MAX_FILE_SIZE // (1024*1024)}MB"
         )
 
-def generate_pet_analysis_prompt(pet_type: str = "pet") -> str:
-    """
-    Generate a comprehensive prompt for pet behavior analysis
-    
-    Args:
-        pet_type: Type of pet ("dog", "cat", or "pet" for unknown)
-    
-    Returns:
-        Formatted prompt string for Gemini AI
-    """
-    # Get behavior context from our knowledge base
-    behavior_context = get_behavior_context(pet_type)
-    
-    # Get example thoughts for this pet type
-    thought_examples = get_pet_thoughts_examples(pet_type)
-    example_thoughts = "\n".join([f"- {thought}" for thought in thought_examples[:3]])
-    
-    # Create comprehensive prompt
-    prompt = f"""You are a professional pet behavior expert and animal psychologist. 
-
-Analyze this {pet_type} video carefully, paying attention to BOTH visual and audio cues.
-
-{behavior_context}
-
-ANALYSIS INSTRUCTIONS:
-1. Watch the entire video from start to finish
-2. Listen to any sounds the pet makes (barking, meowing, purring, etc.)
-3. Observe body language, facial expressions, and movement patterns
-4. Note how the pet's behavior changes throughout the video
-5. Consider the context and environment shown
-
-RESPONSE FORMAT:
-- Respond in first person as if you ARE the pet
-- Keep it warm, conversational, and engaging
-- Focus on positive interpretations when possible
-- Be specific about what you observe
-- Limit response to 2-3 sentences maximum
-- Make it fun and relatable for pet owners
-
-EXAMPLE THOUGHTS:
-{example_thoughts}
-
-Based on what you see AND hear in this video, what is this {pet_type} thinking or feeling?"""
-
-    return prompt
-
-async def analyze_pet_video(video_path: str, pet_type: str = "pet") -> dict:
-    """
-    Analyze a pet video using Gemini Pro Vision
-    
-    Args:
-        video_path: Path to the video file
-        pet_type: Type of pet ("dog", "cat", or "pet")
-    
-    Returns:
-        Dictionary with analysis results or error information
-    """
-    if not model:
-        return {
-            "success": False,
-            "error": "AI model not initialized",
-            "pet_thoughts": "I'm sorry, but I can't analyze videos right now. Please try again later!"
-        }
-    
-    try:
-        # Upload video file to Gemini
-        print(f"🎬 Uploading video to Gemini for analysis...")
-        video_file = genai.upload_file(video_path)
-        
-        # Wait for file to be processed
-        print(f"⏳ Waiting for video processing...")
-        while video_file.state.name == "PROCESSING":
-            await asyncio.sleep(1)
-            video_file = genai.get_file(video_file.name)
-        
-        # Check if processing was successful
-        if video_file.state.name == "FAILED":
-            return {
-                "success": False,
-                "error": "Video processing failed",
-                "pet_thoughts": "I had trouble analyzing your video. Please try with a different video!"
-            }
-        
-        # Generate analysis prompt
-        prompt = generate_pet_analysis_prompt(pet_type)
-        
-        # Send video and prompt to Gemini for analysis
-        print(f"🧠 Analyzing pet behavior with AI...")
-        response = await asyncio.to_thread(
-            model.generate_content,
-            [video_file, prompt]
-        )
-        
-        # Clean up the uploaded file from Gemini
-        try:
-            genai.delete_file(video_file.name)
-        except:
-            pass  # Don't fail if cleanup doesn't work
-        
-        # Extract and format the response
-        if response and response.text:
-            pet_thoughts = response.text.strip()
-            
-            # Basic response validation
-            if len(pet_thoughts) < 10:
-                pet_thoughts = "I'm feeling great right now! Thanks for sharing this moment with me!"
-            
-            return {
-                "success": True,
-                "pet_thoughts": pet_thoughts,
-                "pet_type": pet_type,
-                "analysis_model": "gemini-1.5-flash"
-            }
-        else:
-            return {
-                "success": False,
-                "error": "No response from AI",
-                "pet_thoughts": "I'm feeling a bit shy and don't have much to say right now!"
-            }
-            
-    except Exception as e:
-        print(f"❌ Error in video analysis: {e}")
-        return {
-            "success": False,
-            "error": str(e),
-            "pet_thoughts": "I'm having trouble expressing my thoughts right now. Please try again!"
-        }
-
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Serve the main upload page"""
@@ -219,20 +91,18 @@ async def home(request: Request):
 
 @app.post("/upload")
 async def upload_video(file: UploadFile = File(...)):
-    """Handle video file upload, validation, and AI analysis"""
+    """Handle video file upload and validation"""
     
     # Validate the uploaded file
     validate_video_file(file)
     
-    # Create a unique temporary file path
+    # Create a temporary file path
     file_extension = Path(file.filename).suffix.lower()
-    unique_id = str(uuid.uuid4())[:8]
-    temp_filename = f"pet_video_{unique_id}{file_extension}"
+    temp_filename = f"temp_video_{file.filename}"
     temp_path = Path("uploads") / temp_filename
     
     try:
-        # Save the uploaded file temporarily
-        print(f"📁 Saving video: {temp_filename}")
+        # Save the uploaded file
         with open(temp_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
@@ -247,30 +117,14 @@ async def upload_video(file: UploadFile = File(...)):
                 detail=f"Video too long ({duration:.1f} seconds). Maximum allowed: 10 seconds"
             )
         
-        # Detect pet type from filename (simple heuristic)
-        pet_type = "pet"  # Default
-        filename_lower = file.filename.lower()
-        if "dog" in filename_lower or "puppy" in filename_lower:
-            pet_type = "dog"
-        elif "cat" in filename_lower or "kitten" in filename_lower:
-            pet_type = "cat"
-        
-        print(f"🐾 Detected pet type: {pet_type}")
-        
-        # Analyze the video with AI
-        print(f"🤖 Starting AI analysis...")
-        analysis_result = await analyze_pet_video(str(temp_path), pet_type)
-        
-        # Return the AI analysis result
+        # For now, just return success info
+        # In later stages, we'll process the video here
         return {
-            "message": "Video analyzed successfully!",
+            "message": "Video uploaded successfully!",
             "filename": file.filename,
             "duration": f"{duration:.1f} seconds",
             "size": f"{file.size / (1024*1024):.1f}MB" if file.size else "Unknown",
-            "pet_type": pet_type,
-            "analysis": analysis_result,
-            "pet_thoughts": analysis_result.get("pet_thoughts", "I'm feeling great!"),
-            "success": analysis_result.get("success", False)
+            "status": "ready_for_processing"
         }
         
     except HTTPException:
@@ -283,13 +137,10 @@ async def upload_video(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Error processing video: {str(e)}")
     
     finally:
-        # Always clean up the temporary file after processing
+        # Clean up the temporary file (for now)
+        # In later stages, we'll keep it for processing
         if temp_path.exists():
-            try:
-                os.remove(temp_path)
-                print(f"🗑️ Cleaned up temporary file: {temp_filename}")
-            except:
-                pass  # Don't fail if cleanup doesn't work
+            os.remove(temp_path)
 
 @app.get("/health")
 async def health_check():
