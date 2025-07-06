@@ -370,11 +370,11 @@ OBSERVATIONS FROM VIDEO:
 RESEARCH INSIGHTS:
 {research_context}
 
-TASK: Write a short, casual paragraph (max 100 words) explaining what the pet is thinking/feeling based on the observations and research. 
+TASK: Write a short, casual paragraph (max 130 words) explaining what the pet is thinking/feeling based on the observations and research. 
 
-TONE: Fun, educational, and friendly - like talking to a friend about their pet
+TONE: educational, and casual but also insightful - like you're a relaxed veterinarian to a friend about their pet
 STYLE: One flowing paragraph, no bullet points or lists
-AVOID: Veterinary recommendations, formal language, or overly technical terms
+AVOID: overly technical terms
 
 Focus on translating the behaviors into what the pet might be "thinking" using the research insights.
 """

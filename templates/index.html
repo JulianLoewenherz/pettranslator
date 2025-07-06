@@ -44,26 +44,9 @@
         <div id="processing-state" class="state-container hidden">
             <div class="glass-card processing-card">
                 <div class="processing-animation">
-                    <div class="brain-icon">🧠</div>
-                    <div class="pulse-rings">
-                        <div class="ring ring-1"></div>
-                        <div class="ring ring-2"></div>
-                        <div class="ring ring-3"></div>
-                    </div>
+                    <div class="spinner"></div>
                 </div>
                 <h2>Analyzing your pet's behavior...</h2>
-                
-                <!-- Thinking Display (like ChatGPT) -->
-                <div class="thinking-container">
-                    <div class="thinking-header">
-                        <span class="thinking-label">🔍 Observing behaviors...</span>
-                    </div>
-                    <div class="thinking-content" id="thinkingContent">
-                        <div class="thinking-text" id="thinkingText">
-                            <!-- Stage 1 observations will appear here with typewriter effect -->
-                        </div>
-                    </div>
-                </div>
                 
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
@@ -140,8 +123,7 @@
         const errorMessage = document.getElementById('errorMessage');
         const progressFill = document.getElementById('progressFill');
         
-        // Thinking elements
-        const thinkingText = document.getElementById('thinkingText');
+        // Removed thinking elements - no longer needed
 
         // Current video blob for playback
         let currentVideoBlob = null;
@@ -241,8 +223,10 @@
                 progressFill.style.width = '100%';
                 
                 if (response.ok && data.success) {
-                    // Show thinking first
-                    showThinkingProcess(data);
+                    // Go directly to results - skip thinking display
+                    setTimeout(() => {
+                        showResults(data);
+                    }, 1000);
                 } else {
                     // Show error
                     showError(data.error || data.detail || 'Analysis failed');
@@ -253,16 +237,7 @@
             }
         });
 
-        function showThinkingProcess(data) {
-            // Start typewriter effect for thinking
-            const observations = data.stage1_observations || 'Analyzing your pet\'s behavior...';
-            typewriterEffect(observations, thinkingText, 30, () => {
-                // Once thinking is complete, show results after a brief pause
-                setTimeout(() => {
-                    showResults(data);
-                }, 1000);
-            });
-        }
+        // Removed showThinkingProcess function - no longer displaying observations
 
         function showResults(data) {
             // Set up video playback
