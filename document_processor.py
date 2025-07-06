@@ -114,79 +114,44 @@ class IntelligentPetBehaviorProcessor:
         """
         
         prompt = f"""
-You are a veterinary behaviorist analyzing research papers to extract ONLY actionable behavioral insights for pet emotion recognition or understanding pet needs.
+You are extracting cat and dog behaviors from research papers for video analysis.
 
-DOCUMENT TO ANALYZE: {filename}
+GOAL: Extract specific, observable behaviors that can be identified in videos and looked up later.
 
-EXTRACTION TASK:
-Extract specific behavioral indicators that help identify pet emotions or needs. Focus ONLY on observable behaviors and what the paper tells us they mean. 
-
-REQUIRED OUTPUT FORMAT (JSON):
+REQUIRED JSON FORMAT:
 {{
-  "document_info": {{
-    "filename": "{filename}",
-    "pet_types": ["cat", "dog", "both"],
-    "research_quality": "high/medium/low",
-    "publication_type": "peer-reviewed/study/guide/other"
-  }},
-  "behavioral_indicators": [
+  "behaviors": [
     {{
-      "behavior": "exact behavior name",
-      "pet_type": "cat/dog/both",
-      "body_part": "ears/tail/eyes/mouth/body/vocal",
-      "emotional_states": ["primary emotion/need", "secondary emotion/need"],
-      "confidence_level": "high/medium/low",
-      "observable_signs": ["specific sign 1", "specific sign 2"],
-      "context_factors": ["when this behavior occurs"],
-      "scientific_evidence": "brief evidence summary",
-      "differentiation": "how to distinguish from similar behaviors"
+      "behavior": "exact behavior name (e.g., 'dilated pupils', 'tail puffed up')",
+      "pet_type": "cat/dog/both", 
+      "indicates": "what this behavior typically means (e.g., 'fear or stress')"
     }}
   ]
 }}
 
-WHAT TO EXTRACT:
-✅ Specific body language indicators (tail position, ear position, eye expressions)
-✅ Vocal patterns and their meanings
-✅ Behavioral sequences that indicate emotions or needs
-✅ Context-dependent behavioral interpretations
-✅ Scientific evidence for behavioral meanings
-✅ Differentiation between similar behaviors
-✅ Need-related behaviors (food-seeking, water-seeking, elimination, comfort)
+EXTRACT ONLY:
+✅ Specific physical behaviors: "dilated pupils", "ears flattened", "tail puffed up"
+✅ Vocalizations: "loud meowing", "purring", "hissing", "chirping"  
+✅ Body positions: "crouched low", "arched back", "hiding"
+✅ Movements: "pacing", "trembling", "excessive grooming"
 
-WHAT TO IGNORE:
-❌ Methodology sections
-❌ Statistical analyses
-❌ Author information
-❌ References and citations
-❌ General background information
-❌ Irrelevant medical information
+EXAMPLES OF GOOD EXTRACTIONS:
+- "dilated pupils" → "fear or stress"
+- "tail held high with curve" → "confidence or happiness"
+- "ears flattened against head" → "fear or aggression"
+- "excessive meowing" → "attention seeking or distress"
 
-EMOTIONAL STATES AND NEEDS TO FOCUS ON:
-- Stress/Anxiety
-- Fear/Defensive
-- Happiness/Content
-- Excitement/Arousal
-- Aggression/Territorial
-- Playfulness
-- Relaxation/Calm
-- Confusion/Uncertainty
-- Hunger/Food-seeking
-- Thirst/Water-seeking
-- Bathroom/Elimination needs
-- Comfort/Temperature needs
-- Social/Attention needs
-- Exercise/Energy needs
+IGNORE:
+❌ Methodology, statistics, references
+❌ Abstract concepts without physical behaviors
+❌ Research procedures
 
-QUALITY CRITERIA:
-- Only extract behaviors with clear emotional correlations
-- Prioritize peer-reviewed findings
-- Include confidence levels based on evidence strength
-- Focus on observable, measurable behaviors
+DOCUMENT: {filename}
 
-DOCUMENT TEXT:
+TEXT:
 {text}
 
-IMPORTANT: Return ONLY the JSON object. No additional text or explanations.
+Return ONLY the JSON object.
 """
         
         return prompt
@@ -223,30 +188,119 @@ IMPORTANT: Return ONLY the JSON object. No additional text or explanations.
             elif response_text.startswith("```"):
                 response_text = response_text[3:-3].strip()
             
-            # Parse JSON
+            # Parse JSON with better error handling
             try:
                 behavioral_data = json.loads(response_text)
-                logger.info(f"✅ Extracted {len(behavioral_data.get('behavioral_indicators', []))} behavioral indicators")
+                logger.info(f"✅ Extracted {len(behavioral_data.get('behaviors', []))} behavioral indicators")
                 return behavioral_data
             except json.JSONDecodeError as e:
                 logger.error(f"❌ JSON parsing error: {e}")
-                logger.error(f"Response text: {response_text[:500]}...")
+                logger.error(f"Response length: {len(response_text)} characters")
+                logger.error(f"Response text preview: {response_text[:1000]}...")
+                logger.error(f"Response text end: ...{response_text[-500:]}")
+                
+                # Try to fix common JSON issues
+                fixed_response = self._attempt_json_fix(response_text)
+                if fixed_response:
+                    try:
+                        behavioral_data = json.loads(fixed_response)
+                        logger.info(f"✅ JSON fixed! Extracted {len(behavioral_data.get('behaviors', []))} behavioral indicators")
+                        return behavioral_data
+                    except json.JSONDecodeError:
+                        logger.error("❌ JSON fix attempt failed")
+                
                 return self._create_fallback_response(filename)
                 
         except Exception as e:
             logger.error(f"❌ Error extracting behavioral insights: {e}")
             return self._create_fallback_response(filename)
     
+    def _attempt_json_fix(self, response_text: str) -> Optional[str]:
+        """Attempt to fix common JSON formatting issues"""
+        try:
+            # Remove any trailing commas before closing brackets/braces
+            fixed_text = response_text
+            
+            # Fix incomplete strings at the end
+            if fixed_text.endswith('..."'):
+                # Find the last complete field and truncate there
+                last_complete_field = fixed_text.rfind('",\n')
+                if last_complete_field > -1:
+                    fixed_text = fixed_text[:last_complete_field + 1]
+            
+            # Ensure proper closing of arrays and objects
+            open_braces = fixed_text.count('{') - fixed_text.count('}')
+            open_brackets = fixed_text.count('[') - fixed_text.count(']')
+            
+            # Add missing closing brackets and braces
+            for _ in range(open_brackets):
+                fixed_text += ']'
+            for _ in range(open_braces):
+                fixed_text += '}'
+            
+            # Test if the fix worked
+            json.loads(fixed_text)
+            logger.info("🔧 Successfully fixed JSON formatting")
+            return fixed_text
+            
+        except Exception as e:
+            logger.error(f"❌ JSON fix attempt failed: {e}")
+            return None
+    
+    def _extract_relevant_sections(self, text: str) -> str:
+        """Extract most relevant sections from large documents"""
+        # Split text into sections
+        sections = text.split('\n\n')
+        relevant_sections = []
+        
+        # Keywords that indicate relevant behavioral content
+        behavioral_keywords = [
+            'behavio', 'emotion', 'stress', 'fear', 'anxiety', 'tail', 'ear', 'eye', 'pupil',
+            'vocal', 'meow', 'bark', 'purr', 'hiss', 'body language', 'posture', 'movement',
+            'expression', 'indicator', 'sign', 'signal', 'communication', 'welfare',
+            'hunger', 'thirst', 'comfort', 'need', 'seeking', 'elimination', 'social'
+        ]
+        
+        # Score each section based on relevance
+        scored_sections = []
+        for section in sections:
+            section_lower = section.lower()
+            score = sum(1 for keyword in behavioral_keywords if keyword in section_lower)
+            
+            # Bonus for sections with actual behavioral descriptions
+            if any(word in section_lower for word in ['indicates', 'shows', 'displays', 'demonstrates']):
+                score += 2
+            
+            # Penalty for methodology/statistical sections
+            if any(word in section_lower for word in ['methodology', 'statistical', 'references', 'citation']):
+                score -= 1
+            
+            scored_sections.append((score, section))
+        
+        # Sort by score and take top sections
+        scored_sections.sort(key=lambda x: x[0], reverse=True)
+        
+        # Take top sections until we reach a reasonable length
+        selected_text = ""
+        for score, section in scored_sections:
+            if len(selected_text) + len(section) > 25000:  # Stay under limit
+                break
+            if score > 0:  # Only include sections with positive relevance
+                selected_text += section + "\n\n"
+        
+        # If we didn't get enough content, add some high-scoring sections anyway
+        if len(selected_text) < 5000:
+            for score, section in scored_sections[:10]:  # Take top 10 regardless
+                selected_text += section + "\n\n"
+                if len(selected_text) > 20000:
+                    break
+        
+        return selected_text.strip()
+    
     def _create_fallback_response(self, filename: str) -> Dict[str, Any]:
         """Create fallback response when extraction fails"""
         return {
-            "document_info": {
-                "filename": filename,
-                "pet_types": ["unknown"],
-                "research_quality": "unknown",
-                "publication_type": "unknown"
-            },
-            "behavioral_indicators": [],
+            "behaviors": [],
             "extraction_error": True,
             "processed_date": datetime.now().isoformat()
         }
@@ -263,28 +317,19 @@ IMPORTANT: Return ONLY the JSON object. No additional text or explanations.
         """
         structured_data = []
         
-        doc_info = behavioral_data.get("document_info", {})
-        indicators = behavioral_data.get("behavioral_indicators", [])
+        behaviors = behavioral_data.get("behaviors", [])
         
-        for i, indicator in enumerate(indicators):
+        for i, behavior in enumerate(behaviors):
             # Create a comprehensive text representation for embedding
-            behavior_text = self._create_behavior_text(indicator)
+            behavior_text = self._create_behavior_text(behavior)
             
             structured_item = {
-                "id": f"{doc_info.get('filename', 'unknown')}_{i:03d}",
+                "id": f"behavior_{i:03d}",
                 "text": behavior_text,
                 "metadata": {
-                    "behavior": indicator.get("behavior", "unknown"),
-                    "pet_type": indicator.get("pet_type", "unknown"),
-                    "body_part": indicator.get("body_part", "unknown"),
-                    "emotional_states": indicator.get("emotional_states", []),
-                    "confidence_level": indicator.get("confidence_level", "unknown"),
-                    "observable_signs": indicator.get("observable_signs", []),
-                    "context_factors": indicator.get("context_factors", []),
-                    "scientific_evidence": indicator.get("scientific_evidence", ""),
-                    "differentiation": indicator.get("differentiation", ""),
-                    "source_document": doc_info.get("filename", "unknown"),
-                    "research_quality": doc_info.get("research_quality", "unknown"),
+                    "behavior": behavior.get("behavior", "unknown"),
+                    "pet_type": behavior.get("pet_type", "unknown"),
+                    "indicates": behavior.get("indicates", ""),
                     "processed_date": datetime.now().isoformat()
                 }
             }
@@ -294,39 +339,23 @@ IMPORTANT: Return ONLY the JSON object. No additional text or explanations.
         logger.info(f"📊 Structured {len(structured_data)} behavioral indicators for vector storage")
         return structured_data
     
-    def _create_behavior_text(self, indicator: Dict[str, Any]) -> str:
+    def _create_behavior_text(self, behavior: Dict[str, Any]) -> str:
         """Create comprehensive text representation of behavioral indicator"""
-        behavior = indicator.get("behavior", "")
-        pet_type = indicator.get("pet_type", "")
-        emotional_states = ", ".join(indicator.get("emotional_states", []))
-        observable_signs = "; ".join(indicator.get("observable_signs", []))
-        context = "; ".join(indicator.get("context_factors", []))
-        evidence = indicator.get("scientific_evidence", "")
-        differentiation = indicator.get("differentiation", "")
+        behavior_name = behavior.get("behavior", "")
+        pet_type = behavior.get("pet_type", "")
+        indicates = behavior.get("indicates", "")
         
         # Create comprehensive text for embedding
         text_parts = []
         
-        if behavior:
-            text_parts.append(f"Behavior: {behavior}")
+        if behavior_name:
+            text_parts.append(f"Behavior: {behavior_name}")
         
         if pet_type:
             text_parts.append(f"Pet: {pet_type}")
         
-        if emotional_states:
-            text_parts.append(f"Indicates: {emotional_states}")
-        
-        if observable_signs:
-            text_parts.append(f"Observable signs: {observable_signs}")
-        
-        if context:
-            text_parts.append(f"Context: {context}")
-        
-        if evidence:
-            text_parts.append(f"Evidence: {evidence}")
-        
-        if differentiation:
-            text_parts.append(f"Differentiation: {differentiation}")
+        if indicates:
+            text_parts.append(f"Indicates: {indicates}")
         
         return " | ".join(text_parts)
     
@@ -350,6 +379,17 @@ IMPORTANT: Return ONLY the JSON object. No additional text or explanations.
         
         # Step 2: Extract behavioral insights using Gemini
         filename = Path(pdf_path).stem
+        
+        # Handle large documents by processing in chunks if needed
+        if len(text) > 30000:  # If document is very large
+            logger.info(f"📄 Large document detected ({len(text)} chars). Processing in optimized mode...")
+            # For large documents, we can either:
+            # 1. Truncate to most relevant sections
+            # 2. Process in chunks and combine results
+            # For now, let's truncate to keep the most relevant content
+            text = self._extract_relevant_sections(text)
+            logger.info(f"📄 Optimized text length: {len(text)} characters")
+        
         behavioral_data = await self.extract_behavioral_insights(text, filename)
         
         # Step 3: Structure for vector database
@@ -452,17 +492,15 @@ async def test_intelligent_extraction():
     # Display results
     print("\n📊 Extraction Results:")
     print("=" * 50)
-    print(f"Document info: {behavioral_data.get('document_info', {})}")
-    print(f"Behavioral indicators found: {len(behavioral_data.get('behavioral_indicators', []))}")
+    print(f"Behavioral indicators found: {len(behavioral_data.get('behaviors', []))}")
     
     # Show first few indicators
-    indicators = behavioral_data.get('behavioral_indicators', [])[:3]
-    for i, indicator in enumerate(indicators):
-        print(f"\n🎯 Indicator {i+1}:")
-        print(f"  Behavior: {indicator.get('behavior', 'N/A')}")
-        print(f"  Pet type: {indicator.get('pet_type', 'N/A')}")
-        print(f"  Emotional states: {indicator.get('emotional_states', [])}")
-        print(f"  Observable signs: {indicator.get('observable_signs', [])}")
+    behaviors = behavioral_data.get('behaviors', [])[:3]
+    for i, behavior in enumerate(behaviors):
+        print(f"\n🎯 Behavior {i+1}:")
+        print(f"  Behavior: {behavior.get('behavior', 'N/A')}")
+        print(f"  Pet type: {behavior.get('pet_type', 'N/A')}")
+        print(f"  Indicates: {behavior.get('indicates', 'N/A')}")
     
     # Test structuring for vector DB
     structured = processor.structure_for_vector_db(behavioral_data)
