@@ -147,8 +147,9 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         # 🎯 STAGE 2: RAG-Enhanced Clinical Analysis
         print(f"🧠 Stage 2: Performing clinical analysis with research insights...")
         clinical_result = await get_clinical_analysis(
-            observations=observation_result["observations"],  # Now pass the full string
-            pet_type=pet_type
+            observations=observation_result["observations"],
+            pet_type=pet_type,
+            search_terms=observation_result["search_terms"]
         )
         
         clinical_response = clinical_result["clinical_response"]
@@ -210,24 +211,24 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
 
 async def get_video_observations(video_file, pet_type: str) -> dict:
     """
-    🎯 STAGE 1: Get detailed behavioral observations from video
+    🎯 STAGE 1: Get detailed behavioral observations AND search terms from video
     
-    This function asks Gemini to carefully observe and document specific
-    behaviors without interpretation - just pure observation.
+    OPTIMIZED: Single call to get both observations and search terms
+    This reduces API calls from 3 to 2 total, saving time and cost.
     
     Args:
         video_file: Gemini uploaded video file
         pet_type: Type of pet being analyzed
         
     Returns:
-        dict: Structured observations including full text and parsed components
+        dict: Structured observations with search terms for RAG queries
     """
-    logger.info("🔍 Stage 1: Analyzing video for behavioral observations...")
+    logger.info("🔍 Stage 1: Analyzing video for behavioral observations and generating search terms...")
     
     observation_prompt = f"""
-You are observing this {pet_type} video to document what you see.
+You are observing this {pet_type} video to document what you see AND generate search terms for research.
 
-TASK: Provide a detailed description of what happens in the video and list specific behaviors you observe.
+TASK: Provide a detailed description of what happens in the video AND extract search terms.
 
 WHAT TO OBSERVE:
 - Body posture and position
@@ -238,99 +239,97 @@ WHAT TO OBSERVE:
 - How they interact with their environment
 - Facial expressions and mouth position
 
-RESPONSE FORMAT:
-Write a detailed description of what you observe. Be specific about body language, movements, and positioning. Focus on observable facts, not interpretations.
+RESPONSE FORMAT - Return valid JSON with these two keys:
 
-Example:
-"The cat is sitting in a crouched position with ears flattened against its head. Its tail is low and twitching slightly. The cat moves slowly while sniffing various objects in the room, keeping its head low. Its eyes appear alert and focused on the environment."
+{{
+  "observations": "Write a detailed description of what you observe. Be specific about body language, movements, and positioning. Focus on observable facts, not interpretations. Example: The cat is sitting in a crouched position with ears flattened against its head. Its tail is low and twitching slightly. The cat moves slowly while sniffing various objects in the room, keeping its head low. Its eyes appear alert and focused on the environment.",
+  "search_terms": ["term1", "term2", "term3", "term4", "term5"]
+}}
 
-Be specific and factual. Just describe what you see without interpreting what it means.
-"""
-    
-    try:
-        # Get observations from Gemini
-        observations_response = model.generate_content([
-            observation_prompt,
-            video_file
-        ])
-        
-        observations_text = observations_response.text.strip()
-        
-        # For now, just return the full text - we'll use it for query generation
-        return {
-            "observations": observations_text,  # Full observation text
-            "description": observations_text,   # Same for compatibility
-            "behaviors": [],                    # Not needed anymore
-            "searchable_terms": [],             # Generated separately now
-            "success": True
-        }
-    except Exception as e:
-        logger.error(f"❌ Error during video observation: {e}")
-        return {
-            "observations": f"I had trouble analyzing the video, but I can see your {pet_type} looks healthy and active!",
-            "description": f"Video analysis encountered an error for this {pet_type}.",
-            "behaviors": [],
-            "searchable_terms": [],
-            "success": False
-        }
-
-async def get_clinical_analysis(observations: str, pet_type: str) -> dict:
-    """
-    Perform clinical behavioral analysis using specific observations
-    and research-backed insights from RAG system.
-    """
-    logger.info("🧠 Stage 2: Performing clinical analysis with research insights...")
-    
-    # 🎯 NEW APPROACH: Have Gemini generate specific search queries for RAG
-    query_prompt = f"""
-Based on these video observations of a {pet_type}, generate 3-5 specific search queries that would help find relevant research about the behaviors observed.
-
-VIDEO OBSERVATIONS:
-{observations}
-
-TASK: Generate simple, specific search terms that would be good for finding research about {pet_type} behaviors.
-
-REQUIREMENTS:
+For search_terms, generate 3-5 specific search queries that would help find research about the behaviors observed:
 - Focus on specific behaviors or body language mentioned
 - Use simple terms (1-3 words each)
 - Make them searchable in research papers
 - Focus on observable behaviors, not interpretations
 
-RESPONSE FORMAT:
-Return only the search queries, one per line, like this:
-tail wagging
-ear position
-head tilting
-body posture
-eye contact
+Example search terms: ["tail between legs", "ears back", "crouched position", "sniffing behavior", "eye contact"]
 
-Generate 3-5 queries:
+IMPORTANT: Return ONLY the JSON object, no other text.
 """
     
     try:
-        # Get search queries from Gemini
-        query_response = model.generate_content(query_prompt)
-        query_text = query_response.text.strip()
+        # Get both observations and search terms in one call
+        response = model.generate_content([observation_prompt, video_file])
+        response_text = response.text.strip()
         
-        # Parse the queries (simple line-by-line)
-        search_queries = []
-        for line in query_text.split('\n'):
-            line = line.strip()
-            if line and not line.startswith('#') and not line.startswith('RESPONSE') and not line.startswith('Generate'):
-                # Remove any numbering or bullet points
-                line = line.lstrip('1234567890.-• ')
-                if line:
-                    search_queries.append(line)
+        # Parse JSON response
+        try:
+            import json
+            parsed_response = json.loads(response_text)
+            observations = parsed_response.get("observations", "")
+            search_terms = parsed_response.get("search_terms", [])
+            
+            # Validate we got both pieces
+            if not observations or not search_terms:
+                raise ValueError("Missing observations or search_terms in response")
+            
+            logger.info(f"✅ Generated {len(search_terms)} search terms: {search_terms}")
+            
+            return {
+                "observations": observations,
+                "description": observations,  # Keep for compatibility
+                "search_terms": search_terms,
+                "success": True
+            }
+            
+        except (json.JSONDecodeError, ValueError) as e:
+            logger.warning(f"⚠️ JSON parsing failed: {e}")
+            logger.warning(f"Raw response: {response_text[:200]}...")
+            
+            # Fallback: treat as plain text and generate basic search terms
+            fallback_terms = [f"{pet_type} behavior", "body language", "posture", "movement", "facial expression"]
+            
+            return {
+                "observations": response_text,
+                "description": response_text,
+                "search_terms": fallback_terms,
+                "success": True
+            }
+            
+    except Exception as e:
+        logger.error(f"❌ Error during video observation: {e}")
+        return {
+            "observations": f"I had trouble analyzing the video, but I can see your {pet_type} looks healthy and active!",
+            "description": f"Video analysis encountered an error for this {pet_type}.",
+            "search_terms": [f"{pet_type} behavior", "body language"],
+            "success": False
+        }
+
+async def get_clinical_analysis(observations: str, pet_type: str, search_terms: list) -> dict:
+    """
+    🎯 STAGE 2: Perform clinical behavioral analysis using pre-generated search terms
+    
+    OPTIMIZED: Uses search terms from Stage 1 instead of generating new ones
+    This eliminates the second Gemini call, reducing total calls from 3 to 2.
+    
+    Args:
+        observations: Detailed behavioral observations from Stage 1
+        pet_type: Type of pet being analyzed
+        search_terms: Pre-generated search terms from Stage 1
         
-        # Limit to 5 queries max
-        search_queries = search_queries[:5]
-        
-        logger.info(f"🔍 Generated {len(search_queries)} search queries for RAG...")
-        
-        # Query RAG system for each search query
+    Returns:
+        dict: Clinical analysis with research insights
+    """
+    logger.info("🧠 Stage 2: Performing clinical analysis with research insights...")
+    
+    # Use the pre-generated search terms (no additional Gemini call needed!)
+    logger.info(f"🔍 Using {len(search_terms)} pre-generated search terms: {search_terms}")
+    
+    try:
+        # Query RAG system for each search term
         all_research_insights = []
         
-        for query in search_queries:
+        for query in search_terms:
             logger.info(f"🔍 Querying RAG for: '{query}'")
             insights = get_behavior_insights(query, pet_type=pet_type, top_k=3)
             all_research_insights.extend(insights)
@@ -356,7 +355,7 @@ Generate 3-5 queries:
         
         # Create clinical analysis prompt
         clinical_prompt = f"""
-You are a friendly pet behavior expert writing a casual, insightful paragraph for a pet owner.
+You are a friendly pet behavior expert writing a casual, fun paragraph for a pet owner.
 
 OBSERVATIONS FROM VIDEO:
 {observations}
@@ -368,28 +367,28 @@ TASK: Write a short, casual paragraph (max 100 words) explaining what the pet is
 
 TONE: Fun, educational, and friendly - like talking to a friend about their pet
 STYLE: One flowing paragraph, no bullet points or lists
-AVOID: overly technical terms
+AVOID: Veterinary recommendations, formal language, or overly technical terms
 
 Focus on translating the behaviors into what the pet might be "thinking" using the research insights.
 """
         
         logger.info("🩺 Generating clinical behavioral analysis...")
         
-        # Get clinical analysis from Gemini
+        # Final Gemini call for clinical analysis
         clinical_response = model.generate_content(clinical_prompt)
         clinical_text = clinical_response.text.strip()
         
         return {
             "clinical_response": clinical_text,
             "research_insights": unique_insights,
-            "searchable_terms": search_queries  # Now these are the actual queries we generated
+            "searchable_terms": search_terms  # Return the pre-generated terms
         }
     except Exception as e:
         logger.error(f"❌ Error during clinical analysis: {e}")
         return {
             "clinical_response": "I had trouble analyzing the research insights, but your pet looks happy and healthy!",
             "research_insights": [],
-            "searchable_terms": []
+            "searchable_terms": search_terms or []
         }
 
 def detect_pet_type(filename: str) -> str:
