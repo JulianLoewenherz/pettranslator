@@ -1,0 +1,2537 @@
+[
+  {
+    "id": "behavior_000",
+    "text": "Behavior: raising the eyebrow | Pet: dog | Indicates: a childish look or paedomorphic traits | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "raising the eyebrow",
+      "pet_type": "dog",
+      "indicates": "a childish look or paedomorphic traits",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.986991"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: flattening the ears | Pet: dog | Indicates: aversive states, pain, distress, or any negative emotion | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "flattening the ears",
+      "pet_type": "dog",
+      "indicates": "aversive states, pain, distress, or any negative emotion",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987032"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: modifying the opening of the eyes during challenging stimuli | Pet: dog | Indicates: aversive states, pain, distress, or any negative emotion | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "modifying the opening of the eyes during challenging stimuli",
+      "pet_type": "dog",
+      "indicates": "aversive states, pain, distress, or any negative emotion",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987042"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: drawing forward the short lip | Pet: dog | Indicates: menacing states | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "drawing forward the short lip",
+      "pet_type": "dog",
+      "indicates": "menacing states",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987050"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: retraction of the labial commissure (in the long lip) | Pet: dog | Indicates: menacing states | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "retraction of the labial commissure (in the long lip)",
+      "pet_type": "dog",
+      "indicates": "menacing states",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987058"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: movement of the inner brow raiser | Pet: dog | Indicates: unknown, may be frequent during non-social stage | Confidence: low | Source: text",
+    "metadata": {
+      "behavior": "movement of the inner brow raiser",
+      "pet_type": "dog",
+      "indicates": "unknown, may be frequent during non-social stage",
+      "confidence": "low",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987066"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: flattening of the ears | Pet: dog | Indicates: negative stimuli such as pain or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "flattening of the ears",
+      "pet_type": "dog",
+      "indicates": "negative stimuli such as pain or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987073"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: lifting the upper lip | Pet: dog | Indicates: negative stimuli such as pain or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lifting the upper lip",
+      "pet_type": "dog",
+      "indicates": "negative stimuli such as pain or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987080"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: broad forehead and large eyes | Pet: dog | Indicates: suggestive of sadness, traits associated with chronic pain | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "broad forehead and large eyes",
+      "pet_type": "dog",
+      "indicates": "suggestive of sadness, traits associated with chronic pain",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987087"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: open eyes, exposes white sclera, and flattens the ears | Pet: dog | Indicates: warning of an imminent threat | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "open eyes, exposes white sclera, and flattens the ears",
+      "pet_type": "dog",
+      "indicates": "warning of an imminent threat",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987094"
+    }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: erect ears | Pet: dog | Indicates: positive events | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "erect ears",
+      "pet_type": "dog",
+      "indicates": "positive events",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987101"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: blinking | Pet: dog | Indicates: positive events | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "blinking",
+      "pet_type": "dog",
+      "indicates": "positive events",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987108"
+    }
+  },
+  {
+    "id": "behavior_012",
+    "text": "Behavior: nose licking | Pet: dog | Indicates: negative conditions | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "nose licking",
+      "pet_type": "dog",
+      "indicates": "negative conditions",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987115"
+    }
+  },
+  {
+    "id": "behavior_013",
+    "text": "Behavior: drooping jaw | Pet: dog | Indicates: negative conditions | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "drooping jaw",
+      "pet_type": "dog",
+      "indicates": "negative conditions",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987121"
+    }
+  },
+  {
+    "id": "behavior_014",
+    "text": "Behavior: drooping lip | Pet: dog | Indicates: negative conditions | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "drooping lip",
+      "pet_type": "dog",
+      "indicates": "negative conditions",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987127"
+    }
+  },
+  {
+    "id": "behavior_015",
+    "text": "Behavior: flattened ears | Pet: dog | Indicates: negative conditions | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "flattened ears",
+      "pet_type": "dog",
+      "indicates": "negative conditions",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987134"
+    }
+  },
+  {
+    "id": "behavior_016",
+    "text": "Behavior: fixed gaze | Pet: dog | Indicates: anger | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "fixed gaze",
+      "pet_type": "dog",
+      "indicates": "anger",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987140"
+    }
+  },
+  {
+    "id": "behavior_017",
+    "text": "Behavior: ears at medium height or pulled back with flared nostrils and tensed cheeks | Pet: dog | Indicates: anger | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "ears at medium height or pulled back with flared nostrils and tensed cheeks",
+      "pet_type": "dog",
+      "indicates": "anger",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987146"
+    }
+  },
+  {
+    "id": "behavior_018",
+    "text": "Behavior: deviated gaze with ears pulled back, exposing the frontal region | Pet: dog | Indicates: fear, submission | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "deviated gaze with ears pulled back, exposing the frontal region",
+      "pet_type": "dog",
+      "indicates": "fear, submission",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987152"
+    }
+  },
+  {
+    "id": "behavior_019",
+    "text": "Behavior: raised eyebrows, large expressive eyes | Pet: dog | Indicates: surprise | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "raised eyebrows, large expressive eyes",
+      "pet_type": "dog",
+      "indicates": "surprise",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987159"
+    }
+  },
+  {
+    "id": "behavior_020",
+    "text": "Behavior: raised eyebrows and ears, mouth open, tension in labial commissure | Pet: dog | Indicates: pleasure | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "raised eyebrows and ears, mouth open, tension in labial commissure",
+      "pet_type": "dog",
+      "indicates": "pleasure",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987165"
+    }
+  },
+  {
+    "id": "behavior_021",
+    "text": "Behavior: broad forehead, large eyes, ears erect with caudal inclination, closed snout | Pet: dog | Indicates: sadness | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "broad forehead, large eyes, ears erect with caudal inclination, closed snout",
+      "pet_type": "dog",
+      "indicates": "sadness",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987172"
+    }
+  },
+  {
+    "id": "behavior_022",
+    "text": "Behavior: tension in the labial commissure, eyes semi-closed mimicking smile | Pet: dog | Indicates: pleasure | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "tension in the labial commissure, eyes semi-closed mimicking smile",
+      "pet_type": "dog",
+      "indicates": "pleasure",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987183"
+    }
+  },
+  {
+    "id": "behavior_023",
+    "text": "Behavior: eyebrows raised to show larger eyes, ears raised, labial tension | Pet: dog | Indicates: surprise | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "eyebrows raised to show larger eyes, ears raised, labial tension",
+      "pet_type": "dog",
+      "indicates": "surprise",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987190"
+    }
+  },
+  {
+    "id": "behavior_024",
+    "text": "Behavior: flattening of the ears | Pet: dog | Indicates: aggression | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "flattening of the ears",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987196"
+    }
+  },
+  {
+    "id": "behavior_025",
+    "text": "Behavior: lifting of the upper lip to bare teeth | Pet: dog | Indicates: aggression | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "lifting of the upper lip to bare teeth",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987204"
+    }
+  },
+  {
+    "id": "behavior_026",
+    "text": "Behavior: nostril opening | Pet: dog | Indicates: aggression | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "nostril opening",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987211"
+    }
+  },
+  {
+    "id": "behavior_027",
+    "text": "Behavior: more visible white sclera | Pet: dog | Indicates: aggression | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "more visible white sclera",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987217"
+    }
+  },
+  {
+    "id": "behavior_028",
+    "text": "Behavior: vocalizations | Pet: dog | Indicates: aggression | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "vocalizations",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987226"
+    }
+  },
+  {
+    "id": "behavior_029",
+    "text": "Behavior: sustained raising of the eyebrows, front region of head displays, lateral abduction of the ears | Pet: dog | Indicates: mild pain, sad face | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "sustained raising of the eyebrows, front region of head displays, lateral abduction of the ears",
+      "pet_type": "dog",
+      "indicates": "mild pain, sad face",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987233"
+    }
+  },
+  {
+    "id": "behavior_030",
+    "text": "Behavior: semi-closed eyelids, cheek tension, vocalizations | Pet: dog | Indicates: severe pain | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "semi-closed eyelids, cheek tension, vocalizations",
+      "pet_type": "dog",
+      "indicates": "severe pain",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987241"
+    }
+  },
+  {
+    "id": "behavior_031",
+    "text": "Behavior: wide-open eyes, erect ears, and a fixed, forward gaze | Pet: dog | Indicates: positive stimuli | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "wide-open eyes, erect ears, and a fixed, forward gaze",
+      "pet_type": "dog",
+      "indicates": "positive stimuli",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987248"
+    }
+  },
+  {
+    "id": "behavior_032",
+    "text": "Behavior: furrowing in the central region between the ears, a slightly inclined head, raised eyebrows, and the mouth closed or only slightly open | Pet: dog | Indicates: surprise | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "furrowing in the central region between the ears, a slightly inclined head, raised eyebrows, and the mouth closed or only slightly open",
+      "pet_type": "dog",
+      "indicates": "surprise",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987255"
+    }
+  },
+  {
+    "id": "behavior_033",
+    "text": "Behavior: bow the head and deviate their gaze laterally, accompanied by a differential raising of the two eyebrows, caudally inclined, erect ears, and the mouth closed or slightly open | Pet: dog | Indicates: negative stimuli | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "bow the head and deviate their gaze laterally, accompanied by a differential raising of the two eyebrows, caudally inclined, erect ears, and the mouth closed or slightly open",
+      "pet_type": "dog",
+      "indicates": "negative stimuli",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987262"
+    }
+  },
+  {
+    "id": "behavior_034",
+    "text": "Behavior: ears inclined towards the caudal region | Pet: dog | Indicates: medication | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "ears inclined towards the caudal region",
+      "pet_type": "dog",
+      "indicates": "medication",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987268"
+    }
+  },
+  {
+    "id": "behavior_035",
+    "text": "Behavior: bare teeth slightly, a slight lowering of the nose and eyebrows | Pet: dog | Indicates: medication | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "bare teeth slightly, a slight lowering of the nose and eyebrows",
+      "pet_type": "dog",
+      "indicates": "medication",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987275"
+    }
+  },
+  {
+    "id": "behavior_036",
+    "text": "Behavior: ears markedly erect, small display of the sclera, shift gaze side to side, mouth is either slightly open or tightly shut | Pet: dog | Indicates: fear | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "ears markedly erect, small display of the sclera, shift gaze side to side, mouth is either slightly open or tightly shut",
+      "pet_type": "dog",
+      "indicates": "fear",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987283"
+    }
+  },
+  {
+    "id": "behavior_037",
+    "text": "Behavior: teeth bared, gaze fixated on the objective, eyebrows pointing towards the center, ears folded rearwards, semi-open or open mouth | Pet: dog | Indicates: hearing negative stimuli, bad boy | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "teeth bared, gaze fixated on the objective, eyebrows pointing towards the center, ears folded rearwards, semi-open or open mouth",
+      "pet_type": "dog",
+      "indicates": "hearing negative stimuli, bad boy",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987290"
+    }
+  },
+  {
+    "id": "behavior_038",
+    "text": "Behavior: lateral inclination of ears | Pet: dog | Indicates: neutral stimulus | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "lateral inclination of ears",
+      "pet_type": "dog",
+      "indicates": "neutral stimulus",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987296"
+    }
+  },
+  {
+    "id": "behavior_039",
+    "text": "Behavior: aversive gaze, lowered ears, constant licking, and a lowered head position | Pet: dog | Indicates: guilty look, responding to scolding | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "aversive gaze, lowered ears, constant licking, and a lowered head position",
+      "pet_type": "dog",
+      "indicates": "guilty look, responding to scolding",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987303"
+    }
+  },
+  {
+    "id": "behavior_040",
+    "text": "Behavior: retracted lips, thrust snout forward, open mouth | Pet: dog | Indicates: aggressive intentions, a threat | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "retracted lips, thrust snout forward, open mouth",
+      "pet_type": "dog",
+      "indicates": "aggressive intentions, a threat",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987309"
+    }
+  },
+  {
+    "id": "behavior_041",
+    "text": "Behavior: deviated gaze and lip-licking | Pet: dog | Indicates: appeasement, avoiding confrontations | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "deviated gaze and lip-licking",
+      "pet_type": "dog",
+      "indicates": "appeasement, avoiding confrontations",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987316"
+    }
+  },
+  {
+    "id": "behavior_042",
+    "text": "Behavior: erect ears | Pet: dog | Indicates: positive events | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "erect ears",
+      "pet_type": "dog",
+      "indicates": "positive events",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987324"
+    }
+  },
+  {
+    "id": "behavior_043",
+    "text": "Behavior: low posture, lowered tail, hiding, escape attempts, panting, yawning, lip licking, and no eye contact | Pet: dog | Indicates: fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "low posture, lowered tail, hiding, escape attempts, panting, yawning, lip licking, and no eye contact",
+      "pet_type": "dog",
+      "indicates": "fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Current Advances in Assessment of Dog’s Emotions, Facial Expressions, and Their Use for Clinical Recognition of Pain",
+      "processed_date": "2025-07-06T12:03:42.987331"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: relaxed wagging tail | Pet: dog | Indicates: happiness and good welfare | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "relaxed wagging tail",
+      "pet_type": "dog",
+      "indicates": "happiness and good welfare",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547875"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: relaxed body and facial expression | Pet: dog | Indicates: happiness and good welfare | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "relaxed body and facial expression",
+      "pet_type": "dog",
+      "indicates": "happiness and good welfare",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547905"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: fear | Pet: dog | Indicates: negative welfare state | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "fear",
+      "pet_type": "dog",
+      "indicates": "negative welfare state",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547913"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: anxiety | Pet: dog | Indicates: negative welfare state | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "anxiety",
+      "pet_type": "dog",
+      "indicates": "negative welfare state",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547920"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: stress | Pet: dog | Indicates: negative welfare state | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "stress",
+      "pet_type": "dog",
+      "indicates": "negative welfare state",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547927"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: pain | Pet: dog | Indicates: negative welfare state | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "pain",
+      "pet_type": "dog",
+      "indicates": "negative welfare state",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547933"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: ears out to the side | Pet: dog | Indicates: anxiety or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "ears out to the side",
+      "pet_type": "dog",
+      "indicates": "anxiety or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547939"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: ears pulled back | Pet: dog | Indicates: anxiety or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "ears pulled back",
+      "pet_type": "dog",
+      "indicates": "anxiety or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547946"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: ears flat on head | Pet: dog | Indicates: anxiety or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "ears flat on head",
+      "pet_type": "dog",
+      "indicates": "anxiety or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547952"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: tense and rigid body | Pet: dog | Indicates: anxiety and fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tense and rigid body",
+      "pet_type": "dog",
+      "indicates": "anxiety and fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547958"
+    }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: crouching | Pet: dog | Indicates: anxiety and fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "crouching",
+      "pet_type": "dog",
+      "indicates": "anxiety and fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547965"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: cowering | Pet: dog | Indicates: anxiety and fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "cowering",
+      "pet_type": "dog",
+      "indicates": "anxiety and fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547971"
+    }
+  },
+  {
+    "id": "behavior_012",
+    "text": "Behavior: lowered head | Pet: dog | Indicates: anxiety and fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lowered head",
+      "pet_type": "dog",
+      "indicates": "anxiety and fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547978"
+    }
+  },
+  {
+    "id": "behavior_013",
+    "text": "Behavior: tail being carried lower than normal | Pet: dog | Indicates: anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tail being carried lower than normal",
+      "pet_type": "dog",
+      "indicates": "anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547985"
+    }
+  },
+  {
+    "id": "behavior_014",
+    "text": "Behavior: tail tucked between legs | Pet: dog | Indicates: anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tail tucked between legs",
+      "pet_type": "dog",
+      "indicates": "anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547991"
+    }
+  },
+  {
+    "id": "behavior_015",
+    "text": "Behavior: tail clamped to side of body | Pet: dog | Indicates: anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tail clamped to side of body",
+      "pet_type": "dog",
+      "indicates": "anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.547998"
+    }
+  },
+  {
+    "id": "behavior_016",
+    "text": "Behavior: relaxed dog showing interest and looking for attention | Pet: dog | Indicates: relaxed and social | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "relaxed dog showing interest and looking for attention",
+      "pet_type": "dog",
+      "indicates": "relaxed and social",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548004"
+    }
+  },
+  {
+    "id": "behavior_017",
+    "text": "Behavior: showing interest in surroundings | Pet: dog | Indicates: relaxed | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "showing interest in surroundings",
+      "pet_type": "dog",
+      "indicates": "relaxed",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548010"
+    }
+  },
+  {
+    "id": "behavior_018",
+    "text": "Behavior: looking for attention | Pet: dog | Indicates: relaxed and social | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "looking for attention",
+      "pet_type": "dog",
+      "indicates": "relaxed and social",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548017"
+    }
+  },
+  {
+    "id": "behavior_019",
+    "text": "Behavior: approaching a person or another dog | Pet: dog | Indicates: relaxed | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "approaching a person or another dog",
+      "pet_type": "dog",
+      "indicates": "relaxed",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548024"
+    }
+  },
+  {
+    "id": "behavior_020",
+    "text": "Behavior: not backing away | Pet: dog | Indicates: relaxed | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "not backing away",
+      "pet_type": "dog",
+      "indicates": "relaxed",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548031"
+    }
+  },
+  {
+    "id": "behavior_021",
+    "text": "Behavior: closing the distance | Pet: dog | Indicates: relaxed | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "closing the distance",
+      "pet_type": "dog",
+      "indicates": "relaxed",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548038"
+    }
+  },
+  {
+    "id": "behavior_022",
+    "text": "Behavior: yawning when not tired | Pet: dog | Indicates: low level anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "yawning when not tired",
+      "pet_type": "dog",
+      "indicates": "low level anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548045"
+    }
+  },
+  {
+    "id": "behavior_023",
+    "text": "Behavior: licking nose or lips when there isn’t food nearby | Pet: dog | Indicates: low level anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "licking nose or lips when there isn’t food nearby",
+      "pet_type": "dog",
+      "indicates": "low level anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548052"
+    }
+  },
+  {
+    "id": "behavior_024",
+    "text": "Behavior: whites of eyes showing (whale eye) | Pet: dog | Indicates: anxiety or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "whites of eyes showing (whale eye)",
+      "pet_type": "dog",
+      "indicates": "anxiety or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548059"
+    }
+  },
+  {
+    "id": "behavior_025",
+    "text": "Behavior: panting | Pet: dog | Indicates: stress (unless hot or thirsty) | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "panting",
+      "pet_type": "dog",
+      "indicates": "stress (unless hot or thirsty)",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548067"
+    }
+  },
+  {
+    "id": "behavior_026",
+    "text": "Behavior: turning the head | Pet: dog | Indicates: trying to get away from whatever is making it feel anxious | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "turning the head",
+      "pet_type": "dog",
+      "indicates": "trying to get away from whatever is making it feel anxious",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548073"
+    }
+  },
+  {
+    "id": "behavior_027",
+    "text": "Behavior: lifting a paw | Pet: dog | Indicates: trying to get away from whatever is making it feel anxious | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lifting a paw",
+      "pet_type": "dog",
+      "indicates": "trying to get away from whatever is making it feel anxious",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548080"
+    }
+  },
+  {
+    "id": "behavior_028",
+    "text": "Behavior: walking or running away | Pet: dog | Indicates: trying to get away from whatever is making it feel anxious | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "walking or running away",
+      "pet_type": "dog",
+      "indicates": "trying to get away from whatever is making it feel anxious",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548087"
+    }
+  },
+  {
+    "id": "behavior_029",
+    "text": "Behavior: tense body | Pet: dog | Indicates: attempt to reduce conflict but scared | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tense body",
+      "pet_type": "dog",
+      "indicates": "attempt to reduce conflict but scared",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548094"
+    }
+  },
+  {
+    "id": "behavior_030",
+    "text": "Behavior: crouching lower to the ground | Pet: dog | Indicates: attempt to reduce conflict but scared | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "crouching lower to the ground",
+      "pet_type": "dog",
+      "indicates": "attempt to reduce conflict but scared",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548100"
+    }
+  },
+  {
+    "id": "behavior_031",
+    "text": "Behavior: lying on its side | Pet: dog | Indicates: appeasement behavior - trying to reduce conflict but is scared | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lying on its side",
+      "pet_type": "dog",
+      "indicates": "appeasement behavior - trying to reduce conflict but is scared",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548107"
+    }
+  },
+  {
+    "id": "behavior_032",
+    "text": "Behavior: tensing the whole body and limbs | Pet: dog | Indicates: aggression | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tensing the whole body and limbs",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548113"
+    }
+  },
+  {
+    "id": "behavior_033",
+    "text": "Behavior: using direct eye contact | Pet: dog | Indicates: aggression | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "using direct eye contact",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548120"
+    }
+  },
+  {
+    "id": "behavior_034",
+    "text": "Behavior: growling | Pet: dog | Indicates: aggression | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "growling",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548126"
+    }
+  },
+  {
+    "id": "behavior_035",
+    "text": "Behavior: snapping | Pet: dog | Indicates: aggression | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "snapping",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548134"
+    }
+  },
+  {
+    "id": "behavior_036",
+    "text": "Behavior: going for a bite | Pet: dog | Indicates: aggression | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "going for a bite",
+      "pet_type": "dog",
+      "indicates": "aggression",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548141"
+    }
+  },
+  {
+    "id": "behavior_037",
+    "text": "Behavior: relaxed, free roaming dogs playing together | Pet: dog | Indicates: social interaction | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "relaxed, free roaming dogs playing together",
+      "pet_type": "dog",
+      "indicates": "social interaction",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548148"
+    }
+  },
+  {
+    "id": "behavior_038",
+    "text": "Behavior: holding tail up very stiff and high | Pet: dog | Indicates: excited or aroused, positive or negative | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "holding tail up very stiff and high",
+      "pet_type": "dog",
+      "indicates": "excited or aroused, positive or negative",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548155"
+    }
+  },
+  {
+    "id": "behavior_039",
+    "text": "Behavior: fast and rigid wag | Pet: dog | Indicates: excited or aroused, positive or negative | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "fast and rigid wag",
+      "pet_type": "dog",
+      "indicates": "excited or aroused, positive or negative",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548162"
+    }
+  },
+  {
+    "id": "behavior_040",
+    "text": "Behavior: helicopter tail | Pet: dog | Indicates: safe to assume the dog is happy | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "helicopter tail",
+      "pet_type": "dog",
+      "indicates": "safe to assume the dog is happy",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548168"
+    }
+  },
+  {
+    "id": "behavior_041",
+    "text": "Behavior: sweeping wag from the hips | Pet: dog | Indicates: safe to assume the dog is happy | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "sweeping wag from the hips",
+      "pet_type": "dog",
+      "indicates": "safe to assume the dog is happy",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548177"
+    }
+  },
+  {
+    "id": "behavior_042",
+    "text": "Behavior: soft, tension free eyes | Pet: dog | Indicates: feeling relaxed | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "soft, tension free eyes",
+      "pet_type": "dog",
+      "indicates": "feeling relaxed",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548184"
+    }
+  },
+  {
+    "id": "behavior_043",
+    "text": "Behavior: giving eye contact | Pet: dog | Indicates: happy dog | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "giving eye contact",
+      "pet_type": "dog",
+      "indicates": "happy dog",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548190"
+    }
+  },
+  {
+    "id": "behavior_044",
+    "text": "Behavior: gaze rather than stare | Pet: dog | Indicates: happy dog | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "gaze rather than stare",
+      "pet_type": "dog",
+      "indicates": "happy dog",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548197"
+    }
+  },
+  {
+    "id": "behavior_045",
+    "text": "Behavior: orbital tightening | Pet: dog | Indicates: anxiety, fear or pain | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "orbital tightening",
+      "pet_type": "dog",
+      "indicates": "anxiety, fear or pain",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548214"
+    }
+  },
+  {
+    "id": "behavior_046",
+    "text": "Behavior: looking away (gaze averting) | Pet: dog | Indicates: anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "looking away (gaze averting)",
+      "pet_type": "dog",
+      "indicates": "anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548221"
+    }
+  },
+  {
+    "id": "behavior_047",
+    "text": "Behavior: giving brief/flicking looks | Pet: dog | Indicates: anxiety or fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "giving brief/flicking looks",
+      "pet_type": "dog",
+      "indicates": "anxiety or fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548229"
+    }
+  },
+  {
+    "id": "behavior_048",
+    "text": "Behavior: staring continuously | Pet: dog | Indicates: hostile behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "staring continuously",
+      "pet_type": "dog",
+      "indicates": "hostile behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548235"
+    }
+  },
+  {
+    "id": "behavior_049",
+    "text": "Behavior: soft and relaxed mouth and lips | Pet: dog | Indicates: relaxed dog | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "soft and relaxed mouth and lips",
+      "pet_type": "dog",
+      "indicates": "relaxed dog",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548242"
+    }
+  },
+  {
+    "id": "behavior_050",
+    "text": "Behavior: tongue stays in mouth | Pet: dog | Indicates: relaxed dog (unless hot or panting) | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tongue stays in mouth",
+      "pet_type": "dog",
+      "indicates": "relaxed dog (unless hot or panting)",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548248"
+    }
+  },
+  {
+    "id": "behavior_051",
+    "text": "Behavior: tight and tense mouth | Pet: dog | Indicates: anxious or fearful dog | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tight and tense mouth",
+      "pet_type": "dog",
+      "indicates": "anxious or fearful dog",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548257"
+    }
+  },
+  {
+    "id": "behavior_052",
+    "text": "Behavior: lip curling | Pet: dog | Indicates: hostile behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lip curling",
+      "pet_type": "dog",
+      "indicates": "hostile behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548263"
+    }
+  },
+  {
+    "id": "behavior_053",
+    "text": "Behavior: showing teeth | Pet: dog | Indicates: hostile behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "showing teeth",
+      "pet_type": "dog",
+      "indicates": "hostile behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548271"
+    }
+  },
+  {
+    "id": "behavior_054",
+    "text": "Behavior: producing wrinkles on the muzzle | Pet: dog | Indicates: hostile behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "producing wrinkles on the muzzle",
+      "pet_type": "dog",
+      "indicates": "hostile behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548279"
+    }
+  },
+  {
+    "id": "behavior_055",
+    "text": "Behavior: smiling | Pet: dog | Indicates: friendly behavior (relaxed eyes) | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "smiling",
+      "pet_type": "dog",
+      "indicates": "friendly behavior (relaxed eyes)",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548285"
+    }
+  },
+  {
+    "id": "behavior_056",
+    "text": "Behavior: pointing ears forward | Pet: dog | Indicates: interested or aroused | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "pointing ears forward",
+      "pet_type": "dog",
+      "indicates": "interested or aroused",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548291"
+    }
+  },
+  {
+    "id": "behavior_057",
+    "text": "Behavior: body posture looks soft and moves freely | Pet: dog | Indicates: relaxed dog | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "body posture looks soft and moves freely",
+      "pet_type": "dog",
+      "indicates": "relaxed dog",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548297"
+    }
+  },
+  {
+    "id": "behavior_058",
+    "text": "Behavior: head held at normal height | Pet: dog | Indicates: relaxed dog | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "head held at normal height",
+      "pet_type": "dog",
+      "indicates": "relaxed dog",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548304"
+    }
+  },
+  {
+    "id": "behavior_059",
+    "text": "Behavior: stiff posture | Pet: dog | Indicates: about to growl, snap or bite | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "stiff posture",
+      "pet_type": "dog",
+      "indicates": "about to growl, snap or bite",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548311"
+    }
+  },
+  {
+    "id": "behavior_060",
+    "text": "Behavior: head pointing forward | Pet: dog | Indicates: about to growl, snap or bite | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "head pointing forward",
+      "pet_type": "dog",
+      "indicates": "about to growl, snap or bite",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548317"
+    }
+  },
+  {
+    "id": "behavior_061",
+    "text": "Behavior: scavenging for food | Pet: dog | Indicates: finding food is rewarding | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "scavenging for food",
+      "pet_type": "dog",
+      "indicates": "finding food is rewarding",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548323"
+    }
+  },
+  {
+    "id": "behavior_062",
+    "text": "Behavior: urinating to mark territory | Pet: dog | Indicates: marking territory | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "urinating to mark territory",
+      "pet_type": "dog",
+      "indicates": "marking territory",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "cnr_dog_behaviour_and_handling",
+      "processed_date": "2025-07-06T12:04:04.548329"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: AD126 action descriptor | Pet: dog | Indicates: tongue showing | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "AD126 action descriptor",
+      "pet_type": "dog",
+      "indicates": "tongue showing",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Visual perception of emotion cues in dogs- a critical review of methodologies",
+      "processed_date": "2025-07-06T12:04:10.735923"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: AU5 action unit | Pet: human | Indicates: upper eyelid raise for fear | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "AU5 action unit",
+      "pet_type": "human",
+      "indicates": "upper eyelid raise for fear",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Visual perception of emotion cues in dogs- a critical review of methodologies",
+      "processed_date": "2025-07-06T12:04:10.735956"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: AU20 action unit | Pet: human | Indicates: lip stretcher for fear | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "AU20 action unit",
+      "pet_type": "human",
+      "indicates": "lip stretcher for fear",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Visual perception of emotion cues in dogs- a critical review of methodologies",
+      "processed_date": "2025-07-06T12:04:10.735964"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: AU6 action unit | Pet: human | Indicates: cheek raise for happiness | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "AU6 action unit",
+      "pet_type": "human",
+      "indicates": "cheek raise for happiness",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Visual perception of emotion cues in dogs- a critical review of methodologies",
+      "processed_date": "2025-07-06T12:04:10.735972"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: AU27 action unit | Pet: dog | Indicates: mouth stretch for happiness | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "AU27 action unit",
+      "pet_type": "dog",
+      "indicates": "mouth stretch for happiness",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Visual perception of emotion cues in dogs- a critical review of methodologies",
+      "processed_date": "2025-07-06T12:04:10.735979"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: curiosity towards new stimuli | Pet: cat | Indicates: high interest and engagement with the environment | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "curiosity towards new stimuli",
+      "pet_type": "cat",
+      "indicates": "high interest and engagement with the environment",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100499"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: inappropriate spraying | Pet: cat | Indicates: potential stress, territory marking, or medical issue | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "inappropriate spraying",
+      "pet_type": "cat",
+      "indicates": "potential stress, territory marking, or medical issue",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100548"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: playfulness | Pet: cat | Indicates: positive welfare and engagement | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "playfulness",
+      "pet_type": "cat",
+      "indicates": "positive welfare and engagement",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100561"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: changes in elimination patterns | Pet: cat | Indicates: potential stress, medical condition, or welfare issue | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "changes in elimination patterns",
+      "pet_type": "cat",
+      "indicates": "potential stress, medical condition, or welfare issue",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100567"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: aggression | Pet: cat | Indicates: fear, territoriality, or pain | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "aggression",
+      "pet_type": "cat",
+      "indicates": "fear, territoriality, or pain",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100572"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: stress-related behaviors | Pet: cat | Indicates: anxiety or discomfort in the environment | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "stress-related behaviors",
+      "pet_type": "cat",
+      "indicates": "anxiety or discomfort in the environment",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100578"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: actively investigating/exploring new objects | Pet: cat | Indicates: high curiosity and environmental interest | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "actively investigating/exploring new objects",
+      "pet_type": "cat",
+      "indicates": "high curiosity and environmental interest",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100582"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: purring when petted | Pet: cat | Indicates: happiness, comfort, or contentment | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "purring when petted",
+      "pet_type": "cat",
+      "indicates": "happiness, comfort, or contentment",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100586"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: spraying outside of the litter box | Pet: cat | Indicates: territorial marking or stress | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "spraying outside of the litter box",
+      "pet_type": "cat",
+      "indicates": "territorial marking or stress",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100591"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: exhibiting sudden frantic licking or chewing | Pet: cat | Indicates: anxiety, stress, or compulsive behavior | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "exhibiting sudden frantic licking or chewing",
+      "pet_type": "cat",
+      "indicates": "anxiety, stress, or compulsive behavior",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100596"
+    }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: self-mutilation or hair barbering | Pet: cat | Indicates: high stress, anxiety, or compulsive disorder | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "self-mutilation or hair barbering",
+      "pet_type": "cat",
+      "indicates": "high stress, anxiety, or compulsive disorder",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100600"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: stalks, chases, or pounces on moving objects | Pet: cat | Indicates: playful hunting behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "stalks, chases, or pounces on moving objects",
+      "pet_type": "cat",
+      "indicates": "playful hunting behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100604"
+    }
+  },
+  {
+    "id": "behavior_012",
+    "text": "Behavior: readily adapts to changes in daily routines | Pet: cat | Indicates: high resilience and adaptability | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "readily adapts to changes in daily routines",
+      "pet_type": "cat",
+      "indicates": "high resilience and adaptability",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100609"
+    }
+  },
+  {
+    "id": "behavior_013",
+    "text": "Behavior: comes when called | Pet: cat | Indicates: high trainability and responsiveness | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "comes when called",
+      "pet_type": "cat",
+      "indicates": "high trainability and responsiveness",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100613"
+    }
+  },
+  {
+    "id": "behavior_014",
+    "text": "Behavior: aggression towards strangers | Pet: cat | Indicates: fear or lack of socialization | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "aggression towards strangers",
+      "pet_type": "cat",
+      "indicates": "fear or lack of socialization",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100617"
+    }
+  },
+  {
+    "id": "behavior_015",
+    "text": "Behavior: aggression towards owners | Pet: cat | Indicates: fear, pain, or learned behavior | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "aggression towards owners",
+      "pet_type": "cat",
+      "indicates": "fear, pain, or learned behavior",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100622"
+    }
+  },
+  {
+    "id": "behavior_016",
+    "text": "Behavior: aggression towards other cats | Pet: cat | Indicates: territoriality or competition | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "aggression towards other cats",
+      "pet_type": "cat",
+      "indicates": "territoriality or competition",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100626"
+    }
+  },
+  {
+    "id": "behavior_017",
+    "text": "Behavior: fear towards dogs | Pet: cat | Indicates: negative past experiences or instinctual fear | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "fear towards dogs",
+      "pet_type": "cat",
+      "indicates": "negative past experiences or instinctual fear",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100630"
+    }
+  },
+  {
+    "id": "behavior_018",
+    "text": "Behavior: separation-related behavior problems | Pet: cat | Indicates: high anxiety when left alone | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "separation-related behavior problems",
+      "pet_type": "cat",
+      "indicates": "high anxiety when left alone",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Exploring domestic cat behavior using the Fe-BARQ",
+      "processed_date": "2025-07-06T12:04:19.100634"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: purring | Pet: cat | Indicates: contentment, hunger, stress, and pain | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "purring",
+      "pet_type": "cat",
+      "indicates": "contentment, hunger, stress, and pain",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131425"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: hissing | Pet: cat | Indicates: warning or scare off an opponent, signals danger | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "hissing",
+      "pet_type": "cat",
+      "indicates": "warning or scare off an opponent, signals danger",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131455"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: laughs | Pet: both | Indicates: human happiness | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "laughs",
+      "pet_type": "both",
+      "indicates": "human happiness",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131463"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: growls | Pet: both | Indicates: human anger | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "growls",
+      "pet_type": "both",
+      "indicates": "human anger",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131471"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: facial expression of anger (cat) | Pet: cat | Indicates: high stress level | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "facial expression of anger (cat)",
+      "pet_type": "cat",
+      "indicates": "high stress level",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131478"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: facial expression of happiness (human) | Pet: both | Indicates: low stress levels | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "facial expression of happiness (human)",
+      "pet_type": "both",
+      "indicates": "low stress levels",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131486"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: facial expression of anger (human) | Pet: both | Indicates: high stress levels | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "facial expression of anger (human)",
+      "pet_type": "both",
+      "indicates": "high stress levels",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131493"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: facial expression of purring (cat) | Pet: cat | Indicates: low stress levels | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "facial expression of purring (cat)",
+      "pet_type": "cat",
+      "indicates": "low stress levels",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131500"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: cat hissing with open mouth and showing teeth | Pet: cat | Indicates: high aggression or fear | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "cat hissing with open mouth and showing teeth",
+      "pet_type": "cat",
+      "indicates": "high aggression or fear",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131508"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: cat half-blinking while purring | Pet: cat | Indicates: relaxed, content, or friendly | Confidence: medium | Source: image",
+    "metadata": {
+      "behavior": "cat half-blinking while purring",
+      "pet_type": "cat",
+      "indicates": "relaxed, content, or friendly",
+      "confidence": "medium",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131515"
+    }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: human smiling | Pet: both | Indicates: happiness | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "human smiling",
+      "pet_type": "both",
+      "indicates": "happiness",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131523"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: human frowning with eyebrows furrowed | Pet: both | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "human frowning with eyebrows furrowed",
+      "pet_type": "both",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Emotion Recognition in Cats",
+      "processed_date": "2025-07-06T12:04:28.131530"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: blinking | Pet: cat | Indicates: low to moderate fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "blinking",
+      "pet_type": "cat",
+      "indicates": "low to moderate fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809642"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: half-blinking | Pet: cat | Indicates: low to moderate fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "half-blinking",
+      "pet_type": "cat",
+      "indicates": "low to moderate fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809674"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: hissing | Pet: cat | Indicates: moderate to high frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "hissing",
+      "pet_type": "cat",
+      "indicates": "moderate to high frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809680"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: nose-licking | Pet: cat | Indicates: mild to moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "nose-licking",
+      "pet_type": "cat",
+      "indicates": "mild to moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809686"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: dropping of the jaw | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "dropping of the jaw",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809691"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: raising of the upper lip | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "raising of the upper lip",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809696"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: nose wrinkling | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "nose wrinkling",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809701"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: lower lip depression | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lower lip depression",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809706"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: parting of the lips | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "parting of the lips",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809710"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: mouth stretching | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "mouth stretching",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809716"
+    }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: vocalisation | Pet: cat | Indicates: moderate frustration or distress | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "vocalisation",
+      "pet_type": "cat",
+      "indicates": "moderate frustration or distress",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809721"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: showing of the tongue | Pet: cat | Indicates: moderate frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "showing of the tongue",
+      "pet_type": "cat",
+      "indicates": "moderate frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809726"
+    }
+  },
+  {
+    "id": "behavior_012",
+    "text": "Behavior: hiding | Pet: cat | Indicates: moderate to high fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "hiding",
+      "pet_type": "cat",
+      "indicates": "moderate to high fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809731"
+    }
+  },
+  {
+    "id": "behavior_013",
+    "text": "Behavior: flat postures | Pet: cat | Indicates: moderate to high fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "flat postures",
+      "pet_type": "cat",
+      "indicates": "moderate to high fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809736"
+    }
+  },
+  {
+    "id": "behavior_014",
+    "text": "Behavior: freezing | Pet: cat | Indicates: moderate to high fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "freezing",
+      "pet_type": "cat",
+      "indicates": "moderate to high fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809741"
+    }
+  },
+  {
+    "id": "behavior_015",
+    "text": "Behavior: startling | Pet: cat | Indicates: moderate to high fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "startling",
+      "pet_type": "cat",
+      "indicates": "moderate to high fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809745"
+    }
+  },
+  {
+    "id": "behavior_016",
+    "text": "Behavior: crawling | Pet: cat | Indicates: moderate to high fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "crawling",
+      "pet_type": "cat",
+      "indicates": "moderate to high fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809750"
+    }
+  },
+  {
+    "id": "behavior_017",
+    "text": "Behavior: retreat from humans | Pet: cat | Indicates: moderate to high fear | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "retreat from humans",
+      "pet_type": "cat",
+      "indicates": "moderate to high fear",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809755"
+    }
+  },
+  {
+    "id": "behavior_018",
+    "text": "Behavior: persistent meowing | Pet: cat | Indicates: moderate attention seeking or distress | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "persistent meowing",
+      "pet_type": "cat",
+      "indicates": "moderate attention seeking or distress",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809759"
+    }
+  },
+  {
+    "id": "behavior_019",
+    "text": "Behavior: scanning | Pet: cat | Indicates: moderate anxiety or uncertainty | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "scanning",
+      "pet_type": "cat",
+      "indicates": "moderate anxiety or uncertainty",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809764"
+    }
+  },
+  {
+    "id": "behavior_020",
+    "text": "Behavior: pacing | Pet: cat | Indicates: moderate anxiety or uncertainty | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "pacing",
+      "pet_type": "cat",
+      "indicates": "moderate anxiety or uncertainty",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809769"
+    }
+  },
+  {
+    "id": "behavior_021",
+    "text": "Behavior: pushing | Pet: cat | Indicates: moderate frustration or determination | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "pushing",
+      "pet_type": "cat",
+      "indicates": "moderate frustration or determination",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809774"
+    }
+  },
+  {
+    "id": "behavior_022",
+    "text": "Behavior: bouts of destructive behavior | Pet: cat | Indicates: high frustration or boredom | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "bouts of destructive behavior",
+      "pet_type": "cat",
+      "indicates": "high frustration or boredom",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809779"
+    }
+  },
+  {
+    "id": "behavior_023",
+    "text": "Behavior: escape attempts | Pet: cat | Indicates: high distress or fear | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "escape attempts",
+      "pet_type": "cat",
+      "indicates": "high distress or fear",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809784"
+    }
+  },
+  {
+    "id": "behavior_024",
+    "text": "Behavior: redirected aggression | Pet: cat | Indicates: high frustration or fear | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "redirected aggression",
+      "pet_type": "cat",
+      "indicates": "high frustration or fear",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809788"
+    }
+  },
+  {
+    "id": "behavior_025",
+    "text": "Behavior: ears forward | Pet: cat | Indicates: interest, attention | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "ears forward",
+      "pet_type": "cat",
+      "indicates": "interest, attention",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809793"
+    }
+  },
+  {
+    "id": "behavior_026",
+    "text": "Behavior: ears adducted | Pet: cat | Indicates: interest, attention | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "ears adducted",
+      "pet_type": "cat",
+      "indicates": "interest, attention",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809798"
+    }
+  },
+  {
+    "id": "behavior_027",
+    "text": "Behavior: lying sternally recumbent with a relaxed body | Pet: cat | Indicates: relaxed state | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "lying sternally recumbent with a relaxed body",
+      "pet_type": "cat",
+      "indicates": "relaxed state",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809804"
+    }
+  },
+  {
+    "id": "behavior_028",
+    "text": "Behavior: Upper lid raiser | Pet: cat | Indicates: alertness | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Upper lid raiser",
+      "pet_type": "cat",
+      "indicates": "alertness",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809809"
+    }
+  },
+  {
+    "id": "behavior_029",
+    "text": "Behavior: Ears adductor | Pet: cat | Indicates: focus | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Ears adductor",
+      "pet_type": "cat",
+      "indicates": "focus",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809814"
+    }
+  },
+  {
+    "id": "behavior_030",
+    "text": "Behavior: Ears rotator | Pet: cat | Indicates: focus | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Ears rotator",
+      "pet_type": "cat",
+      "indicates": "focus",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809818"
+    }
+  },
+  {
+    "id": "behavior_031",
+    "text": "Behavior: Eyes left | Pet: cat | Indicates: right hemispherical dominance for the processing of more negative stimuli | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Eyes left",
+      "pet_type": "cat",
+      "indicates": "right hemispherical dominance for the processing of more negative stimuli",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809824"
+    }
+  },
+  {
+    "id": "behavior_032",
+    "text": "Behavior: Pupil dilator | Pet: cat | Indicates: fear | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Pupil dilator",
+      "pet_type": "cat",
+      "indicates": "fear",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809830"
+    }
+  },
+  {
+    "id": "behavior_033",
+    "text": "Behavior: Ears flattener | Pet: cat | Indicates: stress | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Ears flattener",
+      "pet_type": "cat",
+      "indicates": "stress",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809836"
+    }
+  },
+  {
+    "id": "behavior_034",
+    "text": "Behavior: Lower lip depressor | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Lower lip depressor",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809841"
+    }
+  },
+  {
+    "id": "behavior_035",
+    "text": "Behavior: tongue show | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "tongue show",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809847"
+    }
+  },
+  {
+    "id": "behavior_036",
+    "text": "Behavior: Lips part | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Lips part",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809852"
+    }
+  },
+  {
+    "id": "behavior_037",
+    "text": "Behavior: Jaw drop | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Jaw drop",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809857"
+    }
+  },
+  {
+    "id": "behavior_038",
+    "text": "Behavior: Mouth stretch | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Mouth stretch",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809863"
+    }
+  },
+  {
+    "id": "behavior_039",
+    "text": "Behavior: Eyes up | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Eyes up",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809868"
+    }
+  },
+  {
+    "id": "behavior_040",
+    "text": "Behavior: Nose wrinkler | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Nose wrinkler",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809874"
+    }
+  },
+  {
+    "id": "behavior_041",
+    "text": "Behavior: Upper lip raiser | Pet: cat | Indicates: anger | Confidence: high | Source: image",
+    "metadata": {
+      "behavior": "Upper lip raiser",
+      "pet_type": "cat",
+      "indicates": "anger",
+      "confidence": "high",
+      "source": "image",
+      "source_document": "Facial correlates of emotional behaviour in the domestic cat (Felis catus)",
+      "processed_date": "2025-07-06T12:04:43.809880"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: defecation | Pet: dog | Indicates: high fear or stress | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "defecation",
+      "pet_type": "dog",
+      "indicates": "high fear or stress",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795385"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: urination | Pet: dog | Indicates: high fear or stress | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "urination",
+      "pet_type": "dog",
+      "indicates": "high fear or stress",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795489"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: yelping | Pet: dog | Indicates: high fear or stress | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "yelping",
+      "pet_type": "dog",
+      "indicates": "high fear or stress",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795497"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: trembling | Pet: dog | Indicates: high fear or stress | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "trembling",
+      "pet_type": "dog",
+      "indicates": "high fear or stress",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795501"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: approaches humans displaying positive emotions | Pet: cat | Indicates: trust and/or seeking positive interaction | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "approaches humans displaying positive emotions",
+      "pet_type": "cat",
+      "indicates": "trust and/or seeking positive interaction",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795507"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: avoids humans displaying expressions of anger | Pet: cat | Indicates: fear or distrust | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "avoids humans displaying expressions of anger",
+      "pet_type": "cat",
+      "indicates": "fear or distrust",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795512"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: increase in vocalization frequency | Pet: both | Indicates: moderate to high arousal or emotional state | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "increase in vocalization frequency",
+      "pet_type": "both",
+      "indicates": "moderate to high arousal or emotional state",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795517"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: increase in vocalization duration | Pet: both | Indicates: moderate to high arousal or emotional state | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "increase in vocalization duration",
+      "pet_type": "both",
+      "indicates": "moderate to high arousal or emotional state",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795522"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: increase in heart rate | Pet: both | Indicates: moderate to high physiological stress response and heightened psychological arousal | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "increase in heart rate",
+      "pet_type": "both",
+      "indicates": "moderate to high physiological stress response and heightened psychological arousal",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795527"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: decrease in parasympathetic nervous system activity | Pet: dog | Indicates: attachment behavior (e.g., looking at owner) | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "decrease in parasympathetic nervous system activity",
+      "pet_type": "dog",
+      "indicates": "attachment behavior (e.g., looking at owner)",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
+      "processed_date": "2025-07-06T12:04:48.795532"
+    }
+  }
+]

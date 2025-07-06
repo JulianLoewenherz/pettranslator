@@ -43,8 +43,8 @@ genai.configure(api_key=GOOGLE_API_KEY)
 
 # Initialize Gemini model
 try:
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    print("✅ Gemini Flash model initialized for intelligent extraction!")
+    model = genai.GenerativeModel('gemini-2.0-flash-exp')
+    print("✅ Gemini 2.0 Flash model initialized for intelligent extraction!")
 except Exception as e:
     print(f"❌ Error initializing Gemini model: {e}")
     model = None
@@ -479,9 +479,9 @@ Return ONLY the JSON object.
         filename = Path(pdf_path).stem
         
         # Handle large documents by processing in chunks if needed
-        if len(text) > 30000:  # If document is very large
+        if len(text) > 100000:  # Increased limit for 2.0 Flash (was 30000)
             logger.info(f"📄 Large document detected ({len(text)} chars). Processing in optimized mode...")
-            # For large documents, we can either:
+            # For very large documents, we can either:
             # 1. Truncate to most relevant sections
             # 2. Process in chunks and combine results
             # For now, let's truncate to keep the most relevant content
