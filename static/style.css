@@ -185,6 +185,90 @@ header p {
     border: 1px solid #ddd;
 }
 
+/* AI Analysis Results */
+.pet-thoughts {
+    margin-bottom: 20px;
+}
+
+.pet-thoughts h4 {
+    color: #2d5a2d;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.pet-quote {
+    background: #fff;
+    border: 2px solid #4a7c4a;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    position: relative;
+}
+
+.pet-quote::before {
+    content: "💭";
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 20px;
+}
+
+.video-info {
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-top: 15px;
+}
+
+.video-info p {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+.video-info p:last-child {
+    margin-bottom: 0;
+}
+
+.analysis-error {
+    margin-bottom: 20px;
+}
+
+.analysis-error .pet-quote {
+    border-color: #d4a574;
+    background: #fef8f0;
+}
+
+.analysis-error .pet-quote::before {
+    content: "🤔";
+    background: #fef8f0;
+}
+
+.error-details {
+    background: #f8f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #d32f2f;
+}
+
+/* Loading improvements */
+.loading small {
+    display: block;
+    margin-top: 10px;
+    color: #666;
+    font-size: 12px;
+}
+
 /* Info section */
 .info-section {
     background: #fafafa;

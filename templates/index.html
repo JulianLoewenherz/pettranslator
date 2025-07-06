@@ -34,7 +34,8 @@
 
             <div id="loading" class="loading hidden">
                 <div class="spinner"></div>
-                <p>Analyzing your pet's video...</p>
+                <p>🧠 Analyzing your pet's behavior with AI...</p>
+                <small>This may take 30-60 seconds while we process the video and analyze your pet's thoughts</small>
             </div>
 
             <div id="result" class="result hidden">
@@ -112,19 +113,44 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    // Show success result
-                    document.getElementById('result-content').innerHTML = `
-                        <div class="success-info">
-                            <p><strong>File:</strong> ${data.filename}</p>
-                            <p><strong>Duration:</strong> ${data.duration}</p>
-                            <p><strong>Size:</strong> ${data.size}</p>
-                            <p><strong>Status:</strong> ${data.message}</p>
-                        </div>
-                        <p class="note">🎉 Great! Your video has been uploaded and validated. In the next development stage, we'll add AI analysis to interpret your pet's thoughts!</p>
-                    `;
+                    // Check if analysis was successful
+                    if (data.success && data.analysis_complete) {
+                        // Show AI analysis results
+                        document.getElementById('result-content').innerHTML = `
+                            <div class="pet-thoughts">
+                                <h4>🗣️ Your ${data.pet_type} is thinking:</h4>
+                                <blockquote class="pet-quote">
+                                    "${data.pet_thoughts}"
+                                </blockquote>
+                            </div>
+                            <div class="video-info">
+                                <p><strong>📁 File:</strong> ${data.video_info.filename}</p>
+                                <p><strong>⏱️ Duration:</strong> ${data.video_info.duration}</p>
+                                <p><strong>📊 Size:</strong> ${data.video_info.size}</p>
+                                <p><strong>🐾 Pet Type:</strong> ${data.pet_type}</p>
+                                <p><strong>🕐 Analyzed:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+                            </div>
+                        `;
+                    } else {
+                        // Show error from AI analysis
+                        document.getElementById('result-content').innerHTML = `
+                            <div class="analysis-error">
+                                <p><strong>🤖 AI Analysis Result:</strong></p>
+                                <blockquote class="pet-quote">
+                                    "${data.pet_thoughts}"
+                                </blockquote>
+                                <div class="video-info">
+                                    <p><strong>📁 File:</strong> ${data.video_info.filename}</p>
+                                    <p><strong>⏱️ Duration:</strong> ${data.video_info.duration}</p>
+                                    <p><strong>📊 Size:</strong> ${data.video_info.size}</p>
+                                </div>
+                                ${data.error ? `<p class="error-details"><strong>Error:</strong> ${data.error}</p>` : ''}
+                            </div>
+                        `;
+                    }
                     result.classList.remove('hidden');
                 } else {
-                    // Show error
+                    // Show HTTP error
                     document.getElementById('error-content').innerHTML = `<p>${data.detail}</p>`;
                     error.classList.remove('hidden');
                 }
