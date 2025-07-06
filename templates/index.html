@@ -3,106 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Video Interpreter - What's Your Pet Thinking?</title>
+    <title>Pet Mind Reader</title>
     <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🐾 Pet Video Interpreter</h1>
-            <p>Upload a short video of your pet and discover what they're thinking!</p>
-        </header>
+    <!-- Background Elements -->
+    <div class="background-gradient"></div>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
 
-        <div class="upload-section">
-            <form id="uploadForm" enctype="multipart/form-data">
-                <div class="file-input-container">
-                    <label for="video-file" class="file-label">
-                        <span class="file-icon">📹</span>
-                        <span class="file-text">Choose Pet Video</span>
-                        <input type="file" id="video-file" name="file" accept=".mp4,.mov,.avi,.mkv,.webm" required>
-                    </label>
-                    <div class="file-info">
-                        <small>Max 10 seconds, up to 50MB • MP4, MOV, AVI, MKV, WEBM</small>
-                    </div>
+    <!-- Main Container -->
+    <div class="glass-container">
+        <!-- Upload State -->
+        <div id="upload-state" class="state-container">
+            <div class="glass-card upload-card">
+                <div class="card-header">
+                    <h1>🐾 Pet Mind Reader</h1>
+                    <p>Upload your pet's video to discover their thoughts</p>
                 </div>
-
-                <button type="submit" class="upload-btn" disabled>
-                    <span class="btn-text">Analyze My Pet's Thoughts</span>
-                    <span class="btn-icon">🧠</span>
-                </button>
-            </form>
-
-            <div id="loading" class="loading hidden">
-                <div class="spinner"></div>
-                <p>🧠 Analyzing your pet's behavior with AI...</p>
-                <small>This may take 30-60 seconds while we process the video and analyze your pet's thoughts</small>
-            </div>
-
-            <div id="result" class="result hidden">
-                <h3>Analysis Complete!</h3>
-                <div id="result-content"></div>
-            </div>
-
-            <div id="error" class="error hidden">
-                <h3>Oops! Something went wrong</h3>
-                <div id="error-content"></div>
+                
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-icon">📹</div>
+                        <p class="upload-text">Drop your video here or click to browse</p>
+                        <p class="upload-hint">MP4, MOV, AVI • Max 10 seconds • Up to 50MB</p>
+                        <input type="file" id="video-file" name="file" accept=".mp4,.mov,.avi,.mkv,.webm" required>
+                    </div>
+                    
+                    <button type="submit" class="glass-button" id="analyzeBtn" disabled>
+                        <span>✨ Analyze Pet's Mind</span>
+                    </button>
+                </form>
             </div>
         </div>
 
-        <div class="info-section">
-            <h3>How it works:</h3>
-            <div class="steps">
-                <div class="step">
-                    <span class="step-number">1</span>
-                    <span>Upload a short video of your pet (under 10 seconds)</span>
+        <!-- Processing State -->
+        <div id="processing-state" class="state-container hidden">
+            <div class="glass-card processing-card">
+                <div class="processing-animation">
+                    <div class="brain-icon">🧠</div>
+                    <div class="pulse-rings">
+                        <div class="ring ring-1"></div>
+                        <div class="ring ring-2"></div>
+                        <div class="ring ring-3"></div>
+                    </div>
                 </div>
-                <div class="step">
-                    <span class="step-number">2</span>
-                    <span>Our AI analyzes your pet's behavior and body language</span>
+                <h2>Reading your pet's mind...</h2>
+                <p class="processing-text">Analyzing behavior, body language, and emotions</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <div class="step">
-                    <span class="step-number">3</span>
-                    <span>Get a fun interpretation of what your pet is thinking!</span>
+                <p class="processing-time">This may take 30-60 seconds</p>
+            </div>
+        </div>
+
+        <!-- Results State -->
+        <div id="results-state" class="state-container hidden">
+            <div class="glass-card results-card">
+                <div class="video-container">
+                    <video id="resultVideo" controls loop muted>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-overlay">
+                        <div class="pet-type-badge" id="petTypeBadge">🐕 Dog</div>
+                    </div>
                 </div>
+                
+                <div class="analysis-container">
+                    <div class="thought-bubble">
+                        <div class="bubble-icon">💭</div>
+                        <div class="thought-text" id="thoughtText">
+                            <!-- AI response will appear here -->
+                        </div>
+                    </div>
+                    
+                    <div class="video-info" id="videoInfo">
+                        <!-- Video metadata will appear here -->
+                    </div>
+                </div>
+                
+                <button class="glass-button secondary" id="analyzeAnotherBtn">
+                    <span>🔄 Analyze Another Video</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="error-state" class="state-container hidden">
+            <div class="glass-card error-card">
+                <div class="error-icon">⚠️</div>
+                <h2>Something went wrong</h2>
+                <p class="error-message" id="errorMessage">
+                    <!-- Error message will appear here -->
+                </p>
+                <button class="glass-button secondary" id="tryAgainBtn">
+                    <span>🔄 Try Again</span>
+                </button>
             </div>
         </div>
     </div>
 
     <script>
+        // State management
+        const states = {
+            upload: document.getElementById('upload-state'),
+            processing: document.getElementById('processing-state'),
+            results: document.getElementById('results-state'),
+            error: document.getElementById('error-state')
+        };
+
+        // Form elements
         const form = document.getElementById('uploadForm');
         const fileInput = document.getElementById('video-file');
-        const uploadBtn = document.querySelector('.upload-btn');
-        const loading = document.getElementById('loading');
-        const result = document.getElementById('result');
-        const error = document.getElementById('error');
-        const fileLabel = document.querySelector('.file-label');
-        const fileText = document.querySelector('.file-text');
+        const uploadZone = document.getElementById('uploadZone');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const analyzeAnotherBtn = document.getElementById('analyzeAnotherBtn');
+        const tryAgainBtn = document.getElementById('tryAgainBtn');
+        
+        // Result elements
+        const resultVideo = document.getElementById('resultVideo');
+        const thoughtText = document.getElementById('thoughtText');
+        const petTypeBadge = document.getElementById('petTypeBadge');
+        const videoInfo = document.getElementById('videoInfo');
+        const errorMessage = document.getElementById('errorMessage');
+        const progressFill = document.getElementById('progressFill');
 
-        // Enable upload button when file is selected
-        fileInput.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                uploadBtn.disabled = false;
-                fileText.textContent = this.files[0].name;
-                fileLabel.classList.add('file-selected');
-            } else {
-                uploadBtn.disabled = true;
-                fileText.textContent = 'Choose Pet Video';
-                fileLabel.classList.remove('file-selected');
-            }
+        // Current video blob for playback
+        let currentVideoBlob = null;
+
+        // State switching function
+        function showState(stateName) {
+            Object.values(states).forEach(state => state.classList.add('hidden'));
+            states[stateName].classList.remove('hidden');
+        }
+
+        // File upload handling
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('drag-over');
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('drag-over');
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag-over');
+            fileInput.files = e.dataTransfer.files;
+            handleFileSelection();
         });
 
-        // Handle form submission
+        fileInput.addEventListener('change', handleFileSelection);
+
+        function handleFileSelection() {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                uploadZone.classList.add('file-selected');
+                uploadZone.querySelector('.upload-text').textContent = file.name;
+                analyzeBtn.disabled = false;
+                
+                // Create blob URL for later video playback
+                currentVideoBlob = URL.createObjectURL(file);
+            } else {
+                uploadZone.classList.remove('file-selected');
+                uploadZone.querySelector('.upload-text').textContent = 'Drop your video here or click to browse';
+                analyzeBtn.disabled = true;
+                currentVideoBlob = null;
+            }
+        }
+
+        // Progress simulation
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) progress = 90;
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 90) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+            return interval;
+        }
+
+        // Typewriter effect for AI response
+        function typewriterEffect(text, element, speed = 50) {
+            element.textContent = '';
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                }
+            }, speed);
+        }
+
+        // Form submission
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
             
-            // Show loading state
-            loading.classList.remove('hidden');
-            result.classList.add('hidden');
-            error.classList.add('hidden');
-            uploadBtn.disabled = true;
+            // Switch to processing state
+            showState('processing');
+            const progressInterval = simulateProgress();
             
             try {
                 const response = await fetch('/upload', {
@@ -112,58 +224,88 @@
                 
                 const data = await response.json();
                 
-                if (response.ok) {
-                    // Check if analysis was successful
-                    if (data.success && data.analysis_complete) {
-                        // Show AI analysis results
-                        document.getElementById('result-content').innerHTML = `
-                            <div class="pet-thoughts">
-                                <h4>🗣️ Your ${data.pet_type} is thinking:</h4>
-                                <blockquote class="pet-quote">
-                                    "${data.pet_thoughts}"
-                                </blockquote>
-                            </div>
-                            <div class="video-info">
-                                <p><strong>📁 File:</strong> ${data.video_info.filename}</p>
-                                <p><strong>⏱️ Duration:</strong> ${data.video_info.duration}</p>
-                                <p><strong>📊 Size:</strong> ${data.video_info.size}</p>
-                                <p><strong>🐾 Pet Type:</strong> ${data.pet_type}</p>
-                                <p><strong>🕐 Analyzed:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
-                            </div>
-                        `;
-                    } else {
-                        // Show error from AI analysis
-                        document.getElementById('result-content').innerHTML = `
-                            <div class="analysis-error">
-                                <p><strong>🤖 AI Analysis Result:</strong></p>
-                                <blockquote class="pet-quote">
-                                    "${data.pet_thoughts}"
-                                </blockquote>
-                                <div class="video-info">
-                                    <p><strong>📁 File:</strong> ${data.video_info.filename}</p>
-                                    <p><strong>⏱️ Duration:</strong> ${data.video_info.duration}</p>
-                                    <p><strong>📊 Size:</strong> ${data.video_info.size}</p>
-                                </div>
-                                ${data.error ? `<p class="error-details"><strong>Error:</strong> ${data.error}</p>` : ''}
-                            </div>
-                        `;
-                    }
-                    result.classList.remove('hidden');
+                // Complete progress bar
+                clearInterval(progressInterval);
+                progressFill.style.width = '100%';
+                
+                if (response.ok && data.success) {
+                    // Wait a moment then show results
+                    setTimeout(() => {
+                        showResults(data);
+                    }, 1000);
                 } else {
-                    // Show HTTP error
-                    document.getElementById('error-content').innerHTML = `<p>${data.detail}</p>`;
-                    error.classList.remove('hidden');
+                    // Show error
+                    showError(data.error || data.detail || 'Analysis failed');
                 }
             } catch (err) {
-                // Show network error
-                document.getElementById('error-content').innerHTML = `<p>Network error: ${err.message}</p>`;
-                error.classList.remove('hidden');
-            } finally {
-                // Hide loading
-                loading.classList.add('hidden');
-                uploadBtn.disabled = false;
+                clearInterval(progressInterval);
+                showError('Network error: ' + err.message);
             }
         });
+
+        function showResults(data) {
+            // Set up video playback
+            resultVideo.src = currentVideoBlob;
+            resultVideo.load();
+            
+            // Set pet type badge
+            const petIcon = data.pet_type === 'cat' ? '🐱' : '🐕';
+            petTypeBadge.textContent = `${petIcon} ${data.pet_type.charAt(0).toUpperCase() + data.pet_type.slice(1)}`;
+            
+            // Set video info
+            videoInfo.innerHTML = `
+                <div class="info-item">
+                    <span class="info-label">Duration:</span>
+                    <span class="info-value">${data.video_info.duration}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Size:</span>
+                    <span class="info-value">${data.video_info.size}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Analyzed:</span>
+                    <span class="info-value">${new Date(data.timestamp).toLocaleString()}</span>
+                </div>
+            `;
+            
+            // Show results state
+            showState('results');
+            
+            // Start video playback
+            resultVideo.currentTime = 0;
+            resultVideo.play().catch(e => {
+                // Auto-play might be blocked, that's okay
+                console.log('Auto-play blocked, user will need to click play');
+            });
+            
+            // Start typewriter effect for AI response
+            setTimeout(() => {
+                typewriterEffect(data.pet_thoughts, thoughtText, 60);
+            }, 500);
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            showState('error');
+        }
+
+        // Reset buttons
+        analyzeAnotherBtn.addEventListener('click', () => {
+            showState('upload');
+            form.reset();
+            handleFileSelection();
+            if (currentVideoBlob) {
+                URL.revokeObjectURL(currentVideoBlob);
+                currentVideoBlob = null;
+            }
+        });
+
+        tryAgainBtn.addEventListener('click', () => {
+            showState('upload');
+        });
+
+        // Initialize
+        showState('upload');
     </script>
 </body>
 </html> 
