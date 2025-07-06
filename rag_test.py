@@ -81,4 +81,4 @@ if __name__ == "__main__":
     print("\nOr run quick_tests() for multiple examples")
     
     # Uncomment to run a test:
-    rag_test("urinating outside of litterbox", "cat") 
+    rag_test("crouching", "cat") 

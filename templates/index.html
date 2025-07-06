@@ -75,7 +75,7 @@
                 
                 <div class="analysis-container">
                     <!-- Stage 1: Video Description -->
-                    <div class="analysis-stage">
+                    <div class="analysis-stage" id="stage1">
                         <div class="stage-header">
                             <h3>📹 Video Analysis</h3>
                             <span class="stage-badge">Stage 1</span>
@@ -87,16 +87,36 @@
                         </div>
                     </div>
                     
+                    <!-- Loading Screen between stages -->
+                    <div class="analysis-stage loading-stage hidden" id="loadingStage">
+                        <div class="loading-content">
+                            <div class="loading-spinner"></div>
+                            <h3>🧠 Analyzing video and consulting research papers...</h3>
+                            <p>Finding relevant behavioral insights from veterinary research</p>
+                        </div>
+                    </div>
+                    
                     <!-- Stage 2: Clinical Analysis -->
-                    <div class="analysis-stage">
+                    <div class="analysis-stage hidden" id="stage2">
                         <div class="stage-header">
-                            <h3>🩺 Clinical Assessment</h3>
+                            <h3>🐾 What Your Pet is Thinking</h3>
                             <span class="stage-badge">Stage 2</span>
                         </div>
                         <div class="clinical-analysis">
                             <div class="clinical-text" id="clinicalText">
                                 <!-- Clinical analysis will appear here -->
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Debug Panel -->
+                    <div class="debug-panel hidden" id="debugPanel">
+                        <div class="debug-header">
+                            <h4>🔍 Debug: RAG Insights Used</h4>
+                            <button class="debug-toggle" id="debugToggle">Show Debug Info</button>
+                        </div>
+                        <div class="debug-content hidden" id="debugContent">
+                            <!-- Debug information will appear here -->
                         </div>
                     </div>
                     
@@ -151,6 +171,14 @@
         const videoInfo = document.getElementById('videoInfo');
         const errorMessage = document.getElementById('errorMessage');
         const progressFill = document.getElementById('progressFill');
+        
+        // Stage elements
+        const stage1 = document.getElementById('stage1');
+        const loadingStage = document.getElementById('loadingStage');
+        const stage2 = document.getElementById('stage2');
+        const debugPanel = document.getElementById('debugPanel');
+        const debugToggle = document.getElementById('debugToggle');
+        const debugContent = document.getElementById('debugContent');
 
         // Current video blob for playback
         let currentVideoBlob = null;
@@ -286,8 +314,12 @@
                     <span class="info-value">${new Date(data.timestamp).toLocaleString()}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Behaviors Found:</span>
-                    <span class="info-value">${data.stage1_observations ? data.stage1_observations.length : 0}</span>
+                    <span class="info-label">Search Queries:</span>
+                    <span class="info-value">${data.debug_info ? data.debug_info.behaviors_detected : 0}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Research Insights:</span>
+                    <span class="info-value">${data.debug_info ? data.debug_info.research_insights_found : 0}</span>
                 </div>
             `;
             
@@ -297,21 +329,66 @@
             // Start video playback
             resultVideo.currentTime = 0;
             resultVideo.play().catch(e => {
-                // Auto-play might be blocked, that's okay
                 console.log('Auto-play blocked, user will need to click play');
             });
             
-            // Display Stage 1: Video Description
+            // Sequential stage display
+            // Stage 1: Show video description immediately
+            stage1.classList.remove('hidden');
+            loadingStage.classList.add('hidden');
+            stage2.classList.add('hidden');
+            
             setTimeout(() => {
-                const descriptionText = `The video shows: ${data.stage1_description || 'Video analysis in progress...'}`;
+                const descriptionText = `${data.stage1_description || 'Video analysis in progress...'}`;
                 typewriterEffect(descriptionText, videoDescriptionText, 40);
             }, 500);
             
-            // Display Stage 2: Clinical Analysis (after Stage 1 completes)
+            // Stage 2: Show loading screen, then clinical analysis
             setTimeout(() => {
-                const clinicalResponse = data.stage2_clinical_analysis || 'Clinical analysis in progress...';
+                stage1.classList.add('hidden');
+                loadingStage.classList.remove('hidden');
+            }, 3000);
+            
+            setTimeout(() => {
+                loadingStage.classList.add('hidden');
+                stage2.classList.remove('hidden');
+                debugPanel.classList.remove('hidden');
+                
+                const clinicalResponse = data.stage2_clinical_analysis || 'Analysis in progress...';
                 typewriterEffect(clinicalResponse, clinicalText, 60);
-            }, 2000);
+                
+                // Populate debug panel
+                if (data.debug_info && data.debug_info.top_insights) {
+                    populateDebugPanel(data.debug_info);
+                }
+            }, 5000);
+        }
+        
+        function populateDebugPanel(debugInfo) {
+            const debugHTML = `
+                <div class="debug-stats">
+                    <p><strong>Behaviors Detected:</strong> ${debugInfo.behaviors_detected}</p>
+                    <p><strong>Research Insights Found:</strong> ${debugInfo.research_insights_found}</p>
+                </div>
+                <div class="debug-insights">
+                    <h5>Top Research Insights Used:</h5>
+                    ${debugInfo.top_insights.map((insight, index) => `
+                        <div class="debug-insight">
+                            <div class="insight-header">
+                                <span class="insight-number">${index + 1}.</span>
+                                <span class="insight-behavior">${insight.behavior}</span>
+                                <span class="insight-confidence confidence-${insight.confidence}">${insight.confidence}</span>
+                            </div>
+                            <div class="insight-details">
+                                <p><strong>Meaning:</strong> ${insight.meaning}</p>
+                                <p><strong>Similarity:</strong> ${insight.similarity}</p>
+                                <p><strong>Source:</strong> ${insight.source}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            debugContent.innerHTML = debugHTML;
         }
 
         function showError(message) {
@@ -332,6 +409,17 @@
 
         tryAgainBtn.addEventListener('click', () => {
             showState('upload');
+        });
+
+        // Debug panel toggle
+        debugToggle.addEventListener('click', () => {
+            if (debugContent.classList.contains('hidden')) {
+                debugContent.classList.remove('hidden');
+                debugToggle.textContent = 'Hide Debug Info';
+            } else {
+                debugContent.classList.add('hidden');
+                debugToggle.textContent = 'Show Debug Info';
+            }
         });
 
         // Initialize

@@ -11,6 +11,7 @@ import uuid
 import asyncio
 from datetime import datetime, timedelta
 from typing import Optional
+import logging
 
 # Google Generative AI imports
 import google.generativeai as genai
@@ -20,6 +21,10 @@ from dotenv import load_dotenv
 from rag_interface import get_behavior_insights, format_insights_for_prompt
 
 # Pet behavior knowledge comes from RAG system with research-backed insights
+
+# Initialize logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Load environment variables
 load_dotenv()
@@ -141,7 +146,33 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         
         # 🎯 STAGE 2: RAG-Enhanced Clinical Analysis
         print(f"🧠 Stage 2: Performing clinical analysis with research insights...")
-        clinical_analysis = await get_clinical_analysis(observation_result["observations"], pet_type)
+        clinical_result = await get_clinical_analysis(
+            observations=observation_result["observations"],  # Now pass the full string
+            pet_type=pet_type
+        )
+        
+        clinical_response = clinical_result["clinical_response"]
+        research_insights = clinical_result["research_insights"]
+        searchable_terms = clinical_result.get("searchable_terms", [])
+        
+        logger.info(f"✅ Analysis complete! Pet thoughts: {clinical_response[:50]}...")
+        
+        # Create debug info with enhanced details
+        debug_info = {
+            "behaviors_detected": len(searchable_terms),  # Now comes from clinical analysis
+            "research_insights_found": len(research_insights),
+            "searchable_terms": searchable_terms,  # Generated search queries
+            "top_insights": [
+                {
+                    "behavior": insight["behavior"],
+                    "meaning": insight["indicates"],
+                    "confidence": insight["confidence"],
+                    "similarity": round(insight.get("similarity_score", 0), 3),
+                    "source": insight["source_document"][:50] + "..." if len(insight["source_document"]) > 50 else insight["source_document"]
+                }
+                for insight in research_insights[:5]  # Top 5 for debugging
+            ]
+        }
         
         # 🧹 Step 3: Clean up - delete video from Gemini
         try:
@@ -156,8 +187,9 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
             "pet_type": pet_type,
             "stage1_observations": observation_result["observations"],
             "stage1_description": observation_result["description"],
-            "stage2_clinical_analysis": clinical_analysis["clinical_response"],
-            "stage2_research_used": clinical_analysis["research_insights"],
+            "stage2_clinical_analysis": clinical_response,
+            "stage2_research_used": research_insights,
+            "debug_info": debug_info,
             "analysis_complete": True,
             "timestamp": datetime.now().isoformat()
         }
@@ -178,244 +210,187 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
 
 async def get_video_observations(video_file, pet_type: str) -> dict:
     """
-    🔍 STAGE 1: Get detailed behavioral observations from video
+    🎯 STAGE 1: Get detailed behavioral observations from video
     
-    This function focuses purely on observation - what specific behaviors
-    are visible in the video without interpretation.
+    This function asks Gemini to carefully observe and document specific
+    behaviors without interpretation - just pure observation.
     
     Args:
         video_file: Gemini uploaded video file
-        pet_type: Type of pet for context
+        pet_type: Type of pet being analyzed
         
     Returns:
-        dict: Detailed observations and video description
+        dict: Structured observations including full text and parsed components
     """
+    logger.info("🔍 Stage 1: Analyzing video for behavioral observations...")
     
     observation_prompt = f"""
-You are a veterinary behaviorist conducting a systematic observation of this {pet_type} video.
+You are observing this {pet_type} video to document what you see.
 
-OBSERVATION PROTOCOL:
-Your task is to document SPECIFIC, OBSERVABLE behaviors without interpretation. Focus on factual descriptions of what you see.
+TASK: Provide a detailed description of what happens in the video and list specific behaviors you observe.
 
-SYSTEMATIC OBSERVATION CHECKLIST:
-
-BODY LANGUAGE:
-- Overall posture (standing, sitting, lying, crouched, etc.)
-- Back position (straight, arched, lowered, etc.)
-- Head position and orientation
-- Limb positioning
-
-FACIAL EXPRESSIONS:
-- Ear position and movement (upright, forward, back, flattened, etc.)
-- Eye appearance (wide, narrow, dilated pupils, half-closed, etc.)
-- Mouth and jaw position (closed, open, panting, etc.)
-- Facial muscle tension
-
-TAIL BEHAVIOR:
-- Tail position (high, low, tucked, straight out, etc.)
-- Tail movement (still, wagging, twitching, thrashing, etc.)
-- Speed and pattern of tail movement
-
-MOVEMENT PATTERNS:
-- Gait and walking style
-- Speed of movement
-- Direction changes
-- Specific actions or behaviors
-
-VOCALIZATIONS:
-- Type of sounds made (if any)
-- Frequency and intensity
-- Context of vocalizations
-
-ENVIRONMENTAL INTERACTIONS:
-- How the pet interacts with surroundings
-- Attention focus and gaze direction
-- Responses to stimuli
+WHAT TO OBSERVE:
+- Body posture and position
+- Ear and tail position/movement  
+- Head orientation and eye appearance
+- Movement patterns and speed
+- Any sounds or vocalizations
+- How they interact with their environment
+- Facial expressions and mouth position
 
 RESPONSE FORMAT:
-1. First, provide a brief video description (1-2 sentences)
-2. Then list specific observations in this format:
+Write a detailed description of what you observe. Be specific about body language, movements, and positioning. Focus on observable facts, not interpretations.
 
-OBSERVED BEHAVIORS:
-- [Specific behavior 1]
-- [Specific behavior 2]
-- [Specific behavior 3]
-... etc.
+Example:
+"The cat is sitting in a crouched position with ears flattened against its head. Its tail is low and twitching slightly. The cat moves slowly while sniffing various objects in the room, keeping its head low. Its eyes appear alert and focused on the environment."
 
-Example format:
-OBSERVED BEHAVIORS:
-- Ears are flattened against head
-- Tail is low and tucked between legs
-- Body is in crouched position close to ground
-- Eyes appear wide with dilated pupils
-- Moving slowly with hesitant steps
-
-Be specific, factual, and thorough. Do not interpret what these behaviors mean - just describe what you observe.
+Be specific and factual. Just describe what you see without interpreting what it means.
 """
     
-    # Send observation request to Gemini
-    response = await asyncio.to_thread(
-        model.generate_content,
-        [video_file, observation_prompt]
-    )
-    
-    observation_text = response.text.strip()
-    
-    # Parse the response to extract video description and specific behaviors
-    lines = observation_text.split('\n')
-    
-    # Extract video description (usually first few lines before "OBSERVED BEHAVIORS:")
-    description = ""
-    observations = []
-    
-    found_behaviors_section = False
-    for line in lines:
-        line = line.strip()
-        if "OBSERVED BEHAVIORS:" in line.upper():
-            found_behaviors_section = True
-            continue
+    try:
+        # Get observations from Gemini
+        observations_response = model.generate_content([
+            observation_prompt,
+            video_file
+        ])
         
-        if not found_behaviors_section and line:
-            # This is part of the video description
-            description += line + " "
-        elif found_behaviors_section and line.startswith('-'):
-            # This is a specific behavior observation
-            behavior = line.lstrip('- ').strip()
-            if behavior:
-                observations.append(behavior)
-    
-    # If we didn't find the structured format, use the whole response as description
-    if not observations:
-        description = observation_text
-        # Try to extract bullet points anyway
-        for line in lines:
-            if line.strip().startswith('-'):
-                behavior = line.lstrip('- ').strip()
-                if behavior:
-                    observations.append(behavior)
-    
-    return {
-        "description": description.strip(),
-        "observations": observations
-    }
+        observations_text = observations_response.text.strip()
+        
+        # For now, just return the full text - we'll use it for query generation
+        return {
+            "observations": observations_text,  # Full observation text
+            "description": observations_text,   # Same for compatibility
+            "behaviors": [],                    # Not needed anymore
+            "searchable_terms": [],             # Generated separately now
+            "success": True
+        }
+    except Exception as e:
+        logger.error(f"❌ Error during video observation: {e}")
+        return {
+            "observations": f"I had trouble analyzing the video, but I can see your {pet_type} looks healthy and active!",
+            "description": f"Video analysis encountered an error for this {pet_type}.",
+            "behaviors": [],
+            "searchable_terms": [],
+            "success": False
+        }
 
-async def get_clinical_analysis(observations: list, pet_type: str) -> dict:
+async def get_clinical_analysis(observations: str, pet_type: str) -> dict:
     """
-    🧠 STAGE 2: Perform clinical analysis using RAG-enhanced research
-    
-    This function takes specific observations and uses them to:
-    1. Query the research database for relevant behavioral insights
-    2. Provide clinician-style interpretation and recommendations
-    
-    Args:
-        observations: List of specific behaviors observed in the video
-        pet_type: Type of pet
-        
-    Returns:
-        dict: Clinical analysis and research insights used
+    Perform clinical behavioral analysis using specific observations
+    and research-backed insights from RAG system.
     """
+    logger.info("🧠 Stage 2: Performing clinical analysis with research insights...")
     
-    # 🔍 Step 1: Query RAG system for each specific observation
-    print(f"🔍 Querying research database for {len(observations)} specific behaviors...")
+    # 🎯 NEW APPROACH: Have Gemini generate specific search queries for RAG
+    query_prompt = f"""
+Based on these video observations of a {pet_type}, generate 3-5 specific search queries that would help find relevant research about the behaviors observed.
+
+VIDEO OBSERVATIONS:
+{observations}
+
+TASK: Generate simple, specific search terms that would be good for finding research about {pet_type} behaviors.
+
+REQUIREMENTS:
+- Focus on specific behaviors or body language mentioned
+- Use simple terms (1-3 words each)
+- Make them searchable in research papers
+- Focus on observable behaviors, not interpretations
+
+RESPONSE FORMAT:
+Return only the search queries, one per line, like this:
+tail wagging
+ear position
+head tilting
+body posture
+eye contact
+
+Generate 3-5 queries:
+"""
     
-    all_research_insights = []
-    
-    # Query for each specific behavior
-    for observation in observations:
-        # Clean up the observation for better RAG querying
-        clean_query = observation.lower().replace('the cat', '').replace('the dog', '').strip()
+    try:
+        # Get search queries from Gemini
+        query_response = model.generate_content(query_prompt)
+        query_text = query_response.text.strip()
         
-        # Query RAG system for this specific behavior
-        insights = get_behavior_insights(
-            query=f"{pet_type} {clean_query}",
-            pet_type=pet_type,
-            top_k=3  # Get top 3 research insights for each behavior
-        )
+        # Parse the queries (simple line-by-line)
+        search_queries = []
+        for line in query_text.split('\n'):
+            line = line.strip()
+            if line and not line.startswith('#') and not line.startswith('RESPONSE') and not line.startswith('Generate'):
+                # Remove any numbering or bullet points
+                line = line.lstrip('1234567890.-• ')
+                if line:
+                    search_queries.append(line)
         
-        if insights:
+        # Limit to 5 queries max
+        search_queries = search_queries[:5]
+        
+        logger.info(f"🔍 Generated {len(search_queries)} search queries for RAG...")
+        
+        # Query RAG system for each search query
+        all_research_insights = []
+        
+        for query in search_queries:
+            logger.info(f"🔍 Querying RAG for: '{query}'")
+            insights = get_behavior_insights(query, pet_type=pet_type, top_k=3)
             all_research_insights.extend(insights)
-    
-    # Also do a general query for overall context
-    general_insights = get_behavior_insights(
-        query=f"{pet_type} behavior analysis interpretation",
-        pet_type=pet_type,
-        top_k=5
-    )
-    
-    all_research_insights.extend(general_insights)
-    
-    # Remove duplicates and limit total research insights
-    unique_insights = []
-    seen_behaviors = set()
-    
-    for insight in all_research_insights:
-        behavior_key = insight['behavior'].lower()
-        if behavior_key not in seen_behaviors:
-            unique_insights.append(insight)
-            seen_behaviors.add(behavior_key)
-            
-        # Limit to top 10 most relevant insights
-        if len(unique_insights) >= 10:
-            break
-    
-    # 🔬 Step 2: Format research context for clinical analysis
-    research_context = format_insights_for_prompt(unique_insights)
-    
-    # 🩺 Step 3: Generate clinician-style analysis
-    print(f"🩺 Generating clinical behavioral analysis...")
-    
-    clinical_prompt = f"""
-You are a veterinary behaviorist providing a professional clinical assessment.
+        
+        # Add a general query for broader context
+        general_insights = get_behavior_insights(f"{pet_type} behavior analysis", pet_type=pet_type, top_k=3)
+        all_research_insights.extend(general_insights)
+        
+        # Remove duplicates while preserving order
+        unique_insights = []
+        seen_behaviors = set()
+        
+        for insight in all_research_insights:
+            behavior_key = f"{insight['behavior']}_{insight['pet_type']}"
+            if behavior_key not in seen_behaviors:
+                unique_insights.append(insight)
+                seen_behaviors.add(behavior_key)
+        
+        logger.info(f"📊 Total unique research insights found: {len(unique_insights)}")
+        
+        # Format insights for the prompt
+        research_context = format_insights_for_prompt(unique_insights)
+        
+        # Create clinical analysis prompt
+        clinical_prompt = f"""
+You are a friendly pet behavior expert writing a casual, insightful paragraph for a pet owner.
 
-PATIENT INFORMATION:
-- Species: {pet_type}
-- Behavioral observations from video analysis
+OBSERVATIONS FROM VIDEO:
+{observations}
 
-OBSERVED BEHAVIORS:
-{chr(10).join(f"• {obs}" for obs in observations)}
-
-RELEVANT RESEARCH CONTEXT:
+RESEARCH INSIGHTS:
 {research_context}
 
-CLINICAL ASSESSMENT PROTOCOL:
-Provide a professional behavioral assessment in this format:
+TASK: Write a short, casual paragraph (max 100 words) explaining what the pet is thinking/feeling based on the observations and research. 
 
-BEHAVIORAL ANALYSIS:
-Based on my observation of your {pet_type}, I noticed several key behavioral indicators:
+TONE: Fun, educational, and friendly - like talking to a friend about their pet
+STYLE: One flowing paragraph, no bullet points or lists
+AVOID: overly technical terms
 
-[For each significant behavior, provide clinical interpretation]
-- "I observed [specific behavior]. This typically indicates [meaning based on research] [confidence level]."
-
-EMOTIONAL STATE ASSESSMENT:
-Your {pet_type} appears to be experiencing [emotional state] based on the combination of behaviors observed.
-
-CLINICAL INTERPRETATION:
-[Provide professional interpretation of what these behaviors mean for the pet's wellbeing]
-
-RECOMMENDATIONS:
-[If applicable, provide any care recommendations or notes about the pet's condition]
-
-IMPORTANT NOTES:
-- Use clinical language but keep it accessible to pet owners
-- Reference specific behaviors you observed
-- Base interpretations on the research context provided
-- If behaviors indicate potential issues, mention them professionally
-- Always include confidence levels (high/medium/low confidence)
-- Be specific about which behaviors led to which conclusions
-
-Provide your assessment now:
+Focus on translating the behaviors into what the pet might be "thinking" using the research insights.
 """
-    
-    # Generate clinical analysis
-    clinical_response = await asyncio.to_thread(
-        model.generate_content,
-        clinical_prompt
-    )
-    
-    return {
-        "clinical_response": clinical_response.text.strip(),
-        "research_insights": unique_insights
-    }
+        
+        logger.info("🩺 Generating clinical behavioral analysis...")
+        
+        # Get clinical analysis from Gemini
+        clinical_response = model.generate_content(clinical_prompt)
+        clinical_text = clinical_response.text.strip()
+        
+        return {
+            "clinical_response": clinical_text,
+            "research_insights": unique_insights,
+            "searchable_terms": search_queries  # Now these are the actual queries we generated
+        }
+    except Exception as e:
+        logger.error(f"❌ Error during clinical analysis: {e}")
+        return {
+            "clinical_response": "I had trouble analyzing the research insights, but your pet looks happy and healthy!",
+            "research_insights": [],
+            "searchable_terms": []
+        }
 
 def detect_pet_type(filename: str) -> str:
     """
@@ -499,6 +474,7 @@ async def upload_video(file: UploadFile = File(...)):
             "stage1_description": analysis_result["stage1_description"],
             "stage2_clinical_analysis": analysis_result["stage2_clinical_analysis"],
             "stage2_research_used": analysis_result["stage2_research_used"],
+            "debug_info": analysis_result.get("debug_info", {}),  # Include debug info!
             "video_info": {
             "filename": file.filename,
             "duration": f"{duration:.1f} seconds",

@@ -495,6 +495,162 @@ body {
     color: rgba(255, 255, 255, 0.9);
 }
 
+/* Loading Stage */
+.loading-stage {
+    text-align: center;
+    padding: 40px 25px;
+}
+
+.loading-content h3 {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 20px 0 10px 0;
+}
+
+.loading-content p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top: 3px solid #5856d6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Debug Panel */
+.debug-panel {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+    backdrop-filter: blur(10px);
+}
+
+.debug-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.debug-header h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.debug-toggle {
+    background: rgba(88, 86, 214, 0.2);
+    color: #5856d6;
+    border: 1px solid rgba(88, 86, 214, 0.3);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.debug-toggle:hover {
+    background: rgba(88, 86, 214, 0.3);
+    transform: translateY(-1px);
+}
+
+.debug-stats {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.debug-stats p {
+    color: rgba(255, 255, 255, 0.7);
+    margin: 8px 0;
+    font-size: 0.9rem;
+}
+
+.debug-insights h5 {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin: 0 0 15px 0;
+    font-weight: 500;
+}
+
+.debug-insight {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 10px 0;
+    border-left: 3px solid rgba(88, 86, 214, 0.5);
+}
+
+.insight-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.insight-number {
+    background: rgba(88, 86, 214, 0.3);
+    color: #5856d6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.insight-behavior {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    flex: 1;
+}
+
+.insight-confidence {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.confidence-high {
+    background: rgba(48, 209, 88, 0.2);
+    color: #30d158;
+    border: 1px solid rgba(48, 209, 88, 0.3);
+}
+
+.confidence-medium {
+    background: rgba(255, 149, 0, 0.2);
+    color: #ff9500;
+    border: 1px solid rgba(255, 149, 0, 0.3);
+}
+
+.confidence-low {
+    background: rgba(255, 69, 58, 0.2);
+    color: #ff453a;
+    border: 1px solid rgba(255, 69, 58, 0.3);
+}
+
+.insight-details p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
 .video-info {
     display: flex;
     justify-content: center;
@@ -619,5 +775,33 @@ body {
     
     .video-info {
         gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .description-text, .clinical-text {
+        font-size: 1.0rem;
+    }
+    
+    .loading-stage {
+        padding: 30px 20px;
+    }
+    
+    .loading-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .debug-panel {
+        padding: 15px;
+    }
+    
+    .insight-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .insight-behavior {
+        font-size: 0.9rem;
     }
 } 
