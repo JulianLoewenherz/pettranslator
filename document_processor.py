@@ -21,6 +21,11 @@ from typing import List, Dict, Any, Optional
 import PyPDF2
 from datetime import datetime
 import asyncio
+import base64
+import io
+
+# PDF image extraction
+import fitz  # PyMuPDF
 
 # Google Generative AI imports
 import google.generativeai as genai
@@ -101,6 +106,52 @@ class IntelligentPetBehaviorProcessor:
             logger.error(f"❌ Error extracting text from {pdf_path}: {e}")
             return ""
     
+    def extract_images_from_pdf(self, pdf_path: str) -> List[bytes]:
+        """
+        🖼️ Extract images from PDF file
+        
+        Args:
+            pdf_path: Path to the PDF file
+            
+        Returns:
+            List[bytes]: List of image bytes (JPEG/PNG format)
+        """
+        try:
+            logger.info(f"🖼️ Extracting images from: {pdf_path}")
+            
+            pdf_document = fitz.open(pdf_path)
+            images = []
+            
+            for page_num in range(len(pdf_document)):
+                page = pdf_document[page_num]
+                image_list = page.get_images()
+                
+                for img_index, img in enumerate(image_list):
+                    # Get image data
+                    xref = img[0]
+                    pix = fitz.Pixmap(pdf_document, xref)
+                    
+                    # Skip small images (likely decorative)
+                    if pix.width < 100 or pix.height < 100:
+                        pix = None
+                        continue
+                    
+                    # Convert to bytes
+                    if pix.n - pix.alpha < 4:  # GRAY or RGB
+                        img_data = pix.tobytes("png")
+                        images.append(img_data)
+                        logger.debug(f"   📷 Extracted image {img_index + 1} from page {page_num + 1}")
+                    
+                    pix = None
+            
+            pdf_document.close()
+            logger.info(f"✅ Extracted {len(images)} images from PDF")
+            return images
+            
+        except Exception as e:
+            logger.error(f"❌ Error extracting images from {pdf_path}: {e}")
+            return []
+    
     def create_extraction_prompt(self, text: str, filename: str) -> str:
         """
         🎯 Create intelligent extraction prompt for Gemini
@@ -118,23 +169,28 @@ You are extracting cat and dog behaviors from research papers for video analysis
 
 GOAL: Extract specific, observable behaviors that can be identified in videos and looked up later.
 
+ANALYZE BOTH TEXT AND IMAGES:
+- Extract behaviors from text descriptions
+- Extract behaviors from photos, diagrams, charts, and illustrations
+- Look for body language examples, posture guides, and behavioral demonstrations in images
+
 REQUIRED JSON FORMAT:
 {{
   "behaviors": [
     {{
-      "behavior": "exact behavior name (e.g., 'dilated pupils', 'tail puffed up')",
+      "behavior": "exact behavior name (e.g., 'dilated pupils', 'approaches humans with positive expressions')",
       "pet_type": "cat/dog/both", 
       "indicates": "what this behavior typically means (e.g., 'fear or stress')"
     }}
   ]
 }}
 
-EXTRACT ONLY:
-✅ Specific physical behaviors: "dilated pupils", "ears flattened", "tail puffed up"
-✅ Vocalizations: "loud meowing", "purring", "hissing", "chirping"  
-✅ Body positions: "crouched low", "arched back", "hiding"
-✅ Movements: "pacing", "trembling", "excessive grooming"
-✅ Social interactions: "follows pointing gestures", "approaches smiling humans", "avoids angry expressions"
+EXTRACT BOTH PHYSICAL AND SOCIAL BEHAVIORS:
+
+✅ **Physical behaviors**: "dilated pupils", "ears flattened", "tail puffed up", "crouched low", "arched back"
+✅ **Vocalizations**: "loud meowing", "purring", "hissing", "chirping", "excessive barking"  
+✅ **Body positions**: "hiding", "pacing", "trembling", "excessive grooming"
+✅ **Social behaviors**: "approaches humans with positive expressions", "follows pointing gestures from smiling humans", "avoids humans with angry expressions", "seeks attention from humans"
 
 EXAMPLES OF GOOD EXTRACTIONS:
 - "dilated pupils" → "fear or stress"
@@ -145,7 +201,7 @@ EXAMPLES OF GOOD EXTRACTIONS:
 
 IGNORE:
 ❌ Methodology, statistics, references
-❌ Abstract concepts without physical behaviors
+❌ Abstract concepts without observable behaviors
 ❌ Research procedures
 
 DOCUMENT: {filename}
@@ -153,18 +209,21 @@ DOCUMENT: {filename}
 TEXT:
 {text}
 
+IMAGES: If images are included, analyze them for behavioral examples, body language demonstrations, posture guides, and emotional state illustrations.
+
 Return ONLY the JSON object.
 """
         
         return prompt
     
-    async def extract_behavioral_insights(self, text: str, filename: str) -> Dict[str, Any]:
+    async def extract_behavioral_insights(self, text: str, filename: str, images: List[bytes] = None) -> Dict[str, Any]:
         """
-        🧠 Use Gemini to intelligently extract behavioral insights
+        🧠 Use Gemini to intelligently extract behavioral insights from text and images
         
         Args:
             text: Full document text
             filename: Original filename
+            images: Optional list of image bytes from the PDF
             
         Returns:
             Dict: Structured behavioral insights
@@ -175,10 +234,23 @@ Return ONLY the JSON object.
             # Create extraction prompt
             prompt = self.create_extraction_prompt(text, filename)
             
+            # Prepare content for Gemini
+            content = [prompt]
+            
+            # Add images if available
+            if images:
+                logger.info(f"📷 Including {len(images)} images in analysis")
+                for i, img_bytes in enumerate(images[:5]):  # Limit to 5 images to avoid token limits
+                    # Convert image bytes to format Gemini can understand
+                    content.append({
+                        "mime_type": "image/png",
+                        "data": img_bytes
+                    })
+            
             # Send to Gemini for analysis
             response = await asyncio.to_thread(
                 self.model.generate_content,
-                prompt
+                content
             )
             
             # Parse JSON response
@@ -381,7 +453,10 @@ Return ONLY the JSON object.
             logger.warning(f"⚠️ No text extracted from {pdf_path}")
             return []
         
-        # Step 2: Extract behavioral insights using Gemini
+        # Step 2: Extract images from PDF
+        images = self.extract_images_from_pdf(pdf_path)
+        
+        # Step 3: Extract behavioral insights using Gemini
         filename = Path(pdf_path).stem
         
         # Handle large documents by processing in chunks if needed
@@ -394,9 +469,9 @@ Return ONLY the JSON object.
             text = self._extract_relevant_sections(text)
             logger.info(f"📄 Optimized text length: {len(text)} characters")
         
-        behavioral_data = await self.extract_behavioral_insights(text, filename)
+        behavioral_data = await self.extract_behavioral_insights(text, filename, images)
         
-        # Step 3: Structure for vector database
+        # Step 4: Structure for vector database
         structured_data = self.structure_for_vector_db(behavioral_data, filename)
         
         logger.info(f"✅ Successfully processed {pdf_path} → {len(structured_data)} behavioral indicators")
