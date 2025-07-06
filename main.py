@@ -158,23 +158,6 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         
         logger.info(f"✅ Analysis complete! Pet thoughts: {clinical_response[:50]}...")
         
-        # Create debug info with enhanced details
-        debug_info = {
-            "behaviors_detected": len(searchable_terms),  # Now comes from clinical analysis
-            "research_insights_found": len(research_insights),
-            "searchable_terms": searchable_terms,  # Generated search queries
-            "top_insights": [
-                {
-                    "behavior": insight["behavior"],
-                    "meaning": insight["indicates"],
-                    "confidence": insight["confidence"],
-                    "similarity": round(insight.get("similarity_score", 0), 3),
-                    "source": insight["source_document"][:50] + "..." if len(insight["source_document"]) > 50 else insight["source_document"]
-                }
-                for insight in research_insights[:5]  # Top 5 for debugging
-            ]
-        }
-        
         # 🧹 Step 3: Clean up - delete video from Gemini
         try:
             genai.delete_file(video_file.name)
@@ -190,7 +173,6 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
             "stage1_description": observation_result["description"],
             "stage2_clinical_analysis": clinical_response,
             "stage2_research_used": research_insights,
-            "debug_info": debug_info,
             "analysis_complete": True,
             "timestamp": datetime.now().isoformat()
         }
@@ -248,13 +230,12 @@ RESPONSE FORMAT - Return valid JSON with these two keys:
 
 For search_terms, generate 3-5 specific search queries that would help find research about the behaviors observed:
 - Focus on specific behaviors or body language mentioned
-- Use simple terms (1-3 words each)
-- Make them searchable in research papers
+- Use simple terms (1-5 words each)
 - Focus on observable behaviors, not interpretations
 
-Example search terms: ["tail between legs", "ears back", "crouched position", "sniffing behavior", "eye contact"]
+Example search terms: ["tail moving side to side ", "ears back", "crouched position", "sniffing behavior", "sudden movement", "pupils large"]
 
-IMPORTANT: Return ONLY the JSON object, no other text.
+CRITICAL: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks or any other formatting. No ```json or ``` markers.
 """
     
     try:
@@ -265,7 +246,22 @@ IMPORTANT: Return ONLY the JSON object, no other text.
         # Parse JSON response
         try:
             import json
-            parsed_response = json.loads(response_text)
+            
+            # Strip markdown code blocks if present
+            clean_response = response_text.strip()
+            
+            # Handle various markdown wrapper formats
+            if "```json" in clean_response:
+                # Extract JSON from markdown code block
+                start = clean_response.find("```json") + 7
+                end = clean_response.find("```", start)
+                if end != -1:
+                    clean_response = clean_response[start:end].strip()
+            elif clean_response.startswith("```") and clean_response.endswith("```"):
+                # Generic code block wrapper
+                clean_response = clean_response[3:-3].strip()
+            
+            parsed_response = json.loads(clean_response)
             observations = parsed_response.get("observations", "")
             search_terms = parsed_response.get("search_terms", [])
             
@@ -333,10 +329,7 @@ async def get_clinical_analysis(observations: str, pet_type: str, search_terms: 
             logger.info(f"🔍 Querying RAG for: '{query}'")
             insights = get_behavior_insights(query, pet_type=pet_type, top_k=3)
             all_research_insights.extend(insights)
-        
-        # Add a general query for broader context
-        general_insights = get_behavior_insights(f"{pet_type} behavior analysis", pet_type=pet_type, top_k=3)
-        all_research_insights.extend(general_insights)
+    
         
         # Remove duplicates while preserving order
         unique_insights = []
@@ -348,10 +341,24 @@ async def get_clinical_analysis(observations: str, pet_type: str, search_terms: 
                 unique_insights.append(insight)
                 seen_behaviors.add(behavior_key)
         
-        logger.info(f"📊 Total unique research insights found: {len(unique_insights)}")
+        # Filter out low-similarity results (< 0.4) for better quality
+        filtered_insights = [
+            insight for insight in unique_insights 
+            if insight.get('similarity_score', 0) >= 0.4
+        ]
         
-        # Format insights for the prompt
-        research_context = format_insights_for_prompt(unique_insights)
+        logger.info(f"📊 Total unique research insights found: {len(unique_insights)}")
+        logger.info(f"🎯 High-quality insights (≥0.4 similarity): {len(filtered_insights)}")
+        
+        # Simple terminal output for debugging
+        print(f"\n🔍 Search Queries: {search_terms}")
+        print(f"📚 Research Insights Used in Prompt ({len(filtered_insights)}):")
+        for i, insight in enumerate(filtered_insights, 1):
+            print(f"   {i}. {insight['behavior']} → {insight['indicates']} (similarity: {insight.get('similarity_score', 0):.2f})")
+        print()
+        
+        # Format insights for the prompt (use only high-quality ones)
+        research_context = format_insights_for_prompt(filtered_insights)
         
         # Create clinical analysis prompt
         clinical_prompt = f"""
@@ -380,7 +387,7 @@ Focus on translating the behaviors into what the pet might be "thinking" using t
         
         return {
             "clinical_response": clinical_text,
-            "research_insights": unique_insights,
+            "research_insights": filtered_insights,
             "searchable_terms": search_terms  # Return the pre-generated terms
         }
     except Exception as e:
@@ -473,7 +480,6 @@ async def upload_video(file: UploadFile = File(...)):
             "stage1_description": analysis_result["stage1_description"],
             "stage2_clinical_analysis": analysis_result["stage2_clinical_analysis"],
             "stage2_research_used": analysis_result["stage2_research_used"],
-            "debug_info": analysis_result.get("debug_info", {}),  # Include debug info!
             "video_info": {
             "filename": file.filename,
             "duration": f"{duration:.1f} seconds",
