@@ -1,0 +1,798 @@
+,
+        causal_mask: Optional[torch.Tensor] = None,
+        past_key_value: Optional[ZambaHybridDynamicCache] = None,
+        output_attentions: Optional[bool] = False,
+        use_cache: Optional[bool] = False,
+        cache_position: Optional[torch.LongTensor] = None,
+        transformer_hidden_states: Optional[torch.Tensor] = None,
+        **kwargs,
+    ) -> tuple[torch.FloatTensor, Optional[tuple[torch.FloatTensor, torch.FloatTensor]]]:
+        """
+        Args:
+            hidden_states (`torch.FloatTensor`): input to the layer of shape `(batch, seq_len, embed_dim)`
+            attention_mask (`torch.FloatTensor`, *optional*): attention mask of size
+                `(batch, sequence_length)` where padding elements are indicated by 0.
+            past_key_value (`ZambaHybridDynamicCache`, *optional*): cached past key and value projection states
+            output_attentions (`bool`, *optional*):
+                Whether or not to return the attentions tensors of all attention layers. See `attentions` under
+                returned tensors for more detail.
+            use_cache (`bool`, *optional*):
+                If set to `True`, `past_key_values` key value states are returned and can be used to speed up decoding
+                (see `past_key_values`).
+            cache_position (`torch.LongTensor` of shape `(sequence_length)`, *optional*):
+                Indices depicting the position of the input sequence tokens in the sequence.
+        """
+
+        residual = hidden_states
+
+        # `transformer_hidden_states` is the output from shared transformer + linear layer (see fig. 2 in https://huggingface.co/papers/2405.16712).
+        # `transformer_hidden_states` is then added to the input to the mamba layer below (as described in eq. (6) of https://huggingface.co/papers/2405.16712).
+        hidden_states = (
+            hidden_states + transformer_hidden_states if transformer_hidden_states is not None else hidden_states
+        )
+        hidden_states = self.input_layernorm(hidden_states)
+
+        hidden_states = self.mamba(
+            hidden_states=hidden_states,
+            cache_params=past_key_value,
+            attention_mask=attention_mask,
+        )
+
+        self_attn_weights = None
+
+        # residual connection after mamba
+        hidden_states = residual + hidden_states
+
+        outputs = (hidden_states,)
+
+        if output_attentions:
+            outputs += (self_attn_weights,)
+
+        if use_cache:
+            outputs += (past_key_value,)
+
+        return outputs
+
+
+class ZambaHybridLayer(nn.Module):
+    def __init__(self, shared_transf: ZambaAttentionDecoderLayer, linear: nn.Linear, mamba: ZambaMambaDecoderLayer):
+        super().__init__()
+        self.shared_transf = shared_transf
+        self.linear = linear
+        self.mamba_decoder = mamba
+
+    def forward(
+        self,
+        hidden_states: torch.Tensor,
+        original_hidden_states: Optional[torch.Tensor] = None,
+        layer_idx: Optional[int] = None,
+        attention_mask: Optional[torch.Tensor] = None,
+        causal_mask: Optional[torch.Tensor] = None,
+        past_key_value: Optional[ZambaHybridDynamicCache] = None,
+        output_attentions: Optional[bool] = False,
+        use_cache: Optional[bool] = False,
+        cache_position: Optional[torch.LongTensor] = None,
+    ) -> tuple[torch.FloatTensor, Optional[tuple[torch.FloatTensor, torch.FloatTensor]]]:
+        """
+        Args:
+            hidden_states (`torch.FloatTensor`): input to the layer of shape `(batch, seq_len, embed_dim)`
+            original_hidden_states (`torch.FloatTensor`): word embedding output that will be concatenated with
+            hidden activations to form the input of the shared transformer layer.
+            layer_idx (`int`): layer number.
+            attention_mask (`torch.FloatTensor`, *optional*): attention mask of size
+                `(batch, sequence_length)` where padding elements are indicated by 0.
+            past_key_value (`ZambaHybridDynamicCache`, *optional*): cached past key and value projection states
+            output_attentions (`bool`, *optional*):
+                Whether or not to return the attentions tensors of all attention layers. See `attentions` under
+                returned tensors for more detail.
+            use_cache (`bool`, *optional*):
+                If set to `True`, `past_key_values` key value states are returned and can be used to speed up decoding
+                (see `past_key_values`).
+            cache_position (`torch.LongTensor` of shape `(sequence_length)`, *optional*):
+                Indices depicting the position of the input sequence tokens in the sequence.
+        """
+
+        layer_outputs = self.shared_transf(
+            hidden_states,
+            original_hidden_states=original_hidden_states,
+            layer_idx=layer_idx,
+            attention_mask=causal_mask,
+            past_key_value=past_key_value,
+            output_attentions=output_attentions,
+            use_cache=use_cache,
+            cache_position=cache_position,
+        )
+
+        transformer_hidden_states = layer_outputs[0]
+
+        if output_attentions:
+            self_attn_weights = layer_outputs[1]
+
+        transformer_hidden_states = self.linear(transformer_hidden_states)
+
+        layer_outputs = self.mamba_decoder(
+            hidden_states,
+            transformer_hidden_states=transformer_hidden_states,
+            attention_mask=attention_mask,
+            past_key_value=past_key_value,
+            output_attentions=output_attentions,
+            use_cache=use_cache,
+            cache_position=cache_position,
+        )
+
+        if output_attentions:
+            layer_outputs = (layer_outputs[0], self_attn_weights) + layer_outputs[2:]
+
+        return layer_outputs
+
+
+@auto_docstring
+class ZambaPreTrainedModel(PreTrainedModel):
+    config_class = ZambaConfig
+    base_model_prefix = "model"
+    supports_gradient_checkpointing = True
+    _no_split_modules = ["ZambaAttentionDecoderLayer", "ZambaMambaDecoderLayer"]
+    _skip_keys_device_placement = "past_key_values"
+    _supports_flash_attn_2 = False
+    _supports_sdpa = False
+    _supports_cache_class = True  # Note: only supports ZambaHybridDynamicCache
+    _is_stateful = True
+
+    def _init_weights(self, module):
+        std = self.config.initializer_range
+        if isinstance(module, (nn.Linear, nn.Conv1d)):
+            module.weight.data.normal_(mean=0.0, std=std)
+            if module.bias is not None:
+                module.bias.data.zero_()
+        elif isinstance(module, nn.Embedding):
+            module.weight.data.normal_(mean=0.0, std=std)
+            if module.padding_idx is not None:
+                module.weight.data[module.padding_idx].zero_()
+        elif isinstance(module, ZambaRMSNorm):
+            module.weight.data.fill_(1.0)
+        elif isinstance(module, ZambaMambaMixer):
+            module.x_proj_weight.data.normal_(mean=0.0, std=std)
+            dt_init_std = self.config.mamba_dt_rank**-0.5
+            nn.init.uniform_(module.dt_proj_weight, -dt_init_std, dt_init_std)
+
+            mamba_head_dim = self.config.mamba_expand * self.config.hidden_size // self.config.n_mamba_heads
+            dt = torch.exp(
+                torch.rand(self.config.n_mamba_heads, mamba_head_dim)
+                * (math.log(self.config.time_step_max) - math.log(self.config.time_step_min))
+                + math.log(self.config.time_step_min)
+            ).clamp(min=self.config.time_step_floor)
+            # # Inverse of softplus: https://github.com/pytorch/pytorch/issues/72759
+            inv_dt = dt + torch.log(-torch.expm1(-dt))
+            module.dt_proj_bias.data.copy_(inv_dt)
+
+            A = torch.arange(1, module.ssm_state_size + 1, dtype=torch.float32)[None, :]
+            A = A.expand(module.intermediate_size, -1).contiguous()
+            module.A_log.data.copy_(torch.log(A).reshape(module.n_mamba_heads, module.mamba_head_dim, -1))
+            module.D.data.fill_(1.0)
+
+    @classmethod
+    @classmethod
+    def _check_and_enable_flash_attn_2(
+        cls,
+        config,
+        torch_dtype: Optional[torch.dtype] = None,
+        device_map: Optional[Union[str, dict[str, int]]] = None,
+        hard_check_only: bool = False,
+        check_device_map: bool = False,
+    ):
+        """
+        Overloads `PreTrainedModel._check_and_enable_flash_attn_2` so as to DISABLE Flash Attention 2 by default on Zamba models.
+        Flash attention 2 is currently not supported in the HuggingFace implementation of Zamba v1.
+        """
+        config = super()._check_and_enable_flash_attn_2(
+            config, torch_dtype, device_map, hard_check_only=hard_check_only, check_device_map=check_device_map
+        )
+
+        # if using the default path -> swap sdpa by eager
+        if not hard_check_only and config._attn_implementation == "flash_attention_2":
+            config._attn_implementation = "eager"
+
+        return config
+
+
+@auto_docstring
+class ZambaModel(ZambaPreTrainedModel):
+    """
+    Transformer decoder consisting of *config.num_hidden_layers* layers. Each layer is a [`ZambaDecoderLayer`]
+
+    Args:
+        config: ZambaConfig
+    """
+
+    def __init__(self, config: ZambaConfig):
+        super().__init__(config)
+        self.padding_idx = config.pad_token_id
+        self.vocab_size = config.vocab_size
+
+        self.embed_tokens = nn.Embedding(config.vocab_size, config.hidden_size, self.padding_idx)
+        block = ZambaAttentionDecoderLayer(config)
+        mamba_layers = []
+        linear_layers = []
+        self.layers_block_type = config.layers_block_type
+        for i in range(config.num_hidden_layers):
+            if config.layers_block_type[i] == "mamba":
+                mamba_layers.append(ZambaMambaDecoderLayer(config, layer_idx=i))
+            elif config.layers_block_type[i] == "hybrid":
+                linear_layers.append(nn.Linear(self.config.hidden_size, self.config.hidden_size, bias=False))
+                mamba_layers.append(ZambaMambaDecoderLayer(config, layer_idx=i))
+        mamba_layers = iter(mamba_layers)
+        linear_layers = iter(linear_layers)
+        layers = []
+        self._tied_weights_keys = []
+        for layer_id, layer_type in enumerate(self.layers_block_type):
+            if layer_type == "hybrid":
+                prefix_name = f"layers.{layer_id}."
+                tied_keys = [
+                    "shared_transf.self_attn.q_proj.weight",
+                    "shared_transf.self_attn.k_proj.weight",
+                    "shared_transf.self_attn.v_proj.weight",
+                    "shared_transf.self_attn.o_proj.weight",
+                    "shared_transf.feed_forward.gate_proj.weight",
+                    "shared_transf.feed_forward.up_proj.weight",
+                    "shared_transf.feed_forward.down_proj.weight",
+                    "shared_transf.input_layernorm.weight",
+                    "shared_transf.pre_ff_layernorm.weight",
+                ]
+                self._tied_weights_keys = [*self._tied_weights_keys, *[prefix_name + key for key in tied_keys]]
+                layers.append(ZambaHybridLayer(block, next(linear_layers), next(mamba_layers)))
+            else:
+                layers.append(next(mamba_layers))
+        self.layers = nn.ModuleList(layers)
+
+        self._attn_implementation = config._attn_implementation
+        self.final_layernorm = ZambaRMSNorm(config.hidden_size, eps=config.rms_norm_eps)
+
+        self.gradient_checkpointing = False
+        # Initialize weights and apply final processing
+        self.post_init()
+
+    def get_input_embeddings(self):
+        return self.embed_tokens
+
+    def set_input_embeddings(self, value):
+        self.embed_tokens = value
+
+    @auto_docstring
+    def forward(
+        self,
+        input_ids: Optional[torch.LongTensor] = None,
+        attention_mask: Optional[torch.Tensor] = None,
+        position_ids: Optional[torch.LongTensor] = None,
+        past_key_values: Optional[ZambaHybridDynamicCache] = None,
+        inputs_embeds: Optional[torch.FloatTensor] = None,
+        use_cache: Optional[bool] = None,
+        output_attentions: Optional[bool] = None,
+        output_hidden_states: Optional[bool] = None,
+        return_dict: Optional[bool] = None,
+        cache_position: Optional[torch.LongTensor] = None,
+    ) -> Union[tuple, BaseModelOutputWithPast]:
+        output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
+        output_hidden_states = (
+            output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
+        )
+        use_cache = use_cache if use_cache is not None else self.config.use_cache
+
+        return_dict = return_dict if return_dict is not None else self.config.use_return_dict
+
+        if (input_ids is None) ^ (inputs_embeds is not None):
+            raise ValueError(
+                "You cannot specify both input_ids and inputs_embeds at the same time, and must specify either one"
+            )
+
+        if self.gradient_checkpointing and self.training and use_cache:
+            logger.warning_once(
+                "`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`."
+            )
+            use_cache = False
+
+        if inputs_embeds is None:
+            inputs_embeds = self.embed_tokens(input_ids)
+
+        hidden_states = inputs_embeds
+
+        original_hidden_states = torch.clone(inputs_embeds)
+        # original_hidden_states: word embedding output that will be concatenated with hidden activations to form the input of the shared transformer layer
+
+        if use_cache and past_key_values is None:
+            logger.warning_once(
+                "Zamba requires an initialized `ZambaHybridDynamicCache` to return a cache. None was "
+                "provided, so no cache will be returned."
+            )
+
+        if cache_position is None:
+            cache_position = torch.arange(hidden_states.shape[1], device=hidden_states.device)
+        if position_ids is None:
+            position_ids = cache_position.unsqueeze(0)
+
+        causal_mask = self._update_causal_mask(attention_mask, inputs_embeds, cache_position)
+
+        all_hidden_states = () if output_hidden_states else None
+        all_self_attns = () if output_attentions else None
+
+        for layer_idx, layer in enumerate(self.layers):
+            if output_hidden_states:
+                all_hidden_states += (hidden_states,)
+
+            if self.gradient_checkpointing and self.training:
+                layer_outputs = self._gradient_checkpointing_func(
+                    layer.__call__,
+                    hidden_states,
+                    original_hidden_states,
+                    layer_idx,
+                    attention_mask,
+                    causal_mask,
+                    past_key_values,
+                    output_attentions,
+                    use_cache,
+                    cache_position,
+                )
+            else:
+                layer_outputs = layer(
+                    hidden_states,
+                    original_hidden_states=original_hidden_states,
+                    layer_idx=layer_idx,
+                    attention_mask=attention_mask,
+                    causal_mask=causal_mask,
+                    past_key_value=past_key_values,
+                    output_attentions=output_attentions,
+                    use_cache=use_cache,
+                    cache_position=cache_position,
+                )
+            hidden_states = layer_outputs[0]
+
+            if output_attentions:
+                if layer_outputs[1] is not None:
+                    # append attentions only of attention layers. Mamba layers return `None` as the attention weights
+                    all_self_attns += (layer_outputs[1],)
+
+        hidden_states = self.final_layernorm(hidden_states)
+
+        # add hidden states from the last decoder layer
+        if output_hidden_states:
+            all_hidden_states += (hidden_states,)
+
+        if past_key_values and not past_key_values.has_previous_state:
+            past_key_values.has_previous_state = True
+
+        output = BaseModelOutputWithPast(
+            last_hidden_state=hidden_states,
+            past_key_values=past_key_values if use_cache else None,
+            hidden_states=all_hidden_states,
+            attentions=all_self_attns,
+        )
+        return output if return_dict else output.to_tuple()
+
+    # Copied from transformers.models.jamba.modeling_jamba.JambaModel._update_causal_mask
+    def _update_causal_mask(self, attention_mask, input_tensor, cache_position):
+        if self.config._attn_implementation == "flash_attention_2":
+            if attention_mask is not None and 0.0 in attention_mask:
+                return attention_mask
+            return None
+
+        dtype, device = input_tensor.dtype, input_tensor.device
+        min_dtype = torch.finfo(dtype).min
+        sequence_length = input_tensor.shape[1]
+        target_length = cache_position[-1] + 1
+
+        causal_mask = torch.full((sequence_length, target_length), fill_value=min_dtype, dtype=dtype, device=device)
+        if sequence_length != 1:
+            causal_mask = torch.triu(causal_mask, diagonal=1)
+        causal_mask *= torch.arange(target_length, device=device) > cache_position.reshape(-1, 1)
+        causal_mask = causal_mask[None, None, :, :].expand(input_tensor.shape[0], 1, -1, -1)
+        if attention_mask is not None:
+            causal_mask = causal_mask.clone()  # copy to contiguous memory for in-place edit
+            if attention_mask.dim() == 2:
+                mask_length = attention_mask.shape[-1]
+                padding_mask = causal_mask[..., :mask_length].eq(0.0) * attention_mask[:, None, None, :].eq(0.0)
+                causal_mask[..., :mask_length] = causal_mask[..., :mask_length].masked_fill(padding_mask, min_dtype)
+
+        if (
+            self.config._attn_implementation == "sdpa"
+            and attention_mask is not None
+            and attention_mask.device.type in ["cuda", "xpu", "npu"]
+        ):
+            # Attend to all tokens in fully masked rows in the causal_mask, for example the relevant first rows when
+            # using left padding. This is required by F.scaled_dot_product_attention memory-efficient attention path.
+            # Details: https://github.com/pytorch/pytorch/issues/110213
+            causal_mask = AttentionMaskConverter._unmask_unattended(causal_mask, min_dtype)
+
+        return causal_mask
+
+
+# Adapted from transformers.models.jamba.modeling_jamba.JambaForCausalLM with Jamba->Zamba, JAMBA->ZAMBA
+class ZambaForCausalLM(ZambaPreTrainedModel, GenerationMixin):
+    def __init__(self, config: ZambaConfig):
+        super().__init__(config)
+        self.model = ZambaModel(config)
+        self._tied_weights_keys = ["lm_head.weight", *self.model._tied_weights_keys]
+        self.vocab_size = config.vocab_size
+        self.lm_head = nn.Linear(config.hidden_size, config.vocab_size, bias=False)
+
+        # Initialize weights and apply final processing
+        self.post_init()
+
+    def get_input_embeddings(self):
+        return self.model.embed_tokens
+
+    def set_input_embeddings(self, value):
+        self.model.embed_tokens = value
+
+    def get_output_embeddings(self):
+        return self.lm_head
+
+    def set_output_embeddings(self, new_embeddings):
+        self.lm_head = new_embeddings
+
+    def set_decoder(self, decoder):
+        self.model = decoder
+
+    def get_decoder(self):
+        return self.model
+
+    @auto_docstring
+    def forward(
+        self,
+        input_ids: Optional[torch.LongTensor] = None,
+        attention_mask: Optional[torch.Tensor] = None,
+        position_ids: Optional[torch.LongTensor] = None,
+        past_key_values: Optional[ZambaHybridDynamicCache] = None,
+        inputs_embeds: Optional[torch.FloatTensor] = None,
+        labels: Optional[torch.LongTensor] = None,
+        use_cache: Optional[bool] = None,
+        output_attentions: Optional[bool] = None,
+        output_hidden_states: Optional[bool] = None,
+        return_dict: Optional[bool] = None,
+        cache_position: Optional[torch.LongTensor] = None,
+        logits_to_keep: Union[int, torch.Tensor] = 0,
+        **loss_kwargs,
+    ) -> Union[tuple, CausalLMOutputWithPast]:
+        r"""
+        labels (`torch.LongTensor` of shape `(batch_size, sequence_length)`, *optional*):
+            Labels for computing the masked language modeling loss. Indices should either be in `[0, ...,
+            config.vocab_size]` or -100 (see `input_ids` docstring). Tokens with indices set to `-100` are ignored
+            (masked), the loss is only computed for the tokens with labels in `[0, ..., config.vocab_size]`.
+
+        Example:
+
+        ```python
+        >>> from transformers import AutoTokenizer, ZambaForCausalLM
+
+        >>> model = ZambaForCausalLM.from_pretrained("Zyphra/Zamba-7B-v1")
+        >>> tokenizer = AutoTokenizer.from_pretrained("Zyphra/Zamba-7B-v1")
+
+        >>> prompt = "Hey, are you conscious? Can you talk to me?"
+        >>> inputs = tokenizer(prompt, return_tensors="pt")
+
+        >>> # Generate
+        >>> generate_ids = model.generate(inputs.input_ids, max_length=30)
+        >>> tokenizer.batch_decode(generate_ids, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
+        "Hey, are you conscious? Can you talk to me?\nI'm not conscious, but I can talk to you."
+        ```"""
+
+        output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
+
+        output_hidden_states = (
+            output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
+        )
+        return_dict = return_dict if return_dict is not None else self.config.use_return_dict
+
+        # decoder outputs consists of (dec_features, layer_state, dec_hidden, dec_attn)
+        outputs = self.model(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            position_ids=position_ids,
+            past_key_values=past_key_values,
+            inputs_embeds=inputs_embeds,
+            use_cache=use_cache,
+            output_attentions=output_attentions,
+            output_hidden_states=output_hidden_states,
+            cache_position=cache_position,
+            return_dict=return_dict,
+        )
+
+        hidden_states = outputs[0]
+        # Only compute necessary logits, and do not upcast them to float if we are not computing the loss
+        slice_indices = slice(-logits_to_keep, None) if isinstance(logits_to_keep, int) else logits_to_keep
+        logits = self.lm_head(hidden_states[:, slice_indices, :])
+
+        loss = None
+        if labels is not None:
+            loss = self.loss_function(logits, labels, self.vocab_size, **loss_kwargs)
+
+        if not return_dict:
+            output = (logits,) + outputs[1:]
+            return (loss,) + output if loss is not None else output
+
+        return CausalLMOutputWithPast(
+            loss=loss,
+            logits=logits,
+            past_key_values=outputs.past_key_values,
+            hidden_states=outputs.hidden_states,
+            attentions=outputs.attentions,
+        )
+
+    def prepare_inputs_for_generation(
+        self,
+        input_ids,
+        past_key_values=None,
+        attention_mask=None,
+        inputs_embeds=None,
+        cache_position=None,
+        position_ids=None,
+        use_cache=True,
+        **kwargs,
+    ):
+        # Overwritten -- has a unique cache type, `ZambaHybridDynamicCache`
+
+        empty_past_kv = past_key_values is None
+
+        # Omit tokens covered by past_key_values
+        if not empty_past_kv:
+            # If we have cache: let's slice `input_ids` through `cache_position`, to keep only the unprocessed tokens
+            # Exception 1: when passing input_embeds, input_ids may be missing entries
+            # Exception 2: some generation methods do special slicing of input_ids, so we don't need to do it here
+            # Exception 3: with synced GPUs cache_position may go out of bounds, but we only want dummy token in that case.
+            #              (we can't check exception 3 while compiling)
+            if (
+                inputs_embeds is not None  # Exception 1
+                or cache_position[-1] >= input_ids.shape[1]  # Exception 3
+            ):
+                input_ids = input_ids[:, -cache_position.shape[0] :]
+            elif input_ids.shape[1] != cache_position.shape[0]:  # Default case (the "else", a no op, is Exception 2)
+                input_ids = input_ids[:, cache_position]
+        else:
+            past_key_values = ZambaHybridDynamicCache(
+                self.config, input_ids.shape[0], dtype=self.dtype, device=self.device
+            )
+
+        if attention_mask is not None and position_ids is None:
+            # create position_ids on the fly for batch generation
+            position_ids = attention_mask.long().cumsum(-1) - 1
+            position_ids.masked_fill_(attention_mask == 0, 1)
+            if not empty_past_kv:
+                position_ids = position_ids[:, -input_ids.shape[1] :]
+
+        # if `inputs_embeds` are passed, we only want to use them in the 1st generation step
+        if inputs_embeds is not None and empty_past_kv:
+            model_inputs = {"inputs_embeds": inputs_embeds}
+        else:
+            model_inputs = {"input_ids": input_ids.contiguous()}  # `contiguous()` needed for compilation use cases
+
+        model_inputs.update(
+            {
+                "position_ids": position_ids,
+                "past_key_values": past_key_values,
+                "use_cache": use_cache,
+                "attention_mask": attention_mask,
+                "logits_to_keep": self.config.num_logits_to_keep,
+                "cache_position": cache_position,
+            }
+        )
+        return model_inputs
+
+
+@auto_docstring(
+    custom_intro="""
+    The Zamba Model with a sequence classification head on top (linear layer).
+
+    [`ZambaForSequenceClassification`] uses the last token in order to do the classification, as other causal models
+    (e.g. GPT-2) do.
+
+    Since it does classification on the last token, it requires to know the position of the last token. If a
+    `pad_token_id` is defined in the configuration, it finds the last token that is not a padding token in each row. If
+    no `pad_token_id` is defined, it simply takes the last value in each row of the batch. Since it cannot guess the
+    padding tokens when `inputs_embeds` are passed instead of `input_ids`, it does the same (take the last value in
+    each row of the batch).
+    """
+)
+class ZambaForSequenceClassification(ZambaPreTrainedModel):
+    def __init__(self, config):
+        super().__init__(config)
+        self.num_labels = config.num_labels
+        self.model = ZambaModel(config)
+        self._tied_weights_keys = self.model._tied_weights_keys
+        self.score = nn.Linear(config.hidden_size, self.num_labels, bias=False)
+
+        # Initialize weights and apply final processing
+        self.post_init()
+
+    def get_input_embeddings(self):
+        return self.model.embed_tokens
+
+    def set_input_embeddings(self, value):
+        self.model.embed_tokens = value
+
+    @auto_docstring
+    def forward(
+        self,
+        input_ids: Optional[torch.LongTensor] = None,
+        attention_mask: Optional[torch.Tensor] = None,
+        position_ids: Optional[torch.LongTensor] = None,
+        past_key_values: Optional[Union[Cache, list[torch.FloatTensor]]] = None,
+        inputs_embeds: Optional[torch.FloatTensor] = None,
+        labels: Optional[torch.LongTensor] = None,
+        use_cache: Optional[bool] = None,
+        output_attentions: Optional[bool] = None,
+        output_hidden_states: Optional[bool] = None,
+        return_dict: Optional[bool] = None,
+    ) -> Union[tuple, SequenceClassifierOutputWithPast]:
+        r"""
+        labels (`torch.LongTensor` of shape `(batch_size,)`, *optional*):
+            Labels for computing the sequence classification/regression loss. Indices should be in `[0, ...,
+            config.num_labels - 1]`. If `config.num_labels == 1` a regression loss is computed (Mean-Square loss), If
+            `config.num_labels > 1` a classification loss is computed (Cross-Entropy).
+        """
+        return_dict = return_dict if return_dict is not None else self.config.use_return_dict
+
+        transformer_outputs = self.model(
+            input_ids,
+            attention_mask=attention_mask,
+            position_ids=position_ids,
+            past_key_values=past_key_values,
+            inputs_embeds=inputs_embeds,
+            use_cache=use_cache,
+            output_attentions=output_attentions,
+            output_hidden_states=output_hidden_states,
+            return_dict=return_dict,
+        )
+        hidden_states = transformer_outputs[0]
+        logits = self.score(hidden_states)
+
+        if input_ids is not None:
+            batch_size = input_ids.shape[0]
+        else:
+            batch_size = inputs_embeds.shape[0]
+
+        if self.config.pad_token_id is None and batch_size != 1:
+            raise ValueError("Cannot handle batch sizes > 1 if no padding token is defined.")
+        if self.config.pad_token_id is None:
+            last_non_pad_token = -1
+        elif input_ids is not None:
+            # To handle both left- and right- padding, we take the rightmost token that is not equal to pad_token_id
+            non_pad_mask = (input_ids != self.config.pad_token_id).to(logits.device, torch.int32)
+            token_indices = torch.arange(input_ids.shape[-1], device=logits.device, dtype=torch.int32)
+            last_non_pad_token = (token_indices * non_pad_mask).argmax(-1)
+        else:
+            last_non_pad_token = -1
+            logger.warning_once(
+                f"{self.__class__.__name__} will not detect padding tokens in `inputs_embeds`. Results may be "
+                "unexpected if using padding tokens in conjunction with `inputs_embeds.`"
+            )
+
+        pooled_logits = logits[torch.arange(batch_size, device=logits.device), last_non_pad_token]
+
+        loss = None
+        if labels is not None:
+            labels = labels.to(logits.device)
+            if self.config.problem_type is None:
+                if self.num_labels == 1:
+                    self.config.problem_type = "regression"
+                elif self.num_labels > 1 and (labels.dtype == torch.long or labels.dtype == torch.int):
+                    self.config.problem_type = "single_label_classification"
+                else:
+                    self.config.problem_type = "multi_label_classification"
+
+            if self.config.problem_type == "regression":
+                loss_fct = MSELoss()
+                if self.num_labels == 1:
+                    loss = loss_fct(pooled_logits.squeeze(), labels.squeeze())
+                else:
+                    loss = loss_fct(pooled_logits, labels)
+            elif self.config.problem_type == "single_label_classification":
+                loss_fct = CrossEntropyLoss()
+                loss = loss_fct(pooled_logits.view(-1, self.num_labels), labels.view(-1))
+            elif self.config.problem_type == "multi_label_classification":
+                loss_fct = BCEWithLogitsLoss()
+                loss = loss_fct(pooled_logits, labels)
+        if not return_dict:
+            output = (pooled_logits,) + transformer_outputs[1:]
+            return ((loss,) + output) if loss is not None else output
+
+        return SequenceClassifierOutputWithPast(
+            loss=loss,
+            logits=pooled_logits,
+            past_key_values=transformer_outputs.past_key_values,
+            hidden_states=transformer_outputs.hidden_states,
+            attentions=transformer_outputs.attentions,
+        )
+
+
+__all__ = ["ZambaForCausalLM", "ZambaForSequenceClassification", "ZambaModel", "ZambaPreTrainedModel"]
+   t   o   r   c   h   /   i   s   s   u   e   s   /   5   0   2   7   6   
+                   y   ,       x       =       t   o   r   c   h   .   m   e   s   h   g   r   i   d   (   y   ,       x   ,       i   n   d   e   x   i   n   g   =   "   i   j   "   )   
+   
+                   x   _   m   a   s   k       =       m   a   s   k   s       *       t   o   r   c   h   .   u   n   s   q   u   e   e   z   e   (   x   ,       0   )   
+                   x   _   m   a   x       =       x   _   m   a   s   k   .   v   i   e   w   (   x   _   m   a   s   k   .   s   h   a   p   e   [   0   ]   ,       -   1   )   .   m   a   x   (   -   1   )   [   0   ]   
+                   x   _   m   i   n       =       (   
+                                   t   o   r   c   h   .   w   h   e   r   e   (   m   a   s   k   s   ,       x   .   u   n   s   q   u   e   e   z   e   (   0   )   ,       t   o   r   c   h   .   t   e   n   s   o   r   (   1   e           `ª&   ü      ÿÿÿÿÿÿÿÿ(   =                   #   c o d i n g = u t f - 8 
+ #   C o p y r i g h t   2 0 2 4   Z y p h r a   T e c h n o l o g i e s   a n d   t h e   H u g g i n g F a c e   I n c .   t e a m .   A l l   r i g h t s   r e s e r v e d . 
+ # 
+ #   T h i s   c o d e   i s   b a s e d   o n   E l e u t h e r A I ' s   G P T - N e o X   l i b r a r y   a n d   t h e   G P T - N e o X 
+ #   a n d   O P T   i m p l e m e n t a t i o n s   i n   t h i s   l i b r a r y .   I t   h a s   b e e n   m o d i f i e d   f r o m   i t s 
+ #   o r i g i n a l   f o r m s   t o   a c c o m m o d a t e   m i n o r   a r c h i t e c t u r a l   d i f f e r e n c e s   c o m p a r e d 
+ #   t o   G P T - N e o X   a n d   O P T   u s e d   b y   t h e   M e t a   A I   t e a m   t h a t   t r a i n e d   t h e   m o d e l . 
+ # 
+ #   L i c e n s e d   u n d e r   t h e   A p a c h e   L i c e n s e ,   V e r s i o n   2 . 0   ( t h e   " L i c e n s e " ) ; 
+ #   y o u   m a y   n o t   u s e   t h i s   f i l e   e x c e p t   i n   c o m p l i a n c e   w i t h   t h e   L i c e n s e . 
+ #   Y o u   m a y   o b t a i n   a   c o p y   o f   t h e   L i c e n s e   a t 
+ # 
+ #           h t t p : / / w w w . a p a c h e . o r g / l i c e n s e s / L I C E N S E - 2 . 0 
+ # 
+ #   U n l e s s   r e q u i r e d   b y   a p p l i c a b l e   l a w   o r   a g r e e d   t o   i n   w r i t i n g ,   s o f t w a r e 
+ #   d i s t r i b u t e d   u n d e r   t h e   L i c e n s e   i s   d i s t r i b u t e d   o n   a n   " A S   I S "   B A S I S , 
+ #   W I T H O U T   W A R R A N T I E S   O R   C O N D I T I O N S   O F   A N Y   K I N D ,   e i t h e r   e x p r e s s   o r   i m p l i e d . 
+ #   S e e   t h e   L i c e n s e   f o r   t h e   s p e c i f i c   l a n g u a g e   g o v e r n i n g   p e r m i s s i o n s   a n d 
+ #   l i m i t a t i o n s   u n d e r   t h e   L i c e n s e . 
+ " " " P y T o r c h   Z a m b a   m o d e l . " " " 
+ 
+ i m p o r t   m a t h 
+ f r o m   t y p i n g   i m p o r t   A n y ,   C a l l a b l e ,   O p t i o n a l ,   U n i o n 
+ 
+ i m p o r t   t o r c h 
+ i m p o r t   t o r c h . u t i l s . c h e c k p o i n t 
+ f r o m   t o r c h   i m p o r t   n n 
+ f r o m   t o r c h . n n   i m p o r t   B C E W i t h L o g i t s L o s s ,   C r o s s E n t r o p y L o s s ,   M S E L o s s 
+ 
+ f r o m   . . . a c t i v a t i o n s   i m p o r t   A C T 2 F N 
+ f r o m   . . . c a c h e _ u t i l s   i m p o r t   C a c h e ,   D y n a m i c C a c h e 
+ f r o m   . . . g e n e r a t i o n   i m p o r t   G e n e r a t i o n M i x i n 
+ f r o m   . . . m o d e l i n g _ a t t n _ m a s k _ u t i l s   i m p o r t   A t t e n t i o n M a s k C o n v e r t e r 
+ f r o m   . . . m o d e l i n g _ f l a s h _ a t t e n t i o n _ u t i l s   i m p o r t   F l a s h A t t e n t i o n K w a r g s 
+ f r o m   . . . m o d e l i n g _ o u t p u t s   i m p o r t   B a s e M o d e l O u t p u t W i t h P a s t ,   C a u s a l L M O u t p u t W i t h P a s t ,   S e q u e n c e C l a s s i f i e r O u t p u t W i t h P a s t 
+ f r o m   . . . m o d e l i n g _ u t i l s   i m p o r t   A L L _ A T T E N T I O N _ F U N C T I O N S ,   P r e T r a i n e d M o d e l 
+ f r o m   . . . p r o c e s s i n g _ u t i l s   i m p o r t   U n p a c k 
+ f r o m   . . . u t i l s   i m p o r t   a u t o _ d o c s t r i n g ,   l o g g i n g 
+ f r o m   . . . u t i l s . i m p o r t _ u t i l s   i m p o r t   i s _ c a u s a l _ c o n v 1 d _ a v a i l a b l e ,   i s _ m a m b a _ s s m _ a v a i l a b l e 
+ f r o m   . c o n f i g u r a t i o n _ z a m b a   i m p o r t   Z a m b a C o n f i g 
+ 
+ 
+ i f   i s _ m a m b a _ s s m _ a v a i l a b l e ( ) : 
+         f r o m   m a m b a _ s s m . o p s . s e l e c t i v e _ s c a n _ i n t e r f a c e   i m p o r t   m a m b a _ i n n e r _ f n ,   s e l e c t i v e _ s c a n _ f n 
+         f r o m   m a m b a _ s s m . o p s . t r i t o n . s e l e c t i v e _ s t a t e _ u p d a t e   i m p o r t   s e l e c t i v e _ s t a t e _ u p d a t e 
+ e l s e : 
+         s e l e c t i v e _ s t a t e _ u p d a t e ,   s e l e c t i v e _ s c a n _ f n ,   m a m b a _ i n n e r _ f n   =   N o n e ,   N o n e ,   N o n e 
+ 
+ i f   i s _ c a u s a l _ c o n v 1 d _ a v a i l a b l e ( ) : 
+         f r o m   c a u s a l _ c o n v 1 d   i m p o r t   c a u s a l _ c o n v 1 d _ f n ,   c a u s a l _ c o n v 1 d _ u p d a t e 
+ e l s e : 
+         c a u s a l _ c o n v 1 d _ u p d a t e ,   c a u s a l _ c o n v 1 d _ f n   =   N o n e ,   N o n e 
+ 
+ i s _ f a s t _ p a t h _ a v a i l a b l e   =   a l l ( 
+         ( s e l e c t i v e _ s t a t e _ u p d a t e ,   s e l e c t i v e _ s c a n _ f n ,   c a u s a l _ c o n v 1 d _ f n ,   c a u s a l _ c o n v 1 d _ u p d a t e ,   m a m b a _ i n n e r _ f n ) 
+ ) 
+ 
+ 
+ l o g g e r   =   l o g g i n g . g e t _ l o g g e r ( _ _ n a m e _ _ ) 
+ 
+ 
+ #   C o p i e d   f r o m   t r a n s f o r m e r s . m o d e l s . l l a m a . m o d e l i n g _ l l a m a . L l a m a R M S N o r m   w i t h   L l a m a - > Z a m b a 
+ c l a s s   Z a m b a R M S N o r m ( n n . M o d u l e ) : 
+         d e f   _ _ i n i t _ _ ( s e l f ,   h i d d e n _ s i z e ,   e p s = 1 e - 6 ) : 
+                 " " " 
+                 Z a m b a R M S N o r m   i s   e q u i v a l e n t   t o   T 5 L a y e r N o r m 
+                 " " " 
+                 s u p e r ( ) . _ _ i n i t _ _ ( ) 
+                 s e l f . w e i g h t   =   n n . P a r a m e t e r ( t o r c h . o n e s ( h i d d e n _ s i z e ) ) 
+                 s e l f . v a r i a n c e _ e p s i l o n   =   e p s 
+ 
+         d e f   f o r w a r d ( s e l f ,   h i d d e n _ s t a t e s ) : 
+                 i n p u t _ d t y p e   =   h i d d e n _ s t a t e s . d t y p e 
+                 h i d d e n _ s t a t e s   =   h i d d e n _ s t a t e s . t o ( t o r c h . f l o a t 3 2 ) 
+                 v a r i a n c e   =   h i d d e n _ s t a t e s . p o w ( 2 ) . m e a n ( - 1 ,   k e e p d i m = T r u e ) 
+                 h i d d e n _ s t a t e s   =   h i d d e n _ s t a t e s   *   t o r c h . r s q r t ( v a r i a n c e   +   s e l f . v a r i a n c e _ e p s i l o n ) 
+                 r e t u r n   s e l f . w e i g h t   *   h i d d e n _ s t a t e s . t o ( i n p u t _ d t y p e ) 
+ 
+         d e f   e x t r a _ r e p r ( s e l f ) : 
+                 r e t u r n   f " { t u p l e ( s e l f . w e i g h t . s h a p e ) } ,   e p s = { s e l f . v a r i a n c e _ e p s i l o n } " 
+ 
+ 
+ #   C o p i e d   f r o m   t r a n s f o r m e r s . m o d e l s . l l a m a . m o d e l i n g _ l l a m a . r e p e a t _ k v 
+ d e f   r e p e a t _ k v ( h i d d e n _ s t a t e s :   t o r c h . T e n s o r ,   n _ r e p :   i n t )   - >   t o r c h . T e n s o r : 
+         " " " 
+         T h i s   i s   t h e   e q u i v a l e n t   o f   t o r c h . r e p e a t _ i n t e r l e a v e ( x ,   d i m = 1 ,   r e p e a t s = n _ r e p ) .   T h e   h i d d e n   s t a t e s   g o   f r o m   ( b a t c h , 
+         n u m _ k e y _ v a l u e _ h e a d s ,   s e q l e n ,   h e a d _ d i m )   t o   ( b a t c h ,   n u m _ a t t e n t i o n _ h e a d 
