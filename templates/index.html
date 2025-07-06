@@ -21,20 +21,20 @@
         <div id="upload-state" class="state-container">
             <div class="glass-card upload-card">
                 <div class="card-header">
-                    <h1>🐾 Pet Mind Reader</h1>
+                    <h1>Pet Mind Reader</h1>
                     <p>Upload your pet's video to discover their thoughts</p>
                 </div>
                 
                 <form id="uploadForm" enctype="multipart/form-data">
                     <div class="upload-zone" id="uploadZone">
-                        <div class="upload-icon">📹</div>
+                        <div class="upload-icon">+</div>
                         <p class="upload-text">Drop your video here or click to browse</p>
                         <p class="upload-hint">MP4, MOV, AVI • Max 10 seconds • Up to 50MB</p>
                         <input type="file" id="video-file" name="file" accept=".mp4,.mov,.avi,.mkv,.webm" required>
                     </div>
                     
                     <button type="submit" class="glass-button" id="analyzeBtn" disabled>
-                        <span>✨ Analyze Pet's Mind</span>
+                        <span>Analyze Pet's Mind</span>
                     </button>
                 </form>
             </div>
@@ -44,7 +44,7 @@
         <div id="processing-state" class="state-container hidden">
             <div class="glass-card processing-card">
                 <div class="processing-animation">
-                    <div class="brain-icon">🧠</div>
+                    <div class="brain-icon">•</div>
                     <div class="pulse-rings">
                         <div class="ring ring-1"></div>
                         <div class="ring ring-2"></div>
@@ -69,13 +69,12 @@
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-overlay">
-                        <div class="pet-type-badge" id="petTypeBadge">🐕 Dog</div>
+                        <div class="pet-type-badge" id="petTypeBadge">Dog</div>
                     </div>
                 </div>
                 
                 <div class="analysis-container">
                     <div class="thought-bubble">
-                        <div class="bubble-icon">💭</div>
                         <div class="thought-text" id="thoughtText">
                             <!-- AI response will appear here -->
                         </div>
@@ -87,7 +86,7 @@
                 </div>
                 
                 <button class="glass-button secondary" id="analyzeAnotherBtn">
-                    <span>🔄 Analyze Another Video</span>
+                    <span>Analyze Another Video</span>
                 </button>
             </div>
         </div>
@@ -95,13 +94,13 @@
         <!-- Error State -->
         <div id="error-state" class="state-container hidden">
             <div class="glass-card error-card">
-                <div class="error-icon">⚠️</div>
+                <div class="error-icon">!</div>
                 <h2>Something went wrong</h2>
                 <p class="error-message" id="errorMessage">
                     <!-- Error message will appear here -->
                 </p>
                 <button class="glass-button secondary" id="tryAgainBtn">
-                    <span>🔄 Try Again</span>
+                    <span>Try Again</span>
                 </button>
             </div>
         </div>
@@ -249,8 +248,7 @@
             resultVideo.load();
             
             // Set pet type badge
-            const petIcon = data.pet_type === 'cat' ? '🐱' : '🐕';
-            petTypeBadge.textContent = `${petIcon} ${data.pet_type.charAt(0).toUpperCase() + data.pet_type.slice(1)}`;
+            petTypeBadge.textContent = data.pet_type.charAt(0).toUpperCase() + data.pet_type.slice(1);
             
             // Set video info
             videoInfo.innerHTML = `

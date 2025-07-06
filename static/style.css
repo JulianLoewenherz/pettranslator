@@ -198,7 +198,9 @@ body {
 .upload-icon {
     font-size: 4rem;
     margin-bottom: 20px;
-    opacity: 0.8;
+    opacity: 0.6;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .upload-text {
@@ -293,10 +295,12 @@ body {
 }
 
 .brain-icon {
-    font-size: 4rem;
+    font-size: 6rem;
     z-index: 2;
     position: relative;
     animation: pulse 2s infinite;
+    color: rgba(88, 86, 214, 0.8);
+    font-weight: 100;
 }
 
 @keyframes pulse {
@@ -438,11 +442,7 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.bubble-icon {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    opacity: 0.8;
-}
+/* Bubble icon removed - clean design */
 
 .thought-text {
     font-size: 1.3rem;
@@ -450,6 +450,7 @@ body {
     color: rgba(255, 255, 255, 0.9);
     font-style: italic;
     min-height: 2rem;
+    margin-top: 0;
 }
 
 .video-info {
@@ -490,6 +491,8 @@ body {
     font-size: 4rem;
     margin-bottom: 20px;
     opacity: 0.8;
+    color: rgba(255, 107, 107, 0.8);
+    font-weight: 300;
 }
 
 .error-card h2 {
