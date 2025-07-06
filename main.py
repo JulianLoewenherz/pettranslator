@@ -16,7 +16,10 @@ from typing import Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# Pet behavior knowledge will come from RAG system (to be integrated next)
+# RAG System Integration
+from rag_interface import get_behavior_insights, format_insights_for_prompt
+
+# Pet behavior knowledge comes from RAG system with research-backed insights
 
 # Load environment variables
 load_dotenv()
@@ -130,13 +133,25 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         if total_waited >= max_wait_time:
             raise Exception("Video processing timed out. Please try with a smaller video.")
         
-        # 📚 Step 3: Get pet behavior context (RAG integration coming next)
-        # TODO: Replace with RAG system integration
-        behavior_context = f"Common {pet_type} behaviors will be provided by RAG system."
+        # 📚 Step 3: Get pet behavior context from RAG system
+        print(f"🔍 Getting behavioral insights for {pet_type}...")
+        
+        # Use RAG system to get research-backed behavioral insights
+        # Query for general pet behaviors to provide context
+        behavior_insights = get_behavior_insights(
+            query=f"{pet_type} behavior body language expressions",
+            pet_type=pet_type,
+            top_k=8  # Get top 8 most relevant insights
+        )
+        
+        # Format insights for AI prompt
+        behavior_context = format_insights_for_prompt(behavior_insights)
+        
+        # Enhanced thought examples based on common behavioral patterns
         thought_examples = [
-            f"I'm feeling curious about what's happening around me!",
-            f"I'm in a comfortable and relaxed state right now.",
-            f"Something interesting has caught my attention!"
+            f"I'm displaying typical {pet_type} behaviors that you can observe in my body language.",
+            f"My current posture and expressions show my emotional state clearly.",
+            f"The way I'm moving and positioning myself tells you what I'm feeling right now."
         ]
         
         # 🎭 Step 4: Create smart prompt for AI analysis
