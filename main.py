@@ -16,8 +16,7 @@ from typing import Optional
 import google.generativeai as genai
 from dotenv import load_dotenv
 
-# Import our pet behavior knowledge base
-from pet_behaviors import get_behavior_context, get_pet_thoughts_examples
+# Pet behavior knowledge will come from RAG system (to be integrated next)
 
 # Load environment variables
 load_dotenv()
@@ -131,9 +130,14 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         if total_waited >= max_wait_time:
             raise Exception("Video processing timed out. Please try with a smaller video.")
         
-        # 📚 Step 3: Get pet behavior context from our knowledge base
-        behavior_context = get_behavior_context(pet_type)
-        thought_examples = get_pet_thoughts_examples(pet_type)
+        # 📚 Step 3: Get pet behavior context (RAG integration coming next)
+        # TODO: Replace with RAG system integration
+        behavior_context = f"Common {pet_type} behaviors will be provided by RAG system."
+        thought_examples = [
+            f"I'm feeling curious about what's happening around me!",
+            f"I'm in a comfortable and relaxed state right now.",
+            f"Something interesting has caught my attention!"
+        ]
         
         # 🎭 Step 4: Create smart prompt for AI analysis
         prompt = f"""
