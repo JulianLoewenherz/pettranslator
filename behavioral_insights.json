@@ -2533,5 +2533,189 @@
       "source_document": "Emotional studies in dogs and cats and their estimation techniques  an engineering perspective",
       "processed_date": "2025-07-06T12:04:48.795532"
     }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: head bunting (rubbing head against another) | Pet: cat | Indicates: affection or friendly social bonding | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "head bunting (rubbing head against another)",
+      "pet_type": "cat",
+      "indicates": "affection or friendly social bonding",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: tail chasing (dog obsessively chasing its tail) | Pet: dog | Indicates: compulsive behavior often linked to stress or anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "tail chasing (dog obsessively chasing its tail)",
+      "pet_type": "dog",
+      "indicates": "compulsive behavior often linked to stress or anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_012",
+    "text": "Behavior: circling (dog walking in tight circles repeatedly) | Pet: dog | Indicates: compulsive disorder or high anxiety | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "circling (dog walking in tight circles repeatedly)",
+      "pet_type": "dog",
+      "indicates": "compulsive disorder or high anxiety",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_013",
+    "text": "Behavior: fly biting (dog snapping at imaginary flies) | Pet: dog | Indicates: compulsive, stress-related behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "fly biting (dog snapping at imaginary flies)",
+      "pet_type": "dog",
+      "indicates": "compulsive, stress-related behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_014",
+    "text": "Behavior: excessive chewing of objects (dog) | Pet: dog | Indicates: compulsive disorder or stress-related behavior | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "excessive chewing of objects (dog)",
+      "pet_type": "dog",
+      "indicates": "compulsive disorder or stress-related behavior",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_015",
+    "text": "Behavior: chirp (short high-pitched cat vocalization) | Pet: cat | Indicates: contact call or seeking attention/interaction | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "chirp (short high-pitched cat vocalization)",
+      "pet_type": "cat",
+      "indicates": "contact call or seeking attention/interaction",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_016",
+    "text": "Behavior: trill (soft greeting vocalization in cats) | Pet: cat | Indicates: friendly greeting or soliciting attention | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "trill (soft greeting vocalization in cats)",
+      "pet_type": "cat",
+      "indicates": "friendly greeting or soliciting attention",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_017",
+    "text": "Behavior: chatter (cat jaw-clacking at prey) | Pet: cat | Indicates: predatory excitement or frustration | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "chatter (cat jaw-clacking at prey)",
+      "pet_type": "cat",
+      "indicates": "predatory excitement or frustration",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_018",
+    "text": "Behavior: mutual grooming (cat and dog grooming each other) | Pet: both | Indicates: social bonding and trust between the animals | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "mutual grooming (cat and dog grooming each other)",
+      "pet_type": "both",
+      "indicates": "social bonding and trust between the animals",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_019",
+    "text": "Behavior: co-sleeping (cat and dog sleeping together) | Pet: both | Indicates: social bonding and comfort in shared space | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "co-sleeping (cat and dog sleeping together)",
+      "pet_type": "both",
+      "indicates": "social bonding and comfort in shared space",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_020",
+    "text": "Behavior: body shake (dog full-body shake) | Pet: dog | Indicates: release of tension or transition between activities | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "body shake (dog full-body shake)",
+      "pet_type": "dog",
+      "indicates": "release of tension or transition between activities",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_021",
+    "text": "Behavior: head shake (dog shaking head side-to-side) | Pet: dog | Indicates: playful signal often seen during social play | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "head shake (dog shaking head side-to-side)",
+      "pet_type": "dog",
+      "indicates": "playful signal often seen during social play",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_022",
+    "text": "Behavior: play bow (dog forelimbs down, hindquarters up) | Pet: dog | Indicates: invitation to play or friendly excitement | Confidence: high | Source: text",
+    "metadata": {
+      "behavior": "play bow (dog forelimbs down, hindquarters up)",
+      "pet_type": "dog",
+      "indicates": "invitation to play or friendly excitement",
+      "confidence": "high",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
+  },
+  {
+    "id": "behavior_023",
+    "text": "Behavior: rolling on ground (dog lying and rolling side to side) | Pet: dog | Indicates: playfulness or comfortable relaxation | Confidence: medium | Source: text",
+    "metadata": {
+      "behavior": "rolling on ground (dog lying and rolling side to side)",
+      "pet_type": "dog",
+      "indicates": "playfulness or comfortable relaxation",
+      "confidence": "medium",
+      "source": "text",
+      "source_document": "none",
+      "processed_date": "2025-01-07T12:00:00.000000"
+    }
   }
 ]
+
+
