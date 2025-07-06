@@ -25,20 +25,20 @@
                     <p>Upload your pet's video to discover their thoughts</p>
                 </div>
                 
-                <form id="uploadForm" enctype="multipart/form-data">
+            <form id="uploadForm" enctype="multipart/form-data">
                     <div class="upload-zone" id="uploadZone">
                         <div class="upload-icon">+</div>
                         <p class="upload-text">Drop your video here or click to browse</p>
                         <p class="upload-hint">MP4, MOV, AVI • Max 10 seconds • Up to 50MB</p>
                         <input type="file" id="video-file" name="file" accept=".mp4,.mov,.avi,.mkv,.webm" required>
-                    </div>
-                    
+                </div>
+
                     <button type="submit" class="glass-button" id="analyzeBtn" disabled>
                         <span>Analyze Pet's Mind</span>
-                    </button>
-                </form>
+                </button>
+            </form>
             </div>
-        </div>
+            </div>
 
         <!-- Processing State -->
         <div id="processing-state" class="state-container hidden">
@@ -89,7 +89,7 @@
                     <span>Analyze Another Video</span>
                 </button>
             </div>
-        </div>
+                </div>
 
         <!-- Error State -->
         <div id="error-state" class="state-container hidden">
@@ -200,7 +200,7 @@
                     i++;
                 } else {
                     clearInterval(timer);
-                }
+            }
             }, speed);
         }
 

@@ -137,27 +137,45 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         
         # 🎭 Step 4: Create smart prompt for AI analysis
         prompt = f"""
-You are a professional pet behavior expert and animal psychologist with years of experience.
+You are a professional veterinary behaviorist conducting a diagnostic analysis of this {pet_type}.
 
-ANALYZE THIS {pet_type.upper()} VIDEO:
-- Watch the entire video carefully
-- Pay attention to BOTH visual behavior AND audio (barks, meows, purrs, etc.)
-- Consider body language, facial expressions, and movements
-- Listen for vocalizations and their emotional tone
+DIAGNOSTIC PROCESS - Follow these steps:
+
+STEP 1 - DETAILED OBSERVATIONS:
+Watch the entire video carefully and document what you observe:
+- Body posture and positioning
+- Tail position, movement, and speed
+- Ear position and orientation  
+- Eye expression and gaze direction
+- Facial expressions and mouth position
+- Movement patterns and gait
+- Vocalizations (type, frequency, intensity)
+- Environmental interactions
+- Any behavioral changes throughout the video
+
+STEP 2 - BEHAVIORAL ANALYSIS:
+Using the observations above, analyze what these behaviors indicate:
 
 {behavior_context}
 
-RESPONSE INSTRUCTIONS:
-- Respond in FIRST PERSON as if you are the {pet_type}
-- Keep response to 2-3 sentences maximum
-- Make it warm, fun, and conversational
-- Focus on what the {pet_type} is likely thinking/feeling
-- Consider both what you SEE and what you HEAR
+STEP 3 - EMOTIONAL INTERPRETATION:
+Based on your observations and behavioral analysis, determine the emotional state.
 
-Example {pet_type} thoughts:
+RESPONSE FORMAT:
+Respond in FIRST PERSON as the {pet_type}, but structure your response as:
+"[Brief observation of what you're doing] [Emotional interpretation of how you're feeling]"
+
+EXAMPLE RESPONSES:
 {chr(10).join(f"- {example}" for example in thought_examples[:3])}
 
-Based on everything you observe in this video (visual + audio), what is this {pet_type} thinking?
+IMPORTANT GUIDELINES:
+- Base your interpretation strictly on observable behaviors
+- Be specific about what you see before interpreting emotions
+- Keep response to 2-3 sentences maximum
+- Make it conversational but scientifically grounded
+- Consider both visual and audio cues
+
+Now analyze this {pet_type} video and tell me what you're thinking and feeling:
 """
         
         # 🤖 Step 5: Send to AI for analysis
@@ -277,9 +295,9 @@ async def upload_video(file: UploadFile = File(...)):
             "pet_thoughts": analysis_result["pet_thoughts"],
             "pet_type": analysis_result["pet_type"],
             "video_info": {
-                "filename": file.filename,
-                "duration": f"{duration:.1f} seconds",
-                "size": f"{file.size / (1024*1024):.1f}MB" if file.size else "Unknown",
+            "filename": file.filename,
+            "duration": f"{duration:.1f} seconds",
+            "size": f"{file.size / (1024*1024):.1f}MB" if file.size else "Unknown",
             },
             "analysis_complete": analysis_result["analysis_complete"],
             "timestamp": analysis_result.get("timestamp")
