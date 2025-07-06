@@ -72,6 +72,9 @@
                 <div class="analysis-result">
                     <div class="analysis-header">
                         <h3>🐾 What Your Pet is Thinking</h3>
+                        <button class="tech-details-toggle" id="techDetailsToggle">
+                            <span>📊 Technical Details</span>
+                        </button>
                     </div>
                     <div class="analysis-text" id="analysisText">
                         <!-- Stage 2 clinical analysis will appear here -->
@@ -81,6 +84,28 @@
                 <button class="glass-button secondary" id="analyzeAnotherBtn">
                     <span>Analyze Another Video</span>
                 </button>
+            </div>
+
+            <!-- Technical Details Pop-out -->
+            <div class="tech-details-panel" id="techDetailsPanel">
+                <div class="tech-header">
+                    <h4>Technical Details</h4>
+                    <button class="close-btn" id="closeTechPanel">×</button>
+                </div>
+                
+                <div class="tech-section">
+                    <h5>🔍 Observed Behaviors</h5>
+                    <div class="observations-text" id="observationsText">
+                        <!-- Original observations will appear here -->
+                    </div>
+                </div>
+
+                <div class="tech-section">
+                    <h5>📊 Top Research Matches</h5>
+                    <div class="rag-insights" id="ragInsights">
+                        <!-- Top 3 RAG matches will appear here -->
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -122,6 +147,13 @@
         const analysisText = document.getElementById('analysisText');
         const errorMessage = document.getElementById('errorMessage');
         const progressFill = document.getElementById('progressFill');
+        
+        // Tech panel elements
+        const techDetailsPanel = document.getElementById('techDetailsPanel');
+        const closeTechPanel = document.getElementById('closeTechPanel');
+        const observationsText = document.getElementById('observationsText');
+        const ragInsights = document.getElementById('ragInsights');
+        const techDetailsToggle = document.getElementById('techDetailsToggle');
         
         // Removed thinking elements - no longer needed
 
@@ -239,6 +271,55 @@
 
         // Removed showThinkingProcess function - no longer displaying observations
 
+        let techDetailsData = null;
+
+        function showTechDetails(data) {
+            // Store data for later use
+            techDetailsData = data;
+            
+            // Populate observations
+            observationsText.textContent = data.stage1_observations || 'No observations available';
+            
+            // Populate RAG insights (top 3)
+            ragInsights.innerHTML = '';
+            const insights = data.stage2_research_used || [];
+            const top3 = insights.slice(0, 3);
+            
+            top3.forEach((insight, index) => {
+                const insightElement = document.createElement('div');
+                insightElement.className = 'rag-insight';
+                
+                const score = Math.round((insight.similarity_score || 0) * 100) / 100;
+                
+                insightElement.innerHTML = `
+                    <div class="insight-header">
+                        <div class="insight-behavior">${insight.behavior}</div>
+                        <div class="insight-score">${score}</div>
+                    </div>
+                    <div class="insight-meaning">${insight.indicates}</div>
+                `;
+                
+                ragInsights.appendChild(insightElement);
+            });
+            
+            // Show panel
+            techDetailsPanel.classList.add('visible');
+            techDetailsToggle.classList.add('active');
+        }
+
+        function hideTechDetails() {
+            techDetailsPanel.classList.remove('visible');
+            techDetailsToggle.classList.remove('active');
+        }
+
+        function toggleTechDetails() {
+            if (techDetailsPanel.classList.contains('visible')) {
+                hideTechDetails();
+            } else if (techDetailsData) {
+                showTechDetails(techDetailsData);
+            }
+        }
+
         function showResults(data) {
             // Set up video playback
             resultVideo.src = currentVideoBlob;
@@ -261,6 +342,9 @@
                 const clinicalResponse = data.stage2_clinical_analysis || 'Analysis in progress...';
                 typewriterEffect(clinicalResponse, analysisText, 50);
             }, 500);
+            
+            // Store data for tech details (don't auto-show, let user discover via button)
+            techDetailsData = data;
         }
 
         function showError(message) {
@@ -268,8 +352,13 @@
             showState('error');
         }
 
+        // Tech panel event listeners
+        closeTechPanel.addEventListener('click', hideTechDetails);
+        techDetailsToggle.addEventListener('click', toggleTechDetails);
+
         // Reset buttons
         analyzeAnotherBtn.addEventListener('click', () => {
+            hideTechDetails();
             showState('upload');
             form.reset();
             handleFileSelection();
@@ -280,6 +369,7 @@
         });
 
         tryAgainBtn.addEventListener('click', () => {
+            hideTechDetails();
             showState('upload');
         });
 
