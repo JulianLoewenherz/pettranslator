@@ -307,12 +307,13 @@ Return ONLY the JSON object.
             "processed_date": datetime.now().isoformat()
         }
     
-    def structure_for_vector_db(self, behavioral_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def structure_for_vector_db(self, behavioral_data: Dict[str, Any], filename: str = "unknown") -> List[Dict[str, Any]]:
         """
         📊 Structure behavioral data for vector database storage
         
         Args:
             behavioral_data: Extracted behavioral insights
+            filename: Name of the source PDF file
             
         Returns:
             List[Dict]: Structured data ready for embedding
@@ -332,6 +333,7 @@ Return ONLY the JSON object.
                     "behavior": behavior.get("behavior", "unknown"),
                     "pet_type": behavior.get("pet_type", "unknown"),
                     "indicates": behavior.get("indicates", ""),
+                    "source_document": filename,
                     "processed_date": datetime.now().isoformat()
                 }
             }
@@ -395,7 +397,7 @@ Return ONLY the JSON object.
         behavioral_data = await self.extract_behavioral_insights(text, filename)
         
         # Step 3: Structure for vector database
-        structured_data = self.structure_for_vector_db(behavioral_data)
+        structured_data = self.structure_for_vector_db(behavioral_data, filename)
         
         logger.info(f"✅ Successfully processed {pdf_path} → {len(structured_data)} behavioral indicators")
         return structured_data
@@ -505,7 +507,7 @@ async def test_intelligent_extraction():
         print(f"  Indicates: {behavior.get('indicates', 'N/A')}")
     
     # Test structuring for vector DB
-    structured = processor.structure_for_vector_db(behavioral_data)
+    structured = processor.structure_for_vector_db(behavioral_data, "sample_cat_behavior_study")
     print(f"\n📈 Structured for vector DB: {len(structured)} items")
     
     if structured:

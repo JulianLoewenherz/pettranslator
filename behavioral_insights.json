@@ -1,0 +1,212 @@
+[
+  {
+    "id": "behavior_000",
+    "text": "Behavior: purr | Pet: cat | Indicates: contentment, hunger, stress, or pain (depending on context)",
+    "metadata": {
+      "behavior": "purr",
+      "pet_type": "cat",
+      "indicates": "contentment, hunger, stress, or pain (depending on context)",
+      "processed_date": "2025-07-06T11:22:24.189161"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: hiss | Pet: cat | Indicates: danger, warning, or scare",
+    "metadata": {
+      "behavior": "hiss",
+      "pet_type": "cat",
+      "indicates": "danger, warning, or scare",
+      "processed_date": "2025-07-06T11:22:24.189192"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: follows pointing gestures | Pet: cat | Indicates: social responsiveness and trust",
+    "metadata": {
+      "behavior": "follows pointing gestures",
+      "pet_type": "cat",
+      "indicates": "social responsiveness and trust",
+      "processed_date": "2025-07-06T11:22:24.189198"
+    }
+  },
+  {
+    "id": "behavior_000",
+    "text": "Behavior: dilated pupils | Pet: both | Indicates: fear or stress",
+    "metadata": {
+      "behavior": "dilated pupils",
+      "pet_type": "both",
+      "indicates": "fear or stress",
+      "processed_date": "2025-07-06T11:22:34.415072"
+    }
+  },
+  {
+    "id": "behavior_001",
+    "text": "Behavior: ears flattened against head | Pet: both | Indicates: fear or aggression",
+    "metadata": {
+      "behavior": "ears flattened against head",
+      "pet_type": "both",
+      "indicates": "fear or aggression",
+      "processed_date": "2025-07-06T11:22:34.415108"
+    }
+  },
+  {
+    "id": "behavior_002",
+    "text": "Behavior: tail puffed up | Pet: both | Indicates: fear or stress",
+    "metadata": {
+      "behavior": "tail puffed up",
+      "pet_type": "both",
+      "indicates": "fear or stress",
+      "processed_date": "2025-07-06T11:22:34.415122"
+    }
+  },
+  {
+    "id": "behavior_003",
+    "text": "Behavior: loud meowing | Pet: cat | Indicates: attention seeking or distress",
+    "metadata": {
+      "behavior": "loud meowing",
+      "pet_type": "cat",
+      "indicates": "attention seeking or distress",
+      "processed_date": "2025-07-06T11:22:34.415136"
+    }
+  },
+  {
+    "id": "behavior_004",
+    "text": "Behavior: purring | Pet: cat | Indicates: contentment or appeasement",
+    "metadata": {
+      "behavior": "purring",
+      "pet_type": "cat",
+      "indicates": "contentment or appeasement",
+      "processed_date": "2025-07-06T11:22:34.415148"
+    }
+  },
+  {
+    "id": "behavior_005",
+    "text": "Behavior: hissing | Pet: cat | Indicates: aggression or fear",
+    "metadata": {
+      "behavior": "hissing",
+      "pet_type": "cat",
+      "indicates": "aggression or fear",
+      "processed_date": "2025-07-06T11:22:34.415160"
+    }
+  },
+  {
+    "id": "behavior_006",
+    "text": "Behavior: chirping | Pet: cat | Indicates: communication, often with kittens or during mating",
+    "metadata": {
+      "behavior": "chirping",
+      "pet_type": "cat",
+      "indicates": "communication, often with kittens or during mating",
+      "processed_date": "2025-07-06T11:22:34.415172"
+    }
+  },
+  {
+    "id": "behavior_007",
+    "text": "Behavior: crouched low | Pet: both | Indicates: fear or submission",
+    "metadata": {
+      "behavior": "crouched low",
+      "pet_type": "both",
+      "indicates": "fear or submission",
+      "processed_date": "2025-07-06T11:22:34.415183"
+    }
+  },
+  {
+    "id": "behavior_008",
+    "text": "Behavior: arched back | Pet: both | Indicates: fear or aggression",
+    "metadata": {
+      "behavior": "arched back",
+      "pet_type": "both",
+      "indicates": "fear or aggression",
+      "processed_date": "2025-07-06T11:22:34.415194"
+    }
+  },
+  {
+    "id": "behavior_009",
+    "text": "Behavior: hiding | Pet: both | Indicates: fear or anxiety",
+    "metadata": {
+      "behavior": "hiding",
+      "pet_type": "both",
+      "indicates": "fear or anxiety",
+      "processed_date": "2025-07-06T11:22:34.415206"
+    }
+  },
+  {
+    "id": "behavior_010",
+    "text": "Behavior: pacing | Pet: both | Indicates: anxiety or stress",
+    "metadata": {
+      "behavior": "pacing",
+      "pet_type": "both",
+      "indicates": "anxiety or stress",
+      "processed_date": "2025-07-06T11:22:34.415217"
+    }
+  },
+  {
+    "id": "behavior_011",
+    "text": "Behavior: trembling | Pet: both | Indicates: fear or stress",
+    "metadata": {
+      "behavior": "trembling",
+      "pet_type": "both",
+      "indicates": "fear or stress",
+      "processed_date": "2025-07-06T11:22:34.415228"
+    }
+  },
+  {
+    "id": "behavior_012",
+    "text": "Behavior: excessive grooming | Pet: both | Indicates: stress or anxiety",
+    "metadata": {
+      "behavior": "excessive grooming",
+      "pet_type": "both",
+      "indicates": "stress or anxiety",
+      "processed_date": "2025-07-06T11:22:34.415247"
+    }
+  },
+  {
+    "id": "behavior_013",
+    "text": "Behavior: follows pointing gestures from smiling humans | Pet: both | Indicates: social responsiveness and trust",
+    "metadata": {
+      "behavior": "follows pointing gestures from smiling humans",
+      "pet_type": "both",
+      "indicates": "social responsiveness and trust",
+      "processed_date": "2025-07-06T11:22:34.415259"
+    }
+  },
+  {
+    "id": "behavior_014",
+    "text": "Behavior: approaches smiling humans | Pet: both | Indicates: positive social interaction",
+    "metadata": {
+      "behavior": "approaches smiling humans",
+      "pet_type": "both",
+      "indicates": "positive social interaction",
+      "processed_date": "2025-07-06T11:22:34.415270"
+    }
+  },
+  {
+    "id": "behavior_015",
+    "text": "Behavior: avoids angry expressions | Pet: both | Indicates: fear or avoidance of negative interactions",
+    "metadata": {
+      "behavior": "avoids angry expressions",
+      "pet_type": "both",
+      "indicates": "fear or avoidance of negative interactions",
+      "processed_date": "2025-07-06T11:22:34.415281"
+    }
+  },
+  {
+    "id": "behavior_016",
+    "text": "Behavior: tail held high with curve | Pet: dog | Indicates: confidence or happiness",
+    "metadata": {
+      "behavior": "tail held high with curve",
+      "pet_type": "dog",
+      "indicates": "confidence or happiness",
+      "processed_date": "2025-07-06T11:22:34.415291"
+    }
+  },
+  {
+    "id": "behavior_017",
+    "text": "Behavior: excessive barking | Pet: dog | Indicates: alertness, excitement, or distress",
+    "metadata": {
+      "behavior": "excessive barking",
+      "pet_type": "dog",
+      "indicates": "alertness, excitement, or distress",
+      "processed_date": "2025-07-06T11:22:34.415303"
+    }
+  }
+]
