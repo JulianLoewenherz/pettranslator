@@ -134,12 +134,14 @@ EXTRACT ONLY:
 ✅ Vocalizations: "loud meowing", "purring", "hissing", "chirping"  
 ✅ Body positions: "crouched low", "arched back", "hiding"
 ✅ Movements: "pacing", "trembling", "excessive grooming"
+✅ Social interactions: "follows pointing gestures", "approaches smiling humans", "avoids angry expressions"
 
 EXAMPLES OF GOOD EXTRACTIONS:
 - "dilated pupils" → "fear or stress"
 - "tail held high with curve" → "confidence or happiness"
 - "ears flattened against head" → "fear or aggression"
 - "excessive meowing" → "attention seeking or distress"
+- "follows pointing gestures from smiling humans" → "social responsiveness and trust"
 
 IGNORE:
 ❌ Methodology, statistics, references
