@@ -432,25 +432,67 @@ body {
     text-align: center;
 }
 
-.thought-bubble {
-    background: rgba(255, 255, 255, 0.08);
+.analysis-stage {
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 30px;
+    padding: 25px;
+    margin: 20px 0;
     position: relative;
     backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 }
 
-/* Bubble icon removed - clean design */
+.analysis-stage:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
 
-.thought-text {
+.stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stage-header h3 {
     font-size: 1.3rem;
-    line-height: 1.6;
+    font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.stage-badge {
+    background: rgba(88, 86, 214, 0.2);
+    color: #5856d6;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(88, 86, 214, 0.3);
+}
+
+.video-description, .clinical-analysis {
+    min-height: 80px;
+}
+
+.description-text, .clinical-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 300;
+    white-space: pre-wrap;
+}
+
+.description-text {
     font-style: italic;
-    min-height: 2rem;
-    margin-top: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.clinical-text {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .video-info {
@@ -540,8 +582,8 @@ body {
         gap: 20px;
     }
     
-    .thought-text {
-        font-size: 1.1rem;
+    .description-text, .clinical-text {
+        font-size: 1.0rem;
     }
     
     .processing-card h2 {
@@ -571,7 +613,7 @@ body {
         padding: 20px;
     }
     
-    .thought-bubble {
+    .analysis-stage {
         padding: 20px;
     }
     

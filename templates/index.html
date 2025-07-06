@@ -51,8 +51,8 @@
                         <div class="ring ring-3"></div>
                     </div>
                 </div>
-                <h2>Reading your pet's mind...</h2>
-                <p class="processing-text">Analyzing behavior, body language, and emotions</p>
+                <h2>Analyzing your pet's behavior...</h2>
+                <p class="processing-text">Stage 1: Observing behaviors • Stage 2: Clinical assessment</p>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -74,9 +74,29 @@
                 </div>
                 
                 <div class="analysis-container">
-                    <div class="thought-bubble">
-                        <div class="thought-text" id="thoughtText">
-                            <!-- AI response will appear here -->
+                    <!-- Stage 1: Video Description -->
+                    <div class="analysis-stage">
+                        <div class="stage-header">
+                            <h3>📹 Video Analysis</h3>
+                            <span class="stage-badge">Stage 1</span>
+                        </div>
+                        <div class="video-description">
+                            <div class="description-text" id="videoDescriptionText">
+                                <!-- Video description will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stage 2: Clinical Analysis -->
+                    <div class="analysis-stage">
+                        <div class="stage-header">
+                            <h3>🩺 Clinical Assessment</h3>
+                            <span class="stage-badge">Stage 2</span>
+                        </div>
+                        <div class="clinical-analysis">
+                            <div class="clinical-text" id="clinicalText">
+                                <!-- Clinical analysis will appear here -->
+                            </div>
                         </div>
                     </div>
                     
@@ -125,7 +145,8 @@
         
         // Result elements
         const resultVideo = document.getElementById('resultVideo');
-        const thoughtText = document.getElementById('thoughtText');
+        const videoDescriptionText = document.getElementById('videoDescriptionText');
+        const clinicalText = document.getElementById('clinicalText');
         const petTypeBadge = document.getElementById('petTypeBadge');
         const videoInfo = document.getElementById('videoInfo');
         const errorMessage = document.getElementById('errorMessage');
@@ -264,6 +285,10 @@
                     <span class="info-label">Analyzed:</span>
                     <span class="info-value">${new Date(data.timestamp).toLocaleString()}</span>
                 </div>
+                <div class="info-item">
+                    <span class="info-label">Behaviors Found:</span>
+                    <span class="info-value">${data.stage1_observations ? data.stage1_observations.length : 0}</span>
+                </div>
             `;
             
             // Show results state
@@ -276,10 +301,17 @@
                 console.log('Auto-play blocked, user will need to click play');
             });
             
-            // Start typewriter effect for AI response
+            // Display Stage 1: Video Description
             setTimeout(() => {
-                typewriterEffect(data.pet_thoughts, thoughtText, 60);
+                const descriptionText = `The video shows: ${data.stage1_description || 'Video analysis in progress...'}`;
+                typewriterEffect(descriptionText, videoDescriptionText, 40);
             }, 500);
+            
+            // Display Stage 2: Clinical Analysis (after Stage 1 completes)
+            setTimeout(() => {
+                const clinicalResponse = data.stage2_clinical_analysis || 'Clinical analysis in progress...';
+                typewriterEffect(clinicalResponse, clinicalText, 60);
+            }, 2000);
         }
 
         function showError(message) {
