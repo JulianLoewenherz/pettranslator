@@ -389,6 +389,52 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
+/* Thinking Container (ChatGPT-like) */
+.thinking-container {
+    margin: 30px 0;
+    text-align: left;
+}
+
+.thinking-header {
+    margin-bottom: 15px;
+}
+
+.thinking-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.thinking-content {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    backdrop-filter: blur(5px);
+}
+
+.thinking-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 300;
+    white-space: pre-wrap;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.thinking-text::after {
+    content: '▊';
+    color: rgba(255, 255, 255, 0.6);
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
 /* Results Card */
 .results-card {
     max-width: 800px;
@@ -428,71 +474,43 @@ body {
     backdrop-filter: blur(10px);
 }
 
-.analysis-container {
-    text-align: center;
-}
-
-.analysis-stage {
+/* Clean Analysis Result */
+.analysis-result {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    padding: 25px;
-    margin: 20px 0;
-    position: relative;
+    padding: 30px;
+    margin: 30px 0;
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    text-align: center;
 }
 
-.analysis-stage:hover {
+.analysis-result:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-2px);
 }
 
-.stage-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
+.analysis-header {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.stage-header h3 {
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.9);
+.analysis-header h3 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.95);
     margin: 0;
 }
 
-.stage-badge {
-    background: rgba(88, 86, 214, 0.2);
-    color: #5856d6;
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border: 1px solid rgba(88, 86, 214, 0.3);
-}
-
-.video-description, .clinical-analysis {
-    min-height: 80px;
-}
-
-.description-text, .clinical-text {
-    font-size: 1.1rem;
+.analysis-text {
+    font-size: 1.2rem;
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 300;
     white-space: pre-wrap;
-}
-
-.description-text {
-    font-style: italic;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.clinical-text {
-    color: rgba(255, 255, 255, 0.9);
+    text-align: left;
 }
 
 /* Loading Stage */

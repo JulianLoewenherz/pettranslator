@@ -44,7 +44,7 @@
         <div id="processing-state" class="state-container hidden">
             <div class="glass-card processing-card">
                 <div class="processing-animation">
-                    <div class="brain-icon">•</div>
+                    <div class="brain-icon">🧠</div>
                     <div class="pulse-rings">
                         <div class="ring ring-1"></div>
                         <div class="ring ring-2"></div>
@@ -52,11 +52,23 @@
                     </div>
                 </div>
                 <h2>Analyzing your pet's behavior...</h2>
-                <p class="processing-text">Stage 1: Observing behaviors • Stage 2: Clinical assessment</p>
+                
+                <!-- Thinking Display (like ChatGPT) -->
+                <div class="thinking-container">
+                    <div class="thinking-header">
+                        <span class="thinking-label">🔍 Observing behaviors...</span>
+                    </div>
+                    <div class="thinking-content" id="thinkingContent">
+                        <div class="thinking-text" id="thinkingText">
+                            <!-- Stage 1 observations will appear here with typewriter effect -->
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
-                <p class="processing-time">This may take 30-60 seconds</p>
+                <p class="processing-time">Consulting research papers...</p>
             </div>
         </div>
 
@@ -73,44 +85,13 @@
                     </div>
                 </div>
                 
-                <div class="analysis-container">
-                    <!-- Stage 1: Video Description -->
-                    <div class="analysis-stage" id="stage1">
-                        <div class="stage-header">
-                            <h3>📹 Video Analysis</h3>
-                            <span class="stage-badge">Stage 1</span>
-                        </div>
-                        <div class="video-description">
-                            <div class="description-text" id="videoDescriptionText">
-                                <!-- Video description will appear here -->
-                            </div>
-                        </div>
+                <!-- Clean Analysis Result -->
+                <div class="analysis-result">
+                    <div class="analysis-header">
+                        <h3>🐾 What Your Pet is Thinking</h3>
                     </div>
-                    
-                    <!-- Loading Screen between stages -->
-                    <div class="analysis-stage loading-stage hidden" id="loadingStage">
-                        <div class="loading-content">
-                            <div class="loading-spinner"></div>
-                            <h3>🧠 Analyzing video and consulting research papers...</h3>
-                            <p>Finding relevant behavioral insights from veterinary research</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Stage 2: Clinical Analysis -->
-                    <div class="analysis-stage hidden" id="stage2">
-                        <div class="stage-header">
-                            <h3>🐾 What Your Pet is Thinking</h3>
-                            <span class="stage-badge">Stage 2</span>
-                        </div>
-                        <div class="clinical-analysis">
-                            <div class="clinical-text" id="clinicalText">
-                                <!-- Clinical analysis will appear here -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="video-info" id="videoInfo">
-                        <!-- Video metadata will appear here -->
+                    <div class="analysis-text" id="analysisText">
+                        <!-- Stage 2 clinical analysis will appear here -->
                     </div>
                 </div>
                 
@@ -118,7 +99,7 @@
                     <span>Analyze Another Video</span>
                 </button>
             </div>
-                </div>
+        </div>
 
         <!-- Error State -->
         <div id="error-state" class="state-container hidden">
@@ -154,17 +135,13 @@
         
         // Result elements
         const resultVideo = document.getElementById('resultVideo');
-        const videoDescriptionText = document.getElementById('videoDescriptionText');
-        const clinicalText = document.getElementById('clinicalText');
         const petTypeBadge = document.getElementById('petTypeBadge');
-        const videoInfo = document.getElementById('videoInfo');
+        const analysisText = document.getElementById('analysisText');
         const errorMessage = document.getElementById('errorMessage');
         const progressFill = document.getElementById('progressFill');
         
-        // Stage elements
-        const stage1 = document.getElementById('stage1');
-        const loadingStage = document.getElementById('loadingStage');
-        const stage2 = document.getElementById('stage2');
+        // Thinking elements
+        const thinkingText = document.getElementById('thinkingText');
 
         // Current video blob for playback
         let currentVideoBlob = null;
@@ -226,7 +203,7 @@
         }
 
         // Typewriter effect for AI response
-        function typewriterEffect(text, element, speed = 50) {
+        function typewriterEffect(text, element, speed = 50, callback) {
             element.textContent = '';
             let i = 0;
             const timer = setInterval(() => {
@@ -235,7 +212,8 @@
                     i++;
                 } else {
                     clearInterval(timer);
-            }
+                    if (callback) callback();
+                }
             }, speed);
         }
 
@@ -263,10 +241,8 @@
                 progressFill.style.width = '100%';
                 
                 if (response.ok && data.success) {
-                    // Wait a moment then show results
-                    setTimeout(() => {
-                        showResults(data);
-                    }, 1000);
+                    // Show thinking first
+                    showThinkingProcess(data);
                 } else {
                     // Show error
                     showError(data.error || data.detail || 'Analysis failed');
@@ -277,6 +253,17 @@
             }
         });
 
+        function showThinkingProcess(data) {
+            // Start typewriter effect for thinking
+            const observations = data.stage1_observations || 'Analyzing your pet\'s behavior...';
+            typewriterEffect(observations, thinkingText, 30, () => {
+                // Once thinking is complete, show results after a brief pause
+                setTimeout(() => {
+                    showResults(data);
+                }, 1000);
+            });
+        }
+
         function showResults(data) {
             // Set up video playback
             resultVideo.src = currentVideoBlob;
@@ -284,22 +271,6 @@
             
             // Set pet type badge
             petTypeBadge.textContent = data.pet_type.charAt(0).toUpperCase() + data.pet_type.slice(1);
-            
-            // Set video info
-            videoInfo.innerHTML = `
-                <div class="info-item">
-                    <span class="info-label">Duration:</span>
-                    <span class="info-value">${data.video_info.duration}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Size:</span>
-                    <span class="info-value">${data.video_info.size}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Analyzed:</span>
-                    <span class="info-value">${new Date(data.timestamp).toLocaleString()}</span>
-                </div>
-            `;
             
             // Show results state
             showState('results');
@@ -310,30 +281,11 @@
                 console.log('Auto-play blocked, user will need to click play');
             });
             
-            // Sequential stage display
-            // Stage 1: Show video description immediately
-            stage1.classList.remove('hidden');
-            loadingStage.classList.add('hidden');
-            stage2.classList.add('hidden');
-            
+            // Show analysis with typewriter effect
             setTimeout(() => {
-                const descriptionText = `${data.stage1_description || 'Video analysis in progress...'}`;
-                typewriterEffect(descriptionText, videoDescriptionText, 40);
-            }, 500);
-            
-            // Stage 2: Show loading screen, then clinical analysis
-            setTimeout(() => {
-                stage1.classList.add('hidden');
-                loadingStage.classList.remove('hidden');
-            }, 3000);
-            
-            setTimeout(() => {
-                loadingStage.classList.add('hidden');
-                stage2.classList.remove('hidden');
-                
                 const clinicalResponse = data.stage2_clinical_analysis || 'Analysis in progress...';
-                typewriterEffect(clinicalResponse, clinicalText, 60);
-            }, 5000);
+                typewriterEffect(clinicalResponse, analysisText, 50);
+            }, 500);
         }
 
         function showError(message) {
