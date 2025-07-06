@@ -180,7 +180,9 @@ REQUIRED JSON FORMAT:
     {{
       "behavior": "exact behavior name (e.g., 'dilated pupils', 'approaches humans with positive expressions')",
       "pet_type": "cat/dog/both", 
-      "indicates": "what this behavior typically means (e.g., 'fear or stress')"
+      "indicates": "what this behavior means with intensity (e.g., 'moderate fear or stress', 'high excitement')",
+      "confidence": "high/medium/low - how confident you are in this extraction",
+      "source": "text/image/both - where you found this behavior"
     }}
   ]
 }}
@@ -193,11 +195,18 @@ EXTRACT BOTH PHYSICAL AND SOCIAL BEHAVIORS:
 ✅ **Social behaviors**: "approaches humans with positive expressions", "follows pointing gestures from smiling humans", "avoids humans with angry expressions", "seeks attention from humans"
 
 EXAMPLES OF GOOD EXTRACTIONS:
-- "dilated pupils" → "fear or stress"
-- "tail held high with curve" → "confidence or happiness"
-- "ears flattened against head" → "fear or aggression"
-- "excessive meowing" → "attention seeking or distress"
-- "follows pointing gestures from smiling humans" → "social responsiveness and trust"
+- "dilated pupils" → "moderate to high fear or stress" → "high" → "text"
+- "tail held high with curve" → "high confidence or happiness" → "high" → "text"
+- "ears flattened against head" → "moderate to high fear or aggression" → "high" → "both"
+- "excessive meowing" → "moderate attention seeking or distress" → "medium" → "text"
+- "follows pointing gestures from smiling humans" → "high social responsiveness and trust" → "medium" → "text"
+- "half-blinking" → "low to moderate fear" → "medium" → "image"
+- "nose-licking" → "mild to moderate frustration" → "high" → "image"
+
+SOURCE FIELD INSTRUCTIONS:
+- "text" = behavior described in written text
+- "image" = behavior shown in charts, diagrams, photos, or illustrations
+- "both" = behavior mentioned in both text AND shown in images
 
 IGNORE:
 ❌ Methodology, statistics, references
@@ -405,6 +414,8 @@ Return ONLY the JSON object.
                     "behavior": behavior.get("behavior", "unknown"),
                     "pet_type": behavior.get("pet_type", "unknown"),
                     "indicates": behavior.get("indicates", ""),
+                    "confidence": behavior.get("confidence", "unknown"),
+                    "source": behavior.get("source", "unknown"),
                     "source_document": filename,
                     "processed_date": datetime.now().isoformat()
                 }
@@ -420,6 +431,8 @@ Return ONLY the JSON object.
         behavior_name = behavior.get("behavior", "")
         pet_type = behavior.get("pet_type", "")
         indicates = behavior.get("indicates", "")
+        confidence = behavior.get("confidence", "")
+        source = behavior.get("source", "")
         
         # Create comprehensive text for embedding
         text_parts = []
@@ -432,6 +445,12 @@ Return ONLY the JSON object.
         
         if indicates:
             text_parts.append(f"Indicates: {indicates}")
+        
+        if confidence:
+            text_parts.append(f"Confidence: {confidence}")
+        
+        if source:
+            text_parts.append(f"Source: {source}")
         
         return " | ".join(text_parts)
     
@@ -580,6 +599,8 @@ async def test_intelligent_extraction():
         print(f"  Behavior: {behavior.get('behavior', 'N/A')}")
         print(f"  Pet type: {behavior.get('pet_type', 'N/A')}")
         print(f"  Indicates: {behavior.get('indicates', 'N/A')}")
+        print(f"  Confidence: {behavior.get('confidence', 'N/A')}")
+        print(f"  Source: {behavior.get('source', 'N/A')}")
     
     # Test structuring for vector DB
     structured = processor.structure_for_vector_db(behavioral_data, "sample_cat_behavior_study")
