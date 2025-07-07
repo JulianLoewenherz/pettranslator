@@ -360,15 +360,19 @@ async def get_clinical_analysis(observations: str, pet_type: str, search_terms: 
         logger.info(f"📊 Total unique research insights found: {len(unique_insights)}")
         logger.info(f"🎯 High-quality insights (≥0.30 similarity): {len(filtered_insights)}")
         
+        # Format insights for the prompt (use only top 3 for clinical analysis)
+        top_insights_for_analysis = sorted(filtered_insights, key=lambda x: x.get('similarity_score', 0), reverse=True)[:3]
+        research_context = format_insights_for_prompt(top_insights_for_analysis)
+        
         # Simple terminal output for debugging
         print(f"\n🔍 Search Queries: {search_terms}")
-        print(f"📚 Research Insights Used in Prompt ({len(filtered_insights)}):")
+        print(f"📚 All Research Insights Found ({len(filtered_insights)}) - shown in technical panel:")
         for i, insight in enumerate(filtered_insights, 1):
             print(f"   {i}. {insight['behavior']} → {insight['indicates']} (similarity: {insight.get('similarity_score', 0):.2f})")
+        print(f"\n🎯 Top 3 Insights Used in Clinical Analysis:")
+        for i, insight in enumerate(top_insights_for_analysis, 1):
+            print(f"   {i}. {insight['behavior']} → {insight['indicates']} (similarity: {insight.get('similarity_score', 0):.2f})")
         print()
-        
-        # Format insights for the prompt (use only high-quality ones)
-        research_context = format_insights_for_prompt(filtered_insights)
         
         # Create clinical analysis prompt
         clinical_prompt = f"""
