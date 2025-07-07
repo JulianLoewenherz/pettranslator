@@ -9,11 +9,6 @@
 <body>
     <!-- Background Elements -->
     <div class="background-gradient"></div>
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
 
     <!-- Main Container -->
     <div class="glass-container">
@@ -101,9 +96,9 @@
                 </div>
 
                 <div class="tech-section">
-                    <h5>📊 Top Research Matches</h5>
+                    <h5>🎯 Top 3 Research Insights Used</h5>
                     <div class="rag-insights" id="ragInsights">
-                        <!-- Top 3 RAG matches will appear here -->
+                        <!-- Top 3 insights used in clinical analysis will appear here -->
                     </div>
                 </div>
             </div>
@@ -280,20 +275,28 @@
             // Populate observations
             observationsText.textContent = data.stage1_observations || 'No observations available';
             
-            // Populate RAG insights (show all filtered insights)
+            // Populate RAG insights (show only top 3 used in clinical analysis)
             ragInsights.innerHTML = '';
-            const insights = data.stage2_research_used || [];
+            const insights = data.stage2_top_insights || [];
             
             insights.forEach((insight, index) => {
                 const insightElement = document.createElement('div');
                 insightElement.className = 'rag-insight';
                 
                 const score = Math.round((insight.similarity_score || 0) * 100) / 100;
+                const confidence = insight.confidence || 'unknown';
+                
+                // Add confidence badge styling
+                const confidenceClass = confidence.toLowerCase() === 'high' ? 'confidence-high' : 
+                                      confidence.toLowerCase() === 'medium' ? 'confidence-medium' : 'confidence-low';
                 
                 insightElement.innerHTML = `
                     <div class="insight-header">
                         <div class="insight-behavior">${insight.behavior}</div>
-                        <div class="insight-score">${score}</div>
+                        <div class="insight-scores">
+                            <div class="insight-score">${score}</div>
+                            <div class="insight-confidence ${confidenceClass}">${confidence}</div>
+                        </div>
                     </div>
                     <div class="insight-meaning">${insight.indicates}</div>
                 `;

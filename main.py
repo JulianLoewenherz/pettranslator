@@ -154,6 +154,7 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         
         clinical_response = clinical_result["clinical_response"]
         research_insights = clinical_result["research_insights"]
+        top_insights_used = clinical_result.get("top_insights_used", [])
         searchable_terms = clinical_result.get("searchable_terms", [])
         
         logger.info(f"✅ Analysis complete! Pet thoughts: {clinical_response[:50]}...")
@@ -173,6 +174,7 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
             "stage1_description": observation_result["description"],
             "stage2_clinical_analysis": clinical_response,
             "stage2_research_used": research_insights,
+            "stage2_top_insights": top_insights_used,  # Top 3 used in clinical analysis
             "analysis_complete": True,
             "timestamp": datetime.now().isoformat()
         }
@@ -191,6 +193,7 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
                 "stage1_description": "🚫 Daily request limit reached! Our free AI analysis quota has been used up for today. Please try again tomorrow when the quota resets.",
                 "stage2_clinical_analysis": "The daily request limit has been reached. Please check back tomorrow to analyze your pet's video!",
                 "stage2_research_used": [],
+                "stage2_top_insights": [],
                 "pet_type": pet_type,
                 "analysis_complete": False
             }
@@ -202,6 +205,7 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
             "stage1_description": f"I'm having trouble analyzing this {pet_type} video right now. Please try again.",
             "stage2_clinical_analysis": "Unable to provide clinical analysis due to processing error.",
             "stage2_research_used": [],
+            "stage2_top_insights": [],
             "pet_type": pet_type,
             "analysis_complete": False
         }
@@ -254,7 +258,7 @@ REQUIREMENTS:
 - Focus on specific body language, not general activities
 - Think like a veterinary behaviorist writing research terms
 
-GOOD examples: ["ears flattened back", "tail twitching rapidly", "crouched low posture", "pupils dilated", "mouth open panting", "nose licking", "head lowered", "ears forward alert", "retreating quickly"]
+GOOD examples: ["ears flattened back", "tail twitching rapidly", "crouched low posture", "pupils dilated", "mouth open panting", "nose licking", "head lowered", "ears forward alert", "retreating quickly", "tense body", "frizzy tail"]
 
 BAD examples: ["cat sniffing object", "cat on table", "soft vocalization", "cats interacting"] - these are too general
 
@@ -392,12 +396,11 @@ async def get_clinical_analysis(observations: str, pet_type: str, search_terms: 
         
         # Simple terminal output for debugging
         print(f"\n🔍 Search Queries: {search_terms}")
-        print(f"📚 All Research Insights Found ({len(filtered_insights)}) - shown in technical panel:")
-        for i, insight in enumerate(filtered_insights, 1):
-            print(f"   {i}. {insight['behavior']} → {insight['indicates']} (similarity: {insight.get('similarity_score', 0):.2f})")
-        print(f"\n🎯 Top 3 Insights Used in Clinical Analysis:")
+        print(f"📚 All Research Insights Found: {len(filtered_insights)}")
+        print(f"🎯 Top 3 Insights Used in Clinical Analysis (shown in technical panel):")
         for i, insight in enumerate(top_insights_for_analysis, 1):
-            print(f"   {i}. {insight['behavior']} → {insight['indicates']} (similarity: {insight.get('similarity_score', 0):.2f})")
+            confidence = insight.get('confidence', 'unknown')
+            print(f"   {i}. {insight['behavior']} → {insight['indicates']} (similarity: {insight.get('similarity_score', 0):.2f}, confidence: {confidence})")
         print()
         
         # Create clinical analysis prompt
@@ -411,7 +414,7 @@ RESEARCH INSIGHTS:
 {research_context}
 
 TASK: Write a short, casual paragraph (max 130 words) explaining what the pet is thinking/feeling based on the observations and research. 
-Base your interpretation a large amount on the research insights above. These are scientifically-backed behavioral indicators - trust them over general assumptions.
+IMPORTANT: Base your interpretation heavily on the research insights above. These are scientifically-backed behavioral indicators - trust them over general assumptions.
 
 If research shows behaviors indicating stress/anxiety/tension → mention the pet might be feeling unsure or alert
 If research shows behaviors indicating aggression → mention the pet might be feeling defensive 
@@ -432,7 +435,8 @@ Focus on translating the behaviors into what the pet might be "thinking" using t
         
         return {
             "clinical_response": clinical_text,
-            "research_insights": filtered_insights,
+            "research_insights": filtered_insights,  # All insights for transparency
+            "top_insights_used": top_insights_for_analysis,  # Top 3 used in analysis
             "searchable_terms": search_terms  # Return the pre-generated terms
         }
     except Exception as e:
@@ -444,12 +448,14 @@ Focus on translating the behaviors into what the pet might be "thinking" using t
             return {
                 "clinical_response": "🚫 Daily request limit reached! Our free AI analysis quota has been used up for today. Please try again tomorrow when the quota resets.",
                 "research_insights": [],
+                "top_insights_used": [],
                 "searchable_terms": search_terms or []
             }
         
         return {
             "clinical_response": "I had trouble analyzing the research insights, but your pet looks happy and healthy!",
             "research_insights": [],
+            "top_insights_used": [],
             "searchable_terms": search_terms or []
         }
 
@@ -535,6 +541,7 @@ async def upload_video(file: UploadFile = File(...)):
             "stage1_description": analysis_result["stage1_description"],
             "stage2_clinical_analysis": analysis_result["stage2_clinical_analysis"],
             "stage2_research_used": analysis_result["stage2_research_used"],
+            "stage2_top_insights": analysis_result.get("stage2_top_insights", []),
             "video_info": {
             "filename": file.filename,
             "duration": f"{duration:.1f} seconds",

@@ -40,54 +40,7 @@ body {
         radial-gradient(circle at 40% 60%, rgba(0, 255, 255, 0.03) 0%, transparent 50%);
 }
 
-.floating-shapes {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-}
 
-.shape {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(1px);
-    animation: float 20s infinite ease-in-out;
-}
-
-.shape-1 {
-    width: 300px;
-    height: 300px;
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.shape-2 {
-    width: 200px;
-    height: 200px;
-    top: 60%;
-    right: 15%;
-    animation-delay: -7s;
-}
-
-.shape-3 {
-    width: 150px;
-    height: 150px;
-    bottom: 20%;
-    left: 60%;
-    animation-delay: -14s;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    25% { transform: translateY(-20px) rotate(90deg); }
-    50% { transform: translateY(-10px) rotate(180deg); }
-    75% { transform: translateY(-30px) rotate(270deg); }
-}
 
 /* Main Container */
 .glass-container {
@@ -489,6 +442,13 @@ body {
     font-weight: 500;
     color: rgba(255, 255, 255, 0.9);
     flex: 1;
+    margin-right: 12px;
+}
+
+.insight-scores {
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
 
 .insight-score {
@@ -498,6 +458,29 @@ body {
     padding: 2px 8px;
     border-radius: 4px;
     font-weight: 500;
+}
+
+.insight-confidence {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.confidence-high {
+    background: rgba(48, 209, 88, 0.15);
+    color: rgba(48, 209, 88, 0.9);
+}
+
+.confidence-medium {
+    background: rgba(255, 204, 0, 0.15);
+    color: rgba(255, 204, 0, 0.9);
+}
+
+.confidence-low {
+    background: rgba(255, 69, 58, 0.15);
+    color: rgba(255, 69, 58, 0.9);
 }
 
 .insight-meaning {
