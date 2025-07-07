@@ -178,8 +178,23 @@ async def analyze_pet_video(video_path: str, pet_type: str = "dog") -> dict:
         }
         
     except Exception as e:
-        # 🚨 Error handling
+        # 🚨 Error handling with quota check
         print(f"❌ Error analyzing video: {e}")
+        error_message = str(e)
+        
+        # Check for quota exceeded errors
+        if any(keyword in error_message.lower() for keyword in ['quota', 'rate limit', '429', 'exhausted', 'exceeded']):
+            return {
+                "success": False,
+                "error": "quota_exceeded",
+                "stage1_observations": [],
+                "stage1_description": "🚫 Daily request limit reached! Our free AI analysis quota has been used up for today. Please try again tomorrow when the quota resets.",
+                "stage2_clinical_analysis": "The daily request limit has been reached. Please check back tomorrow to analyze your pet's video!",
+                "stage2_research_used": [],
+                "pet_type": pet_type,
+                "analysis_complete": False
+            }
+        
         return {
             "success": False,
             "error": str(e),
@@ -304,6 +319,17 @@ CRITICAL: Return ONLY the raw JSON object. Do NOT wrap it in markdown code block
             
     except Exception as e:
         logger.error(f"❌ Error during video observation: {e}")
+        error_message = str(e)
+        
+        # Check for quota exceeded errors
+        if any(keyword in error_message.lower() for keyword in ['quota', 'rate limit', '429', 'exhausted', 'exceeded']):
+            return {
+                "observations": "🚫 Daily request limit reached! Our free AI analysis quota has been used up for today. Please try again tomorrow when the quota resets.",
+                "description": "🚫 Daily request limit reached! Our free AI analysis quota has been used up for today. Please try again tomorrow when the quota resets.",
+                "search_terms": [f"{pet_type} behavior", "body language"],
+                "success": False
+            }
+        
         return {
             "observations": f"I had trouble analyzing the video, but I can see your {pet_type} looks healthy and active!",
             "description": f"Video analysis encountered an error for this {pet_type}.",
@@ -385,7 +411,7 @@ RESEARCH INSIGHTS:
 {research_context}
 
 TASK: Write a short, casual paragraph (max 130 words) explaining what the pet is thinking/feeling based on the observations and research. 
-Base your interpretation a good amount on the research insights above. These are scientifically-backed behavioral indicators - trust them over general assumptions.
+Base your interpretation a large amount on the research insights above. These are scientifically-backed behavioral indicators - trust them over general assumptions.
 
 If research shows behaviors indicating stress/anxiety/tension → mention the pet might be feeling unsure or alert
 If research shows behaviors indicating aggression → mention the pet might be feeling defensive 
@@ -411,6 +437,16 @@ Focus on translating the behaviors into what the pet might be "thinking" using t
         }
     except Exception as e:
         logger.error(f"❌ Error during clinical analysis: {e}")
+        error_message = str(e)
+        
+        # Check for quota exceeded errors
+        if any(keyword in error_message.lower() for keyword in ['quota', 'rate limit', '429', 'exhausted', 'exceeded']):
+            return {
+                "clinical_response": "🚫 Daily request limit reached! Our free AI analysis quota has been used up for today. Please try again tomorrow when the quota resets.",
+                "research_insights": [],
+                "searchable_terms": search_terms or []
+            }
+        
         return {
             "clinical_response": "I had trouble analyzing the research insights, but your pet looks happy and healthy!",
             "research_insights": [],

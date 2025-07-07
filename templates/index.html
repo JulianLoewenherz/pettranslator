@@ -347,7 +347,20 @@
         }
 
         function showError(message) {
-            errorMessage.textContent = message;
+            // Check if it's a quota exceeded error
+            if (message === 'quota_exceeded' || message.includes('Daily request limit reached')) {
+                // Show special quota exceeded UI
+                errorMessage.innerHTML = `
+                    <div class="quota-exceeded-notice">
+                        <div class="quota-icon">⏰</div>
+                        <h3>Daily Request Limit Reached</h3>
+                        <p>Our free AI analysis quota has been used up for today. This helps us keep the service running for everyone!</p>
+                        <p><strong>Please try again tomorrow when the quota resets.</strong></p>
+                    </div>
+                `;
+            } else {
+                errorMessage.textContent = message;
+            }
             showState('error');
         }
 

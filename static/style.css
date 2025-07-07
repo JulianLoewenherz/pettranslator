@@ -969,4 +969,54 @@ body {
     .insight-behavior {
         font-size: 0.9rem;
     }
+}
+
+/* Quota Exceeded Styling */
+.quota-exceeded-notice {
+    text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.quota-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.8;
+}
+
+.quota-exceeded-notice h3 {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.quota-exceeded-notice p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 12px;
+}
+
+.quota-exceeded-notice p:last-child {
+    margin-bottom: 0;
+}
+
+.quota-exceeded-notice strong {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .quota-exceeded-notice h3 {
+        font-size: 1.5rem;
+    }
+    
+    .quota-exceeded-notice p {
+        font-size: 1rem;
+    }
+    
+    .quota-icon {
+        font-size: 3rem;
+    }
 } 
