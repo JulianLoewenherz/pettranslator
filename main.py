@@ -229,14 +229,21 @@ RESPONSE FORMAT - Return valid JSON with these two keys:
   "search_terms": ["term1", "term2", "term3", "term4", "term5"]
 }}
 
-For search_terms, generate 3-5 specific search queries ONLY for behaviors you actually observed in the video:
-- ONLY include behaviors that were actually seen/heard in the video
-- Use simple terms (1-5 words each)
-- no general search terms like "cat vocalizations". Be specific
-- If ears weren't flattened, don't include "ears back"
-- Be specific to what you actually witnessed
+For search_terms, generate 3-5 specific behavioral research queries for behaviors you actually observed:
 
-Example search terms: ["tail moving side to side", "ears back", "crouched position", "sniffing behavior", "sudden quick movement", "pupils large", "retreating or startled"]
+PURPOSE: These terms will query a scientific database of animal behavioral research to find exact behavioral indicators and their meanings.
+
+REQUIREMENTS:
+- ONLY behaviors actually observed in the video
+- Use precise behavioral terminology (2-4 words)
+- Focus on specific body language, not general activities
+- Think like a veterinary behaviorist writing research terms
+
+GOOD examples: ["ears flattened back", "tail twitching rapidly", "crouched low posture", "pupils dilated", "mouth open panting", "nose licking", "head lowered", "ears forward alert", "retreating quickly"]
+
+BAD examples: ["cat sniffing object", "cat on table", "soft vocalization", "cats interacting"] - these are too general
+
+Be specific to exact body positions, ear/tail positions, facial expressions, and precise movements you observed.
 
 CRITICAL: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks or any other formatting. No ```json or ``` markers.
 """
@@ -344,14 +351,14 @@ async def get_clinical_analysis(observations: str, pet_type: str, search_terms: 
                 unique_insights.append(insight)
                 seen_behaviors.add(behavior_key)
         
-        # Filter out low-similarity results (< 0.55) for better quality
+        # Filter out low-similarity results (< 0.30) for better quality
         filtered_insights = [
             insight for insight in unique_insights 
-            if insight.get('similarity_score', 0) >= 0.55
+            if insight.get('similarity_score', 0) >= 0.30
         ]
         
         logger.info(f"📊 Total unique research insights found: {len(unique_insights)}")
-        logger.info(f"🎯 High-quality insights (≥0.55 similarity): {len(filtered_insights)}")
+        logger.info(f"🎯 High-quality insights (≥0.30 similarity): {len(filtered_insights)}")
         
         # Simple terminal output for debugging
         print(f"\n🔍 Search Queries: {search_terms}")
