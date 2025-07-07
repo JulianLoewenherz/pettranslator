@@ -374,8 +374,10 @@ body {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
+    overflow-y: auto;
     pointer-events: none;
+    display: flex;
+    flex-direction: column;
 }
 
 .tech-details-panel.visible {
@@ -391,6 +393,9 @@ body {
     align-items: center;
     padding: 20px 20px 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px 16px 0 0;
 }
 
 .tech-header h4 {
@@ -422,10 +427,18 @@ body {
 .tech-section {
     padding: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
 }
 
 .tech-section:last-child {
     border-bottom: none;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tech-section h5 {
+    flex-shrink: 0;
 }
 
 .tech-section h5 {
@@ -435,6 +448,7 @@ body {
     margin: 0 0 12px 0;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    flex-shrink: 0;
 }
 
 .observations-text {
@@ -450,6 +464,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
 }
 
 .rag-insight {
@@ -491,21 +508,29 @@ body {
 }
 
 /* Custom scrollbar for tech panel */
-.tech-details-panel ::-webkit-scrollbar {
+.tech-details-panel ::-webkit-scrollbar,
+.rag-insights ::-webkit-scrollbar,
+.observations-text ::-webkit-scrollbar {
     width: 4px;
 }
 
-.tech-details-panel ::-webkit-scrollbar-track {
+.tech-details-panel ::-webkit-scrollbar-track,
+.rag-insights ::-webkit-scrollbar-track,
+.observations-text ::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 2px;
 }
 
-.tech-details-panel ::-webkit-scrollbar-thumb {
+.tech-details-panel ::-webkit-scrollbar-thumb,
+.rag-insights ::-webkit-scrollbar-thumb,
+.observations-text ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
 }
 
-.tech-details-panel ::-webkit-scrollbar-thumb:hover {
+.tech-details-panel ::-webkit-scrollbar-thumb:hover,
+.rag-insights ::-webkit-scrollbar-thumb:hover,
+.observations-text ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }
 
@@ -521,8 +546,9 @@ body {
     width: 100%;
     height: auto;
     max-height: 500px;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
+    background: #000;
 }
 
 .video-overlay {

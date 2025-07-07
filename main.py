@@ -220,6 +220,7 @@ WHAT TO OBSERVE:
 - Any sounds or vocalizations
 - How they interact with their environment
 - Facial expressions and mouth position
+- Actions such as retreating or jumping
 
 RESPONSE FORMAT - Return valid JSON with these two keys:
 
@@ -228,12 +229,14 @@ RESPONSE FORMAT - Return valid JSON with these two keys:
   "search_terms": ["term1", "term2", "term3", "term4", "term5"]
 }}
 
-For search_terms, generate 3-5 specific search queries that would help find research about the behaviors observed:
-- Focus on specific behaviors or body language mentioned
+For search_terms, generate 3-5 specific search queries ONLY for behaviors you actually observed in the video:
+- ONLY include behaviors that were actually seen/heard in the video
 - Use simple terms (1-5 words each)
-- Focus on observable behaviors, not interpretations
+- no general search terms like "cat vocalizations". Be specific
+- If ears weren't flattened, don't include "ears back"
+- Be specific to what you actually witnessed
 
-Example search terms: ["tail moving side to side ", "ears back", "crouched position", "sniffing behavior", "sudden movement", "pupils large"]
+Example search terms: ["tail moving side to side", "ears back", "crouched position", "sniffing behavior", "sudden quick movement", "pupils large", "retreating or startled"]
 
 CRITICAL: Return ONLY the raw JSON object. Do NOT wrap it in markdown code blocks or any other formatting. No ```json or ``` markers.
 """
@@ -341,14 +344,14 @@ async def get_clinical_analysis(observations: str, pet_type: str, search_terms: 
                 unique_insights.append(insight)
                 seen_behaviors.add(behavior_key)
         
-        # Filter out low-similarity results (< 0.4) for better quality
+        # Filter out low-similarity results (< 0.55) for better quality
         filtered_insights = [
             insight for insight in unique_insights 
-            if insight.get('similarity_score', 0) >= 0.4
+            if insight.get('similarity_score', 0) >= 0.55
         ]
         
         logger.info(f"📊 Total unique research insights found: {len(unique_insights)}")
-        logger.info(f"🎯 High-quality insights (≥0.4 similarity): {len(filtered_insights)}")
+        logger.info(f"🎯 High-quality insights (≥0.55 similarity): {len(filtered_insights)}")
         
         # Simple terminal output for debugging
         print(f"\n🔍 Search Queries: {search_terms}")
@@ -371,6 +374,11 @@ RESEARCH INSIGHTS:
 {research_context}
 
 TASK: Write a short, casual paragraph (max 130 words) explaining what the pet is thinking/feeling based on the observations and research. 
+Base your interpretation a good amount on the research insights above. These are scientifically-backed behavioral indicators - trust them over general assumptions.
+
+If research shows behaviors indicating stress/anxiety/tension → mention the pet might be feeling unsure or alert
+If research shows behaviors indicating aggression → mention the pet might be feeling defensive 
+If research shows behaviors indicating contentment → mention the pet seems relaxed
 
 TONE: educational, and casual but also insightful - like you're a relaxed veterinarian to a friend about their pet
 STYLE: One flowing paragraph, no bullet points or lists

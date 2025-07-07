@@ -280,12 +280,11 @@
             // Populate observations
             observationsText.textContent = data.stage1_observations || 'No observations available';
             
-            // Populate RAG insights (top 3)
+            // Populate RAG insights (show all filtered insights)
             ragInsights.innerHTML = '';
             const insights = data.stage2_research_used || [];
-            const top3 = insights.slice(0, 3);
             
-            top3.forEach((insight, index) => {
+            insights.forEach((insight, index) => {
                 const insightElement = document.createElement('div');
                 insightElement.className = 'rag-insight';
                 
