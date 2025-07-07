@@ -53,4 +53,11 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST 
+MANIFEST
+
+# ChromaDB database files - these change during normal operation
+chroma_db/
+*.bin
+*.sqlite3
+
+# Existing content (if any) would remain here 
